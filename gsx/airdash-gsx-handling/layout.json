@@ -1,0 +1,79 @@
+{
+  "content": [
+    {
+      "path": "manifest.json",
+      "size": 313,
+      "date": 134334434040442756
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Cargo_Loader/texture.AIRDASH/texture.CFG",
+      "size": 389,
+      "date": 134334434038902316
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_TMX_150/texture.AIRDASH/texture.CFG",
+      "size": 658,
+      "date": 134334434038905992
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRDASH/texture.CFG",
+      "size": 194,
+      "date": 134334434038906006
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRDASH/GSX_LOGO_4X1.PNG.DDS",
+      "size": 349712,
+      "date": 134334434041245976
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRDASH/GSX_logo_4x1.png.DDS.FLAGS",
+      "size": 15,
+      "date": 134334434041270546
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRDASH/GSX_LOGO_4X1.PNG.DDS.json",
+      "size": 61,
+      "date": 134334434041270546
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Cargo_Loader_HI/texture.AIRDASH/texture.CFG",
+      "size": 454,
+      "date": 134334434038914206
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_Trepel_280/texture.AIRDASH/texture.CFG",
+      "size": 569,
+      "date": 134334434038917412
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Tug_660/texture.AIRDASH/texture.CFG",
+      "size": 378,
+      "date": 134334434038921272
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_03/texture.AIRDASH/texture.CFG",
+      "size": 550,
+      "date": 134334434038924338
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_CDS_2438/texture.AIRDASH/texture.CFG",
+      "size": 253,
+      "date": 134334434038927308
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Tug_M1A/texture.AIRDASH/texture.CFG",
+      "size": 295,
+      "date": 134334434038935036
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_M1A/texture.AIRDASH/texture.CFG",
+      "size": 350,
+      "date": 134334434038938008
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-1740/texture.AIRDASH/texture.CFG",
+      "size": 253,
+      "date": 134334434038941268
+    }
+  ]
+}

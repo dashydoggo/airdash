@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+api/.env
+
+# Generated frontend and runtime content
+site/
+dist/
+build/
+out/
+web/dist/
+coverage/
+.cache/
+
+# TypeScript and tooling state
+*.tsbuildinfo
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Python state
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Generated simulator packages
+gsx/*.zip

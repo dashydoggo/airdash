@@ -1,0 +1,17 @@
+{
+  "flights": [
+    {
+      "id": "demo-42",
+      "registration": "N599AD",
+      "status": "ACTIVE",
+      "departure_gate": "B12",
+      "arrival_gate": "D44",
+      "flight_number": 742,
+      "origin": "KSEA",
+      "destination": "KMIA",
+      "discord_id": "860900952097030184",
+      "pilot_number": "AD0042",
+      "pilot": "Dashy Demo"
+    }
+  ]
+}

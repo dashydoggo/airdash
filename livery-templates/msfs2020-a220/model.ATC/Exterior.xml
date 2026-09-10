@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ModelInfo>
+	<LODS>
+		<LOD ModelFile="exterior.gltf" minSize="0">
+			<MergeModel>..\..\inibuilds_aircraft-a220\model\Exterior_LOD00.gltf</MergeModel>
+		</LOD>
+	</LODS>
+	<Behaviors>
+	<Include ModelBehaviorFile="Synaptic\A220\Exterior\Index.xml" />
+
+	<Component ID="Exterior">
+		<UseTemplate Name="A220_Exterior" />
+	</Component>
+    </Behaviors>
+</ModelInfo>

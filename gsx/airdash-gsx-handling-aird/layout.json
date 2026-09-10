@@ -1,0 +1,79 @@
+{
+  "content": [
+    {
+      "path": "manifest.json",
+      "size": 345,
+      "date": 134334564798490426
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Cargo_Loader_HI/texture.AIRD/texture.CFG",
+      "size": 451,
+      "date": 134334564798240588
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_CDS_2438/texture.AIRD/texture.CFG",
+      "size": 250,
+      "date": 134334564798242788
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Cargo_Loader/texture.AIRD/texture.CFG",
+      "size": 386,
+      "date": 134334564798244482
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_Trepel_280/texture.AIRD/texture.CFG",
+      "size": 566,
+      "date": 134334564798246128
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Tug_M1A/texture.AIRD/texture.CFG",
+      "size": 292,
+      "date": 134334564798247778
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_TMX_150/texture.AIRD/texture.CFG",
+      "size": 655,
+      "date": 134334564798250342
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Tug_660/texture.AIRD/texture.CFG",
+      "size": 375,
+      "date": 134334564798252278
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_M1A/texture.AIRD/texture.CFG",
+      "size": 347,
+      "date": 134334564798253898
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRD/GSX_LOGO_4X1.PNG.DDS",
+      "size": 349712,
+      "date": 134334434041245976
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRD/GSX_logo_4x1.png.DDS.FLAGS",
+      "size": 15,
+      "date": 134334434041270546
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRD/GSX_LOGO_4X1.PNG.DDS.json",
+      "size": 61,
+      "date": 134334434041270546
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-580/texture.AIRD/texture.CFG",
+      "size": 194,
+      "date": 134334564798255518
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Pushback_03/texture.AIRD/texture.CFG",
+      "size": 547,
+      "date": 134334564798257160
+    },
+    {
+      "path": "SimObjects/GroundVehicles/FSDT_Staircase_TLD_ABS-1740/texture.AIRD/texture.CFG",
+      "size": 250,
+      "date": 134334564798258794
+    }
+  ]
+}

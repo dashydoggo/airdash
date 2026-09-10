@@ -1,0 +1,24 @@
+{
+  "flights": [
+    {
+      "id": 16,
+      "discord_id": "860900952097030184",
+      "pilot_number": "AD0001",
+      "pilot": "Dashy",
+      "status": "BOOKED",
+      "source": "MISSION",
+      "mission_type": "RECOVERY",
+      "recovery_of_assignment_id": 15,
+      "flight_number": 9015,
+      "origin": "KPUB",
+      "destination": "KDEN",
+      "block_minutes": 45,
+      "registration": "N574AD",
+      "departure_gate": "G17",
+      "arrival_gate": "A36",
+      "booked_at": "2026-09-10T21:30:45.694Z",
+      "started_at": null,
+      "expires_at": "2026-09-11T00:45:45.694Z"
+    }
+  ]
+}
