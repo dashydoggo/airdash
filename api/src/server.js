@@ -12,6 +12,7 @@ import { markNotificationsRead, syncNotificationHistory } from "./notifications.
 import { pushConfiguration, removePushSubscription, savePushSubscription, sendTestPush, startPushWorker } from "./push.js"
 import { assignmentExperienceMultiplier, buildRecoveryMission, buildSimBriefDispatchParams, ensureRecoveryRoute, estimateRecoveryBlockMinutes, recoveryPayloadIsValid } from "./recoveryMissions.js"
 import { repairMissingActiveGates } from "./gates.js"
+import { repairAircraftParkingGates, selectAircraftGate } from "./aircraftGates.js"
 
 const app = express()
 const port = Number(process.env.PORT ?? 3006)
@@ -184,7 +185,7 @@ app.get("/health", async (_req, res) => {
 
 app.get("/public", async (_req, res) => {
   const [aircraft, routes, bases, pilots] = await Promise.all([
-    pool.query("SELECT registration, fleet_number, aircraft_type, status, status_reason, status_until, current_airport, livery_url, livery_sha256, livery_msfs2020_url, livery_msfs2020_sha256, livery_name, special_livery, thumbnail_url, total_block_minutes, total_cycles, livery_download_count, livery_msfs2020_download_count FROM airdash.aircraft ORDER BY fleet_number"),
+    pool.query("SELECT registration, fleet_number, aircraft_type, status, status_reason, status_until, current_airport, current_gate, livery_url, livery_sha256, livery_msfs2020_url, livery_msfs2020_sha256, livery_name, special_livery, thumbnail_url, total_block_minutes, total_cycles, livery_download_count, livery_msfs2020_download_count FROM airdash.aircraft ORDER BY fleet_number"),
     pool.query("SELECT id, flight_number, origin, destination, block_minutes, days FROM airdash.routes WHERE status='ACTIVE' ORDER BY flight_number"),
     pool.query("SELECT code, name, lat, lon, role FROM airdash.bases WHERE is_active=TRUE ORDER BY sort_order, code"),
     pool.query(`SELECT p.discord_id, p.pilot_number, p.display_name, p.base_code, p.rank_name, p.leadership_title,
@@ -507,7 +508,7 @@ app.post("/missions/recovery", requireUser, async (req, res) => {
       WHERE r.origin=$1 AND a.status IN ('BOOKED','ACTIVE','PIREP_SUBMITTED') AND a.departure_gate IS NOT NULL`, [origin])
     const occupiedArrivals = await client.query(`SELECT a.arrival_gate FROM airdash.assignments a JOIN airdash.routes r ON r.id=a.route_id
       WHERE r.destination=$1 AND a.status IN ('BOOKED','ACTIVE','PIREP_SUBMITTED') AND a.arrival_gate IS NOT NULL`, [destination])
-    const departureGate = selectGate(origin, `recovery:${sourceRow.id}:${req.body.flightDate}:departure`, occupiedDepartures.rows.map(row => row.departure_gate))
+    const departureGate = await selectAircraftGate(client, origin, `recovery:${sourceRow.id}:${req.body.flightDate}:departure`, aircraft.rows[0].current_gate, sourceRow.registration)
     const arrivalGate = selectGate(destination, `recovery:${sourceRow.id}:${req.body.flightDate}:arrival`, occupiedArrivals.rows.map(row => row.arrival_gate))
     if (!departureGate || !arrivalGate) throw Object.assign(new Error("Could not assign both recovery gates"), { status: 409 })
     const cancelled = await client.query("SELECT id FROM airdash.assignments WHERE recovery_of_assignment_id=$1 AND status IN ('CANCELLED','EXPIRED') ORDER BY id DESC LIMIT 1 FOR UPDATE", [sourceRow.id])
@@ -522,7 +523,7 @@ app.post("/missions/recovery", requireUser, async (req, res) => {
            volanta_tracking_consent,file_vatsim,source,mission_type,recovery_of_assignment_id)
           VALUES ($1,$2,$3,$4,'BOOKED',NOW()+make_interval(mins=>$5+150),$6,$7,$8,TRUE,FALSE,'MISSION','RECOVERY',$9) RETURNING *`,
         [route.id, req.body.flightDate, req.user.id, sourceRow.registration, blockMinutes, departureGate, arrivalGate, sourceRow.registration.slice(1,4), sourceRow.id])
-    await client.query("UPDATE airdash.aircraft SET status='ASSIGNED' WHERE registration=$1", [sourceRow.registration])
+    await client.query("UPDATE airdash.aircraft SET status='ASSIGNED', current_gate=$1 WHERE registration=$2", [departureGate, sourceRow.registration])
     await client.query("COMMIT")
     await audit(req.user.id, "RECOVERY_FERRY_BOOKED", "assignment", assignment.rows[0].id, { sourceAssignmentId: sourceRow.id, registration: sourceRow.registration, origin, destination, passengers: 0, cargo: 0 })
     res.status(cancelled.rows[0] ? 200 : 201).json({ assignment: { ...assignment.rows[0], flight_number: route.flight_number, origin, destination, block_minutes: blockMinutes }, rebooked: Boolean(cancelled.rows[0]) })
@@ -678,11 +679,11 @@ app.post("/assignments", requireUser, async (req, res) => {
     const occupiedArrivals = await client.query(`SELECT a.arrival_gate FROM airdash.assignments a JOIN airdash.routes r ON r.id=a.route_id
       WHERE r.destination=$1 AND a.status IN ('BOOKED','ACTIVE','PIREP_SUBMITTED') AND a.arrival_gate IS NOT NULL`, [routeRow.destination])
     const previousGate = await client.query(`SELECT a.arrival_gate FROM airdash.assignments a JOIN airdash.routes r ON r.id=a.route_id
-      WHERE a.registration=$1 AND a.status='COMPLETED' AND r.destination=$2 AND a.arrival_gate IS NOT NULL ORDER BY a.id DESC LIMIT 1`, [registration, routeRow.origin])
+      WHERE a.registration=$1 AND a.status IN ('COMPLETED','DIVERTED') AND r.destination=$2 AND a.arrival_gate IS NOT NULL ORDER BY a.id DESC LIMIT 1`, [registration, routeRow.origin])
     const occupiedDepartureGates = occupiedDepartures.rows.map(item => item.departure_gate)
-    const lastGate = previousGate.rows[0]?.arrival_gate ?? null
-    const departureGate = lastGate && !occupiedDepartureGates.includes(lastGate)
-      ? lastGate
+    const preferredGate = aircraft.rows[0].current_gate ?? previousGate.rows[0]?.arrival_gate ?? null
+    const departureGate = preferredGate && !occupiedDepartureGates.includes(preferredGate)
+      ? preferredGate
       : selectGate(routeRow.origin, `${routeId}:${req.body.flightDate}:${registration}:departure`, occupiedDepartureGates)
     const arrivalGate = selectGate(routeRow.destination, `${routeId}:${req.body.flightDate}:${registration}:arrival`, occupiedArrivals.rows.map(item => item.arrival_gate))
     if (!departureGate || !arrivalGate) throw Object.assign(new Error("Could not assign both flight gates"), { status: 409 })
@@ -698,7 +699,7 @@ app.post("/assignments", requireUser, async (req, res) => {
           VALUES ($1,$2,$3,$4,$5,$6,$7, NOW() + make_interval(mins => $8 + 150)) RETURNING *`,
         [routeId, req.body.flightDate, req.user.id, registration, gates.departureGate, gates.arrivalGate, tailNumber, routeRow.block_minutes])
     await client.query("UPDATE airdash.assignments SET volanta_tracking_consent=TRUE, file_vatsim=$1, source=$2, mission_type='STANDARD', recovery_of_assignment_id=NULL WHERE id=$3", [Boolean(req.body.fileVatsim), ["BOARD", "MISSION", "SCHEDULE"].includes(String(req.body.source)) ? req.body.source : "BOARD", result.rows[0].id])
-    await client.query("UPDATE airdash.aircraft SET status='ASSIGNED' WHERE registration=$1", [registration])
+    await client.query("UPDATE airdash.aircraft SET status='ASSIGNED', current_gate=$1 WHERE registration=$2", [gates.departureGate, registration])
     const scheduleId = Number(req.body.scheduleId)
     if (scheduleId) {
       await client.query("UPDATE airdash.schedule SET status='TAKEN', assignment_id=$1 WHERE id=$2 AND status='OPEN'", [result.rows[0].id, scheduleId])
@@ -802,6 +803,7 @@ app.post("/assignments/:id/gates", requireUser, async (req, res) => {
   const gates = generateGates(row.origin, row.destination, `${row.id}:${row.registration}:${Date.now()}`)
   if (!gates.departureGate || !gates.arrivalGate) return res.status(409).json({ error: "Could not assign both flight gates" })
   const updated = await pool.query("UPDATE airdash.assignments SET departure_gate=$1, arrival_gate=$2 WHERE id=$3 RETURNING *", [gates.departureGate, gates.arrivalGate, row.id])
+  await pool.query("UPDATE airdash.aircraft SET current_gate=$1 WHERE registration=$2", [gates.departureGate, row.registration])
   await audit(req.user.id, "ASSIGNMENT_GATES_GENERATED", "assignment", row.id, gates)
   res.json({ assignment: updated.rows[0] })
 })
@@ -854,6 +856,7 @@ app.post("/assignments/:id/departure-gate", requireUser, async (req, res) => {
   const departureGate = selectGate(row.origin, `${row.id}:departure:conflict:${Date.now()}`, excluded)
   if (!departureGate) return res.status(409).json({ error: `No alternate gate is configured at ${row.origin}` })
   const updated = await pool.query("UPDATE airdash.assignments SET departure_gate=$1 WHERE id=$2 RETURNING *", [departureGate, row.id])
+  await pool.query("UPDATE airdash.aircraft SET current_gate=$1 WHERE registration=$2", [departureGate, row.registration])
   await audit(req.user.id, "DEPARTURE_GATE_REASSIGNED", "assignment", row.id, { airport: row.origin, from: row.departure_gate, to: departureGate })
   res.json({ assignment: updated.rows[0], previousGate: row.departure_gate, departureGate })
 })
@@ -1025,13 +1028,16 @@ async function applyPirepReview(client, reportRow, decision, reviewerId, notes) 
       total_flights=total_flights+$3, missions_completed=missions_completed+$4, assignments_completed=assignments_completed+$5 WHERE discord_id=$6`,
       [creditedBlockMinutes, xp, 1, missionCompleted ? 1 : 0, assignmentCompleted ? 1 : 0, reportRow.discord_id])
     const repositionAirport = reportRow.reposition_airport || reportRow.destination
+    const parkedGate = completedOutcome && reportRow.arrival_gate
+      ? reportRow.arrival_gate
+      : await selectAircraftGate(client, repositionAirport, `report:${reportRow.id}:${reportRow.registration}:parking`, null, reportRow.registration)
     const hardLanding = reportRow.landing_rate != null && Number(reportRow.landing_rate) <= -450
     if (hardLanding) {
-      await client.query(`UPDATE airdash.aircraft SET total_block_minutes=total_block_minutes+$1, total_cycles=total_cycles+1, current_airport=$2,
-        status='INSPECTION', status_reason=$3, status_until=NOW() + INTERVAL '48 hours', status_set_by=NULL, status_set_at=NOW() WHERE registration=$4`,
-        [operationalMinutes, repositionAirport, `Hard landing ${reportRow.landing_rate} fpm; automatic 48-hour inspection`, reportRow.registration])
+      await client.query(`UPDATE airdash.aircraft SET total_block_minutes=total_block_minutes+$1, total_cycles=total_cycles+1, current_airport=$2, current_gate=$3,
+        status='INSPECTION', status_reason=$4, status_until=NOW() + INTERVAL '48 hours', status_set_by=NULL, status_set_at=NOW() WHERE registration=$5`,
+        [operationalMinutes, repositionAirport, parkedGate, `Hard landing ${reportRow.landing_rate} fpm; automatic 48-hour inspection`, reportRow.registration])
     } else {
-      await client.query("UPDATE airdash.aircraft SET total_block_minutes=total_block_minutes+$1, total_cycles=total_cycles+1, current_airport=$2, status='AVAILABLE', status_reason='', status_until=NULL WHERE registration=$3", [operationalMinutes, repositionAirport, reportRow.registration])
+      await client.query("UPDATE airdash.aircraft SET total_block_minutes=total_block_minutes+$1, total_cycles=total_cycles+1, current_airport=$2, current_gate=$3, status='AVAILABLE', status_reason='', status_until=NULL WHERE registration=$4", [operationalMinutes, repositionAirport, parkedGate, reportRow.registration])
     }
     await client.query("UPDATE airdash.assignments SET status=$1 WHERE id=$2", [completedOutcome ? "COMPLETED" : "DIVERTED", reportRow.assignment_id])
     if (hardLanding) await audit(null, "AIRCRAFT_INSPECTION_TRIGGERED", "aircraft", reportRow.registration, { landingRate: reportRow.landing_rate, pirep: reportRow.id, repositionAirport })
@@ -1085,7 +1091,7 @@ app.post("/pireps", requireUser, async (req, res) => {
       const client = await pool.connect()
       try {
         await client.query("BEGIN")
-        const report = await client.query(`SELECT p.*, a.registration, a.route_id, a.source, a.mission_type, r.destination FROM airdash.pireps p
+        const report = await client.query(`SELECT p.*, a.registration, a.route_id, a.source, a.mission_type, a.arrival_gate, r.destination FROM airdash.pireps p
           JOIN airdash.assignments a ON a.id=p.assignment_id JOIN airdash.routes r ON r.id=a.route_id WHERE p.id=$1 FOR UPDATE`, [result.rows[0].id])
         await applyPirepReview(client, report.rows[0], "APPROVED", null, "Automatically approved")
         await client.query("COMMIT")
@@ -1282,7 +1288,7 @@ app.post("/admin/pireps/:id/:decision", requireOwner, async (req, res) => {
   const client = await pool.connect()
   try {
     await client.query("BEGIN")
-    const report = await client.query(`SELECT p.*, a.registration, a.route_id, a.source, a.mission_type, r.destination FROM airdash.pireps p
+    const report = await client.query(`SELECT p.*, a.registration, a.route_id, a.source, a.mission_type, a.arrival_gate, r.destination FROM airdash.pireps p
       JOIN airdash.assignments a ON a.id=p.assignment_id JOIN airdash.routes r ON r.id=a.route_id WHERE p.id=$1 FOR UPDATE`, [req.params.id])
     if (!report.rows[0]) return res.status(404).json({ error: "PIREP not found" })
     const row = report.rows[0]
@@ -1298,7 +1304,9 @@ app.post("/admin/pireps/:id/:decision", requireOwner, async (req, res) => {
 
 await migrate()
 const repairedGates = await repairMissingActiveGates(pool, audit)
+const repairedAircraftGates = await repairAircraftParkingGates(pool, audit)
 if (repairedGates > 0) console.log(`[airdash-api] repaired gates for ${repairedGates} active assignment${repairedGates === 1 ? "" : "s"}`)
+if (repairedAircraftGates > 0) console.log(`[airdash-api] assigned parking gates for ${repairedAircraftGates} aircraft`)
 const stopPushWorker = startPushWorker(pool, OWNER_ID)
 const server = app.listen(port, "0.0.0.0", () => console.log(`[airdash-api] listening on 0.0.0.0:${port}`))
 const shutdown = async () => { stopPushWorker(); server.close(); await pool.end(); process.exit(0) }

@@ -175,6 +175,7 @@ export async function migrate() {
       author_name='Staff Writer',
       published_at=COALESCE(published_at,created_at)
       WHERE title='Order for 30 Boeing 757-200 Aircraft';
+    ALTER TABLE airdash.aircraft ADD COLUMN IF NOT EXISTS current_gate TEXT;
     ALTER TABLE airdash.assignments ADD COLUMN IF NOT EXISTS departure_gate TEXT;
     ALTER TABLE airdash.assignments ADD COLUMN IF NOT EXISTS arrival_gate TEXT;
     ALTER TABLE airdash.assignments ADD COLUMN IF NOT EXISTS tail_number TEXT;

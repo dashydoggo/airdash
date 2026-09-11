@@ -5,7 +5,7 @@ import {
   FiActivity, FiAlertCircle, FiArrowRight, FiCalendar, FiCheck,
   FiCheckCircle, FiClipboard, FiClock, FiDownload, FiFileText, FiHome, FiLogIn,
   FiMap, FiMapPin, FiMenu, FiPackage, FiSend, FiSettings, FiShield,
-  FiTruck, FiStar, FiUser, FiUserCheck, FiUsers, FiX, FiXCircle, FiBell, FiChevronDown, FiGlobe, FiEye, FiSearch,
+  FiTruck, FiStar, FiUser, FiUserCheck, FiUsers, FiVideo, FiX, FiXCircle, FiBell, FiChevronDown, FiGlobe, FiEye, FiSearch,
 } from "react-icons/fi"
 import { TbPlane, TbCrown, TbFlame } from "react-icons/tb"
 import { MapContainer, TileLayer, CircleMarker, Polyline, Tooltip } from "react-leaflet"
@@ -19,6 +19,7 @@ import type { AdminOverview, Aircraft, Assignment, FlightOutcomeAnalysis, MeResp
 import { AIRPORTS } from "./airportData"
 import AdvancedNetworkMap from "./AdvancedNetworkMap"
 import { LatestNews, NewsArticle, NewsHub } from "./News"
+import { HomeHeroShowcase } from "./HomeMedia"
 
 interface AppContextValue {
   publicData: PublicResponse | null
@@ -214,10 +215,32 @@ function notificationHistoryIcon(kind: NotificationHistoryItem["kind"]) {
   return <FiBell />
 }
 
+function NotificationPushPrompt() {
+  const { notify } = useApp()
+  const [support, setSupport] = useState<WebPushSupport>(() => webPushSupport())
+  const [enabled, setEnabled] = useState(false)
+  const [busy, setBusy] = useState(true)
+  useEffect(() => { void webPushState().then(state => { setSupport(state.support); setEnabled(state.subscribed) }).finally(() => setBusy(false)) }, [])
+  const toggle = async (next: boolean) => {
+    setBusy(true)
+    try {
+      const state = next ? await subscribeWebPush() : await unsubscribeWebPush()
+      setSupport(state.support); setEnabled(state.subscribed)
+      if (state.subscribed) { notify("Background notifications enabled"); try { await testWebPush() } catch {} }
+      else if (!next) notify("Background notifications turned off on this device")
+      else if (state.support === "denied") notify("Enable notifications in your browser site settings, then try again.", "error")
+    } catch (error) { notify(error instanceof Error ? error.message : "Notifications could not be configured", "error") }
+    finally { setBusy(false) }
+  }
+  if (enabled) return <div className="notif-push-pinned enabled"><FiCheckCircle /><span><strong>Background alerts enabled</strong><small>This device will receive airDash updates even when the site is closed.</small></span><label className="switch switch-small"><input type="checkbox" checked disabled={busy} onChange={event => { void toggle(event.target.checked) }} /><span /></label></div>
+  return <div className="notif-push-pinned"><FiBell /><span><strong>Never miss an airDash update</strong><small>Enable browser notifications for report, aircraft, progress, and Operations alerts.</small></span><label className={`switch switch-small${support === "unsupported" || support === "denied" ? " switch-disabled" : ""}`}><input type="checkbox" checked={false} disabled={busy || support === "unsupported" || support === "denied"} onChange={event => { void toggle(event.target.checked) }} /><span /></label></div>
+}
+
 function NotificationPanel({ title, notifications, onClose, onRead }: { title: string; notifications: NotificationPayload | null; onClose: () => void; onRead: (ids?: number[]) => Promise<void> }) {
   const history = notifications?.history ?? []
   return <div className="notif-panel" role="menu">
     <header><span>{title}</span><div>{(notifications?.total ?? 0) > 0 && <button className="notif-clear" onClick={() => { void onRead() }}>Mark all read</button>}<button className="notif-close" onClick={onClose} aria-label="Close notifications"><FiX /></button></div></header>
+    <NotificationPushPrompt />
     {!history.length && <p className="notif-empty">No notification history yet.</p>}
     {history.map(item => <div key={item.id} className={`notif-history-row${item.read_at ? " read" : " unread"}`}>
       <Link to={item.href} onClick={onClose}>{notificationHistoryIcon(item.kind)}<span><strong>{item.title}</strong><small>{item.body}</small><time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</time></span></Link>
@@ -232,6 +255,7 @@ function Layout({ children }: { children: ReactNode }) {
   const [navMore, setNavMore] = useState(false)
   const navMoreRef = useRef<HTMLDivElement>(null)
   const [profileMenu, setProfileMenu] = useState(false)
+
   const profileMenuRef = useRef<HTMLDivElement>(null)
   const [notifOpen, setNotifOpen] = useState(false)
   const notifOpenRef = useRef(false)
@@ -353,6 +377,7 @@ function Home() {
   useEffect(() => { const timer = window.setInterval(() => setTagline(current => current === 0 ? 1 : 0), 3500); return () => window.clearInterval(timer) }, [])
   return <>
     <section className="home-hero" onMouseMove={onHeroMove} style={{ ["--px" as string]: `${parallax.x * 22}px`, ["--py" as string]: `${parallax.y * 18}px`, ["--lx" as string]: `${parallax.x * -26}px`, ["--ly" as string]: `${parallax.y * -20}px` }}>
+      <HomeHeroShowcase />
       <motion.div {...fade} className="hero-copy hero-tagline-row">
         <div className="route-mark"><FiMapPin /> ATL · DEN · SDQ · GEG</div>
         <div className="rotating-tagline"><AnimatePresence mode="wait" initial={false}>{tagline === 0 ?
@@ -392,7 +417,7 @@ function Home() {
       <div className="aircraft-pair">
         {(publicData?.aircraft ?? []).slice(0, 2).map((aircraft, index) => <motion.article key={aircraft.registration} {...fade} transition={{ delay: index * 0.08 }}>
           <div className="aircraft-profile-wrap"><img src="/assets/airdash-aircraft-front-cutout.png" alt="" /></div>
-          <div className="home-aircraft-details"><span>fleet {aircraft.fleet_number}</span><div className="home-aircraft-registration"><h3>{aircraft.registration}</h3><Status value={aircraft.status} /></div><p>Airbus A220-300 · {aircraft.current_airport}</p></div>
+          <div className="home-aircraft-details"><span>fleet {aircraft.fleet_number}</span><div className="home-aircraft-registration"><h3>{aircraft.registration}</h3><Status value={aircraft.status} /></div><p>Airbus A220-300 · {aircraft.current_airport} · Gate {aircraft.current_gate ?? "pending"}</p></div>
         </motion.article>)}
       </div>
 
@@ -602,7 +627,7 @@ function Portal() {
       </section>
     </> : <>
       <PortalSectionHeading id="portal-current-assignment" icon={<TbPlane />} eyebrow="Current flight" title="No assignment" description="Choose a route and aircraft from the Flight Board to begin." />
-      <Empty icon={<FiMap />} title="No active assignment" body="Choose a route and available aircraft from the flight board."><Link className="button button-primary" to="/flights">open flight board</Link></Empty>
+      <div className="assignment-empty-action"><FiMap /><Link className="button button-primary" to="/flights">open flight board</Link></div>
       <section className="volanta-disclosure required"><FiActivity /><p><strong>Volanta required for every flight.</strong> <a href="https://volanta.app/" target="_blank" rel="noreferrer">Set up Volanta</a> before you fly.</p></section>
     </>}
 
@@ -1008,9 +1033,9 @@ function Fleet() {
     {view === "liveries" && <>
       <section className="livery-version-bar"><div><span className="eyebrow"><FiDownload /> simulator package</span><h2>Choose your MSFS version</h2><p>Each ZIP is built for the selected simulator. Install only the matching version in that simulator's Community folder.</p></div><div className="livery-version-switch" role="group" aria-label="Livery simulator version"><button className={liverySimulator === "2024" ? "active" : ""} onClick={() => setLiverySimulator("2024")}>MSFS 2024</button><button className={liverySimulator === "2020" ? "active" : ""} onClick={() => setLiverySimulator("2020")}>MSFS 2020</button></div></section>
       <section className="livery-download-total"><FiDownload /><div><strong>{totalDownloads}</strong><span>recorded MSFS {liverySimulator} livery download{totalDownloads === 1 ? "" : "s"}</span></div></section>
-      <div className="fleet-cards">{aircraft.map(item => <article key={item.registration}><img className="fleet-thumbnail" src={`/downloads/liveries/${item.registration.toLowerCase()}/thumbnail.png?v=5`} alt={`${item.registration} airDash livery thumbnail`} /><div className="fleet-card-footer"><div className="fleet-summary"><Status value={item.status} /><span>{item.current_airport}</span><span>{item.total_cycles} cycles</span><span>{formatMinutes(item.total_block_minutes)} block</span><span>MSFS {liverySimulator}</span></div>{outOfServiceNote(item) && item.status !== "ASSIGNED" && <small className="oos-reason">{outOfServiceNote(item)}</small>}{downloadControl(item)}</div></article>)}</div>
+      <div className="fleet-cards">{aircraft.map(item => <article key={item.registration}><img className="fleet-thumbnail" src={`/downloads/liveries/${item.registration.toLowerCase()}/thumbnail.png?v=5`} alt={`${item.registration} airDash livery thumbnail`} /><div className="fleet-card-footer"><div className="fleet-summary"><Status value={item.status} /><span>{item.current_airport}</span><span>Gate {item.current_gate ?? "pending"}</span><span>{item.total_cycles} cycles</span><span>{formatMinutes(item.total_block_minutes)} block</span><span>MSFS {liverySimulator}</span></div>{outOfServiceNote(item) && item.status !== "ASSIGNED" && <small className="oos-reason">{outOfServiceNote(item)}</small>}{downloadControl(item)}</div></article>)}</div>
     </>}
-    {view === "aircraft" && <div className="fleet-by-base">{bases.map(code => { const list = aircraft.filter(a => a.current_airport === code); const isOpen = openBases[code] ?? false; return <div key={code} className="fleet-base-group"><button className="fleet-base-heading" onClick={() => toggle(code)}><FiMapPin /> {code} <span>{list.length} aircraft</span><FiChevronDown className={isOpen ? "pirep-caret open" : "pirep-caret"} /></button>{isOpen && <div className="admin-list">{list.map(item => <article key={item.registration}><TbPlane className="list-icon" /><div><h3>{item.registration}{item.special_livery && <em className="special-livery-tag" title="Special livery">{item.livery_name}</em>}</h3><p>Airbus A220-300 · {item.total_cycles} cycles · {formatMinutes(item.total_block_minutes)} block · {item.livery_download_count ?? 0} MSFS 2024 downloads · {item.livery_msfs2020_download_count ?? 0} MSFS 2020 downloads</p>{outOfServiceNote(item) && item.status !== "ASSIGNED" && <small className="oos-reason">{outOfServiceNote(item)}</small>}</div><Status value={item.status} /></article>)}</div>}</div> })}</div>}
+    {view === "aircraft" && <div className="fleet-by-base">{bases.map(code => { const list = aircraft.filter(a => a.current_airport === code); const isOpen = openBases[code] ?? false; return <div key={code} className="fleet-base-group"><button className="fleet-base-heading" onClick={() => toggle(code)}><FiMapPin /> {code} <span>{list.length} aircraft</span><FiChevronDown className={isOpen ? "pirep-caret open" : "pirep-caret"} /></button>{isOpen && <div className="admin-list">{list.map(item => <article key={item.registration}><TbPlane className="list-icon" /><div><h3>{item.registration}{item.special_livery && <em className="special-livery-tag" title="Special livery">{item.livery_name}</em>}</h3><p>Airbus A220-300 · {item.current_airport} · Gate {item.current_gate ?? "pending"} · {item.total_cycles} cycles · {formatMinutes(item.total_block_minutes)} block · {item.livery_download_count ?? 0} MSFS 2024 downloads · {item.livery_msfs2020_download_count ?? 0} MSFS 2020 downloads</p>{outOfServiceNote(item) && item.status !== "ASSIGNED" && <small className="oos-reason">{outOfServiceNote(item)}</small>}</div><Status value={item.status} /></article>)}</div>}</div> })}</div>}
   </Page>
 }
 
@@ -1167,7 +1192,7 @@ function Missions() {
   return <Page title="Missions" icon={<FiStar />} intro="Continue from your last aircraft, or pick up an available airframe where it is parked. Standard missions award scaled bonus experience and expire. Operations recovery ferries remain available until the diverted aircraft reaches its planned destination and award normal experience." >
     <div className="mission-summary">
       <article><span>last flight</span>{data.lastFlight ? <><h3>AIR{String(data.lastFlight.flight_number).padStart(3, "0")}</h3><p>{data.lastFlight.origin} to {data.lastFlight.destination} · {data.lastFlight.registration}</p><small>{data.lastFlight.planned_destination && data.lastFlight.planned_destination !== data.lastFlight.destination ? `Aircraft recovery required from ${data.lastFlight.destination} to planned destination ${data.lastFlight.planned_destination}.` : `You ended the day at ${data.lastFlight.destination}`}</small></> : <><h3>No flights yet</h3><p>Your first completed flight starts your mission history.</p></>}</article>
-      <article><span>mission aircraft</span>{data.aircraft ? <><h3>{data.aircraft.registration}</h3><p>Parked at {data.aircraft.current_airport}</p>{data.fallback && <small>Your last aircraft is in use, so this available airframe is suggested instead.</small>}</> : <><h3>No aircraft available</h3><p>Every airframe is currently assigned. Check back soon.</p></>}</article>
+      <article><span>mission aircraft</span>{data.aircraft ? <><h3>{data.aircraft.registration}</h3><p>Parked at {data.aircraft.current_airport} · Gate {data.aircraft.current_gate ?? "pending"}</p>{data.fallback && <small>Your last aircraft is in use, so this available airframe is suggested instead.</small>}</> : <><h3>No aircraft available</h3><p>Every airframe is currently assigned. Check back soon.</p></>}</article>
     </div>
     {me.assignment && <div className="flight-toolbar"><span><FiAlertCircle /> Finish or cancel the current assignment before starting a mission.</span></div>}
     {sorted.length > 0 && <div className="board-toolbar"><div className="search"><FiStar /><input placeholder="Search mission or destination" value={query} onChange={e => setQuery(e.target.value)} /></div><label>Sort<select value={sort} onChange={e => setSort(e.target.value)}><option value="expiry">Expiring soonest</option><option value="new">New destinations</option><option value="shortest">Shortest first</option><option value="longest">Longest first</option><option value="multiplier">Highest bonus</option><option value="destination">Destination</option></select></label></div>}
@@ -1413,7 +1438,7 @@ function LiveClock() {
 function Empty({ icon, title, body, children }: { icon: ReactNode; title: string; body: string; children?: ReactNode }) { return <div className="empty"><span>{icon}</span><h2>{title}</h2><p>{body}</p>{children}</div> }
 
 // Increment this value whenever tutorial content changes so every pilot sees the new brief once.
-const BRIEF_VERSION = "2026-09-10-news-hub-v2"
+const BRIEF_VERSION = "2026-09-10-home-showcase-v4"
 const briefStorageKey = (pilotId: string) => `airdash-brief-seen:${BRIEF_VERSION}:${pilotId}`
 
 const BRIEF_CARDS = [
@@ -1430,7 +1455,8 @@ const BRIEF_CARDS = [
   { icon: <FiCheckCircle />, title: "Review and aircraft status", body: "Approved reports add flight credit and move the aircraft. Returned reports can be corrected and resubmitted; rejected reports release the aircraft. A landing at or below -450 fpm triggers an automatic 48-hour inspection." },
   { icon: <FiMapPin />, title: "Explore the network maps", body: "The public home map shows every base, route origin, route line, and live flight, and supports scroll-wheel zoom. Pilots can open Network Map from the overflow menu for searchable layers and detailed airport, route, aircraft, flight, and pilot views." },
   { icon: <FiFileText />, title: "News Hub and press releases", body: "The home page shows the latest public airDash release. Open News from navigation for the complete newsroom, category filters, full articles, and share links. Pilot-only Operations updates remain inside the Hangar announcements archive." },
-  { icon: <FiBell />, title: "Notifications and history", body: "The bell shows unread Operations, report, equipment, progress, and announcement updates. Opening the panel keeps them unread until you dismiss it. Notification history lives under Portal Updates, and Pilot Profile can enable background browser push on each device." },
+  { icon: <FiBell />, title: "Notifications and history", body: "The bell shows unread Operations, report, equipment, progress, and announcement updates. Opening the panel keeps them unread until you dismiss it. Use the pinned toggle inside the panel to enable background browser notifications on this device." },
+  { icon: <FiVideo />, title: "Home media", body: "The landing film is the first media in the home hero, followed by the airDash gallery images. It plays automatically, the timing bar shows progress, and arrows, numbered controls, and pause let you browse manually." },
   { icon: <FiClock />, title: "Deadlines and cancellations", body: "A booking is held for the flight time plus two and a half hours. File before the timer expires or the booking is forfeited and the aircraft is released. If you cannot fly, cancel with the correct reason so Operations history remains accurate." },
   { icon: <FiHome />, title: "You are ready", body: "Choose a route, prepare the OFP, run Volanta, fly in real time, and confirm the imported report. The fleet, your experience, and the route network will update from the approved result. Welcome aboard, Captain." },
 ]

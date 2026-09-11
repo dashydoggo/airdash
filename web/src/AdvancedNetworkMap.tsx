@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react"
-import { CircleMarker, MapContainer, Marker, Polyline, TileLayer, Tooltip, useMap } from "react-leaflet"
+import { CircleMarker, MapContainer, Marker, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from "react-leaflet"
 import { divIcon } from "leaflet"
-import { FiActivity, FiArrowRight, FiClock, FiMap, FiMapPin, FiSearch, FiTruck, FiUser, FiUsers, FiX } from "react-icons/fi"
+import { Link } from "react-router-dom"
+import { FiActivity, FiArrowLeft, FiArrowRight, FiClock, FiMap, FiMapPin, FiSearch, FiTruck, FiUser, FiUsers, FiX } from "react-icons/fi"
 import { TbPlane } from "react-icons/tb"
 import { api } from "./api"
 import { AIRPORTS, airportCoordinate } from "./airportData"
@@ -38,7 +39,11 @@ type Selection =
   | { kind: "flight"; id: number }
   | { kind: "pilot"; discordId: string }
 
-interface Layers { routes: boolean; airports: boolean; fleet: boolean; pilots: boolean; live: boolean }
+interface Layers { routes: boolean; airports: boolean; fleet: boolean; pilots: boolean; live: boolean; radar: boolean }
+interface MapView { center: [number, number]; zoom: number }
+interface SelectionHistoryEntry { selection: Selection | null; view: MapView }
+interface RadarFrame { tileUrl: string; generated: number }
+
 
 const formatMinutes = (minutes: number) => `${Math.floor(minutes / 60)}h ${minutes % 60}m`
 const clamp = (value: number, minimum = 0, maximum = 1) => Math.min(maximum, Math.max(minimum, value))
@@ -93,10 +98,17 @@ function flightArrowIcon(from: [number, number], to: [number, number], recovery:
   })
 }
 
-function MapFocus({ focus, reset }: { focus: [number, number] | null; reset: number }) {
+function MapFocus({ focus, reset, restore }: { focus: [number, number] | null; reset: number; restore: (MapView & { token: number }) | null }) {
   const map = useMap()
   useEffect(() => { if (focus) map.flyTo(focus, Math.max(map.getZoom(), 6), { duration: 0.65 }) }, [focus])
   useEffect(() => { map.flyTo([31, -86], 4, { duration: 0.65 }) }, [reset])
+  useEffect(() => { if (restore) map.flyTo(restore.center, restore.zoom, { duration: 0.65 }) }, [restore?.token])
+  return null
+}
+
+function MapViewTracker({ onChange }: { onChange: (view: MapView) => void }) {
+  const map = useMapEvents({ moveend: () => { const center = map.getCenter(); onChange({ center: [center.lat, center.lng], zoom: map.getZoom() }) } })
+  useEffect(() => { const center = map.getCenter(); onChange({ center: [center.lat, center.lng], zoom: map.getZoom() }) }, [])
   return null
 }
 
@@ -107,7 +119,14 @@ function StatusPill({ value }: { value: string }) {
 export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
   const [flights, setFlights] = useState<LiveFlight[]>([])
   const [selection, setSelection] = useState<Selection | null>(null)
-  const [layers, setLayers] = useState<Layers>({ routes: true, airports: true, fleet: true, pilots: false, live: true })
+  const [selectionHistory, setSelectionHistory] = useState<SelectionHistoryEntry[]>([])
+  const [mapView, setMapView] = useState<MapView>({ center: [31, -86], zoom: 4 })
+  const [restoreView, setRestoreView] = useState<(MapView & { token: number }) | null>(null)
+  const [layers, setLayers] = useState<Layers>({ routes: true, airports: true, fleet: true, pilots: false, live: true, radar: false })
+  const [radar, setRadar] = useState<RadarFrame | null>(null)
+  const [radarForecast, setRadarForecast] = useState<RadarFrame[]>([])
+  const [radarMode, setRadarMode] = useState<"current" | "forecast">("current")
+  const [radarError, setRadarError] = useState(false)
   const [query, setQuery] = useState("")
   const [now, setNow] = useState(Date.now())
   const [reset, setReset] = useState(0)
@@ -117,6 +136,31 @@ export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
     load(); const timer = window.setInterval(load, 30_000); return () => window.clearInterval(timer)
   }, [])
   useEffect(() => { const timer = window.setInterval(() => setNow(Date.now()), 15_000); return () => window.clearInterval(timer) }, [])
+
+  useEffect(() => {
+    if (!layers.radar) return
+    let cancelled = false
+    const loadRadar = async () => {
+      try {
+        const response = await fetch("https://api.rainviewer.com/public/weather-maps.json", { headers: { Accept: "application/json" } })
+        if (!response.ok) throw new Error("Radar service unavailable")
+        const data = await response.json()
+        const past = Array.isArray(data.radar?.past) ? data.radar.past : []
+        const nowcast = Array.isArray(data.radar?.nowcast) ? data.radar.nowcast : []
+        const frame = past[past.length - 1]
+        if (!frame || !data.host || cancelled) throw new Error("No radar frame available")
+        setRadar({ tileUrl: `${data.host}${frame.path}/256/{z}/{x}/{y}/2/1_1.png`, generated: Number(frame.time) * 1000 })
+        setRadarForecast(nowcast.map((item: { path: string; time: number }) => ({ tileUrl: `${data.host}${item.path}/256/{z}/{x}/{y}/2/1_1.png`, generated: Number(item.time) * 1000 })))
+        setRadarError(false)
+      } catch { if (!cancelled) setRadarError(true) }
+    }
+    void loadRadar()
+    const timer = window.setInterval(loadRadar, 5 * 60_000)
+    return () => { cancelled = true; window.clearInterval(timer) }
+  }, [layers.radar])
+
+  const forecastRadar = radarForecast[radarForecast.length - 1] ?? null
+  const activeRadar = radarMode === "forecast" ? forecastRadar : radar
 
   const bases = data.bases ?? []
   const routes = data.routes ?? []
@@ -192,10 +236,23 @@ export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
     return results.slice(0, 24)
   }, [query, airportCodes, aircraft, pilots, flights])
 
-  const choose = (next: Selection) => { setSelection(next); setQuery("") }
+  const choose = (next: Selection) => {
+    if (selection && JSON.stringify(selection) !== JSON.stringify(next)) setSelectionHistory(history => [...history, { selection, view: mapView }].slice(-20))
+    else if (!selection) setSelectionHistory(history => [...history, { selection: null, view: mapView }].slice(-20))
+    setSelection(next); setQuery("")
+  }
+  const goBack = () => {
+    const previous = selectionHistory[selectionHistory.length - 1]
+    if (!previous) { showOverview(); setReset(value => value + 1); return }
+    setSelection(previous.selection)
+    setRestoreView({ ...previous.view, token: Date.now() })
+    setSelectionHistory(history => history.slice(0, -1))
+  }
+  const showOverview = () => { setSelection(null); setSelectionHistory([]); setQuery("") }
   const toggleLayer = (key: keyof Layers) => setLayers(current => ({ ...current, [key]: !current[key] }))
 
   return <div className="advanced-map-shell">
+    <div className="advanced-map-topbar"><Link className="advanced-map-back" to="/portal"><FiArrowLeft /> Back to pilot portal</Link></div>
     <header className="advanced-map-header">
       <div><span className="eyebrow"><FiMap /> operations map</span><h1>airDash network control</h1><p>Explore every published route, airport, aircraft, pilot, and live assignment from one operational map.</p></div>
       <div className="advanced-map-metrics"><span><strong>{airportCodes.length}</strong> airports</span><span><strong>{routes.length}</strong> routes</span><span><strong>{aircraft.length}</strong> aircraft</span><span><strong>{flights.length}</strong> live records</span></div>
@@ -204,9 +261,11 @@ export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
     <div className="advanced-map-toolbar">
       <div className="advanced-map-search"><FiSearch /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search airport, flight, aircraft, or pilot" />{query && <button onClick={() => setQuery("")} aria-label="Clear map search"><FiX /></button>}</div>
       <div className="advanced-map-layers" role="group" aria-label="Map layers">
-        {([['routes', 'Routes'], ['airports', 'Airports'], ['fleet', 'Fleet'], ['pilots', 'Pilots'], ['live', 'Live flights']] as Array<[keyof Layers, string]>).map(([key, label]) => <button key={key} className={layers[key] ? "on" : ""} onClick={() => toggleLayer(key)}>{label}</button>)}
-        <button onClick={() => { setSelection(null); setReset(value => value + 1) }}>Reset view</button>
+        {([['routes', 'Routes'], ['airports', 'Airports'], ['fleet', 'Fleet'], ['pilots', 'Pilots'], ['live', 'Live flights'], ['radar', 'Weather radar']] as Array<[keyof Layers, string]>).map(([key, label]) => <button key={key} className={layers[key] ? "on" : ""} onClick={() => toggleLayer(key)}>{label}</button>)}
+        <button onClick={() => { showOverview(); setReset(value => value + 1) }}>Reset view</button>
       </div>
+      {layers.radar && <div className="radar-mode-switch" role="group" aria-label="Weather radar mode"><button type="button" className={radarMode === "current" ? "on" : ""} onClick={() => setRadarMode("current")}>Current</button><button type="button" className={radarMode === "forecast" ? "on" : ""} disabled={radarForecast.length === 0} title={radarForecast.length ? "Show the latest radar nowcast" : "RainViewer is not currently publishing forecast frames"} onClick={() => setRadarMode("forecast")}>Forecast</button></div>}
+      {layers.radar && <small className="radar-status">{activeRadar ? `${radarMode === "forecast" ? "Forecast valid" : "Radar updated"} ${new Date(activeRadar.generated).toLocaleString([], { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" })}Z · RainViewer` : radarError ? "Radar unavailable" : radarMode === "forecast" && radarForecast.length === 0 ? "Forecast frames are currently unavailable from RainViewer" : "Loading weather radar…"}</small>}
       {searchResults.length > 0 && <div className="advanced-map-results">{searchResults.map(result => <button key={result.key} onClick={() => choose(result.selection)}><strong>{result.title}</strong><span>{result.subtitle}</span></button>)}</div>}
     </div>
 
@@ -214,7 +273,9 @@ export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
       <div className="advanced-map-canvas">
         <MapContainer center={[31, -86]} zoom={4} minZoom={3} maxZoom={11} scrollWheelZoom worldCopyJump attributionControl={false} style={{ height: "720px", width: "100%", background: "#0b1010" }}>
           <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?key=cb1_345o_1_c816449b5def2990f5054a04" subdomains="abcd" maxZoom={11} crossOrigin />
-          <MapFocus focus={focus} reset={reset} />
+          {layers.radar && activeRadar && <TileLayer key={activeRadar.tileUrl} url={activeRadar.tileUrl} opacity={0.56} maxNativeZoom={7} maxZoom={11} attribution="Weather radar © RainViewer" />}
+          <MapFocus focus={focus} reset={reset} restore={restoreView} />
+          <MapViewTracker onChange={setMapView} />
 
           {layers.routes && Array.from(routePairs.entries()).map(([key, pairRoutes]) => {
             const route = pairRoutes[0]; const from = coord(route.origin)!; const to = coord(route.destination)!
@@ -247,6 +308,7 @@ export default function AdvancedNetworkMap({ data }: { data: PublicResponse }) {
       </div>
 
       <aside className="advanced-map-inspector">
+        {selection && <nav className="inspector-navigation" aria-label="Map detail navigation"><button type="button" onClick={goBack}><FiArrowLeft /> Back</button><button type="button" onClick={showOverview}><FiActivity /> Overview</button></nav>}
         {!selection && <NetworkOverview flights={flights} aircraft={aircraft} airportCodes={airportCodes} airportStats={airportStats} choose={choose} />}
         {selectedAirport && <AirportDetail code={selectedAirport} info={AIRPORTS[selectedAirport]} base={baseByCode.get(selectedAirport)} stats={airportStats(selectedAirport)} choose={choose} />}
         {selection?.kind === "route" && <RouteDetail routes={selectedRoute} flights={flights} aircraft={aircraft} choose={choose} />}
@@ -275,7 +337,7 @@ function AirportDetail({ code, info, base, stats, choose }: { code: string; info
   return <><InspectorHead icon={<FiMapPin />} eyebrow={base ? base.role : "Network airport"} title={code} /><p className="inspector-intro"><strong>{info?.name ?? code}</strong><br />{info ? `${info.city}, ${info.country}` : "Published airDash airport"}</p>
     <div className="inspector-metrics"><div><strong>{stats.departures.length}</strong><span>departures</span></div><div><strong>{stats.destinations.length}</strong><span>destinations</span></div><div><strong>{stats.fleet.length}</strong><span>aircraft</span></div></div>
     <section><h3>Direct destinations</h3><div className="inspector-chip-list">{stats.destinations.map((destination: string) => <button key={destination} onClick={() => choose({ kind: "route", key: pairKey(code, destination) })}>{destination}</button>)}</div></section>
-    <section><h3>Aircraft on field</h3>{stats.fleet.length ? <div className="inspector-list">{stats.fleet.map((item: Aircraft) => <button key={item.registration} onClick={() => choose({ kind: "aircraft", registration: item.registration })}><FiTruck /><span><strong>{item.registration}</strong><small>{formatMinutes(item.total_block_minutes)} · {item.total_cycles} cycles</small></span><StatusPill value={item.status} /></button>)}</div> : <p className="inspector-empty">No fleet aircraft currently parked here.</p>}</section>
+    <section><h3>Aircraft on field</h3>{stats.fleet.length ? <div className="inspector-list">{stats.fleet.map((item: Aircraft) => <button key={item.registration} onClick={() => choose({ kind: "aircraft", registration: item.registration })}><TbPlane /><span><strong>{item.registration}</strong><small>Gate {item.current_gate ?? "pending"} · {formatMinutes(item.total_block_minutes)} · {item.total_cycles} cycles</small></span><StatusPill value={item.status} /></button>)}</div> : <p className="inspector-empty">No fleet aircraft currently parked here.</p>}</section>
     <section><h3>Current traffic</h3>{stats.traffic.length ? <div className="inspector-list">{stats.traffic.map((flight: LiveFlight) => <button key={flight.id} onClick={() => choose({ kind: "flight", id: flight.id })}><TbPlane /><span><strong>AIR{String(flight.flight_number).padStart(3, "0")}</strong><small>{flight.origin} <FiArrowRight className="inline-arrow" /> {flight.destination}</small></span><StatusPill value={flight.status} /></button>)}</div> : <p className="inspector-empty">No current traffic involving this airport.</p>}</section>
   </>
 }
@@ -291,7 +353,7 @@ function RouteDetail({ routes, flights, aircraft, choose }: { routes: Route[]; f
 }
 
 function AircraftDetail({ aircraft, flight, choose }: { aircraft: Aircraft; flight?: LiveFlight; choose: (selection: Selection) => void }) {
-  return <><InspectorHead icon={<TbPlane />} eyebrow={`Fleet ${aircraft.fleet_number}`} title={aircraft.registration} /><img className="inspector-aircraft-image" src={FLEET_IMAGE} alt="airDash Airbus A220-300" /><div className="inspector-title-status"><StatusPill value={aircraft.status} /><button onClick={() => choose({ kind: "airport", code: aircraft.current_airport })}><FiMapPin /> {aircraft.current_airport}</button></div>
+  return <><InspectorHead icon={<TbPlane />} eyebrow={`Fleet ${aircraft.fleet_number}`} title={aircraft.registration} /><img className="inspector-aircraft-image" src={FLEET_IMAGE} alt="airDash Airbus A220-300" /><div className="inspector-title-status"><StatusPill value={aircraft.status} /><button onClick={() => choose({ kind: "airport", code: aircraft.current_airport })}><FiMapPin /> {aircraft.current_airport} · Gate {aircraft.current_gate ?? "pending"}</button></div>
     <div className="inspector-metrics"><div><strong>{aircraft.total_cycles}</strong><span>cycles</span></div><div><strong>{formatMinutes(aircraft.total_block_minutes)}</strong><span>block</span></div><div><strong>{aircraft.livery_download_count ?? 0}</strong><span>downloads</span></div></div>
     {aircraft.status_reason && <section><h3>Operations status</h3><p className="inspector-note">{aircraft.status_reason}{aircraft.status_until ? ` · until ${new Date(aircraft.status_until).toLocaleString()}` : ""}</p></section>}
     <section><h3>Current assignment</h3>{flight ? <div className="inspector-list"><button onClick={() => choose({ kind: "flight", id: flight.id })}><FiActivity /><span><strong>AIR{String(flight.flight_number).padStart(3, "0")}</strong><small>{flight.origin} <FiArrowRight className="inline-arrow" /> {flight.destination} · {flight.pilot}</small></span><StatusPill value={flight.status} /></button></div> : <p className="inspector-empty">No active assignment.</p>}</section>
