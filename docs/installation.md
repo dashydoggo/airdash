@@ -157,12 +157,12 @@ Run from the repository root:
 
 ```bash
 npm --prefix api ci
-npm --prefix web ci
+npm --prefix web ci --include=dev
 ```
 
-`--prefix <dir>` makes npm operate inside that directory. `ci` means "clean install": it deletes any existing `node_modules/`, reads `package-lock.json`, downloads each package over HTTPS, verifies its integrity hash, and writes `node_modules/`. It fails rather than silently changing the lock file if `package.json` and `package-lock.json` disagree.
+`--prefix <dir>` makes npm operate inside that directory. `ci` means "clean install": it deletes any existing `node_modules/`, reads `package-lock.json`, downloads each selected package over HTTPS, verifies its integrity hash, and writes `node_modules/`. It fails rather than silently changing the lock file if `package.json` and `package-lock.json` disagree. `--include=dev` is required because the production host exports `NODE_ENV=production`; without the flag npm omits TypeScript, Vite, and the `@types/*` packages, and `npm --prefix web run typecheck` fails with `tsc: command not found`.
 
-Expected output, observed on Linux x86-64 with npm 11.13.0, ends with `added 96 packages, and audited 97 packages` for `api` and `added 15 packages, and audited 16 packages` for `web`, each followed by `found 0 vulnerabilities`. The web count is far below the 68 entries in its lock file because 32 of those entries are optional, platform-specific binary packages (for example the Rolldown and Emnapi builds for other operating systems) that npm skips on a platform that does not need them; the count therefore varies by platform and npm version. A line reporting vulnerabilities is informational; see [security](security.md#dependency-security) for how the project handles it.
+Expected output on Linux x86-64 with npm 11.13.0 reports 96 API packages and 38 frontend packages when development dependencies are included. Counts vary by platform because the lock file contains optional platform-specific binary packages (for example Rolldown and Emnapi builds for other operating systems). `npm audit` reported zero vulnerabilities during validation. A later audit finding must be investigated under [dependency security](security.md#dependency-security); it is not fixed by silently changing the lock file.
 
 Files written: `api/node_modules/`, `web/node_modules/`. Nothing else. Rerunning is safe. Undo by deleting the two `node_modules/` directories.
 

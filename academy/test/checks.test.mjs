@@ -45,7 +45,7 @@ test("frontend checks report blocked rather than inventing success when dependen
   const typecheck = await runChecker("web-typecheck")
   if (typecheck.status === "blocked") {
     assert.equal(typecheck.passed, false)
-    assert.match(typecheck.message, /npm --prefix web ci/)
+    assert.match(typecheck.message, /npm --prefix web ci --include=dev/)
   } else {
     assert.equal(typecheck.passed, true, typecheck.stderr)
   }

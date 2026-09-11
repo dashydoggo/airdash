@@ -26,7 +26,7 @@ Simulator packages are versioned separately: the livery catalog records `version
 Prerequisite: one or more pull requests merged into the release branch, each with its validation recorded.
 
 1. On the production host, bring the working tree to the merged commit with the ["Get the code onto the host"](deployment.md#get-the-code-onto-the-host) procedure. `git status --porcelain` must be empty first; uncommitted host edits must be resolved, not overwritten.
-2. If `package-lock.json` changed in either directory, run `npm --prefix api ci` and `npm --prefix web ci`.
+2. If `package-lock.json` changed in either directory, run `npm --prefix api ci` and `npm --prefix web ci --include=dev`.
 3. Run the validation on the host: `npm --prefix api run check`, both test scripts, `npm --prefix web run typecheck`, and the isolated build. The host's Node.js is the one production uses, so this is the final confirmation.
 4. Create the [release backup](backup-and-recovery.md#release-backup) and, if any merged change contains a migration or a data statement, the [database backup](backup-and-recovery.md#database-backup).
 5. Deploy each class of change with its [deployment procedure](deployment.md): API first, then frontend, then static files, then configuration.

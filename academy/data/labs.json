@@ -171,7 +171,7 @@
     "estimatedMinutes": 20,
     "prerequisites": [],
     "instructions": [
-      "Prerequisite: npm --prefix web ci completed. Working directory: repository root.",
+      "Prerequisite: npm --prefix web ci --include=dev completed. Working directory: repository root.",
       "Predict one failure class the check catches and one runtime issue it cannot catch.",
       "Run the checker.",
       "If blocked, install dependencies; if failed, read the first error file, line, and code.",
@@ -667,7 +667,7 @@
     "estimatedMinutes": 35,
     "prerequisites": [],
     "instructions": [
-      "Prerequisite: npm --prefix web ci. Working directory: repository root.",
+      "Prerequisite: npm --prefix web ci --include=dev. Working directory: repository root.",
       "Run the checker and inspect emitted app-assets names.",
       "Explain why the output path is safe and what the chunk warning means.",
       "Cleanup is automatic; confirm temporaryOutputRemoved is true."
