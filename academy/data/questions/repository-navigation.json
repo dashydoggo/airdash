@@ -1,0 +1,544 @@
+[
+  {
+    "id": "repository-navigation-001",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "root-api-layout"
+    ],
+    "prompt": "Which file is the API entry point?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "api/src/server.js"
+      },
+      {
+        "id": "b",
+        "text": "web/index.html"
+      },
+      {
+        "id": "c",
+        "text": "docs/README.md"
+      },
+      {
+        "id": "d",
+        "text": "nginx.conf only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "server.js registers middleware and routes, starts jobs, migrates, and listens.",
+    "remediation": [
+      "docs/repository-guide.md#root-files",
+      "docs/repository-guide.md#api"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/database.js"
+    ]
+  },
+  {
+    "id": "repository-navigation-002",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "web-layout"
+    ],
+    "prompt": "Which file mounts the React application?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "web/src/main.tsx"
+      },
+      {
+        "id": "b",
+        "text": "api/src/auth.js"
+      },
+      {
+        "id": "c",
+        "text": "site/index.html generated bundle only"
+      },
+      {
+        "id": "d",
+        "text": "gsx/build.py"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "main.tsx creates the React root and wraps App in BrowserRouter.",
+    "remediation": [
+      "docs/repository-guide.md#web"
+    ],
+    "sourceRefs": [
+      "web/src/main.tsx",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "repository-navigation-003",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "docs-scripts-layout"
+    ],
+    "prompt": "Where is the source copy of the PowerPoint exporter?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "scripts/Update-AirDashPressStartVideo.ps1"
+      },
+      {
+        "id": "b",
+        "text": "site/app-assets"
+      },
+      {
+        "id": "c",
+        "text": "api/.env"
+      },
+      {
+        "id": "d",
+        "text": "web/src/types.ts"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "scripts contains the version-controlled source copied to the Windows machine.",
+    "remediation": [
+      "docs/repository-guide.md#docs",
+      "docs/repository-guide.md#scripts"
+    ],
+    "sourceRefs": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "gsx/airdash-gsx-handling/build.py"
+    ]
+  },
+  {
+    "id": "repository-navigation-004",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "source-generated-layout"
+    ],
+    "prompt": "Should site/index.html be edited directly?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Yes, it is canonical source"
+      },
+      {
+        "id": "b",
+        "text": "No, Vite generates it from web source"
+      },
+      {
+        "id": "c",
+        "text": "Only when PostgreSQL is down"
+      },
+      {
+        "id": "d",
+        "text": "Only on Windows"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The next frontend build rewrites generated site files.",
+    "remediation": [
+      "docs/repository-guide.md#site-untracked",
+      "docs/repository-guide.md#node_modules-untracked"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "repository-navigation-005",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "trace-search"
+    ],
+    "prompt": "What is the fastest first search for visible static text?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "grep the text in web/src"
+      },
+      {
+        "id": "b",
+        "text": "Inspect database backups"
+      },
+      {
+        "id": "c",
+        "text": "Search Docker images"
+      },
+      {
+        "id": "d",
+        "text": "Run pg_restore"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Visible literals usually lead directly to the owning component; nearby class names handle dynamic text.",
+    "remediation": [
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight",
+      "docs/local-development.md#finding-the-code-for-something-you-see"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:confirmBooking",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "repository-navigation-006",
+    "moduleId": "repository-navigation",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "root-api-layout",
+      "web-layout",
+      "docs-scripts-layout"
+    ],
+    "prompt": "Select every correct ownership mapping.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "api/src/database.js owns pool and migration"
+      },
+      {
+        "id": "b",
+        "text": "web/src/types.ts owns frontend API shapes"
+      },
+      {
+        "id": "c",
+        "text": "docs/ owns durable documentation"
+      },
+      {
+        "id": "d",
+        "text": "site/app-assets owns editable React source"
+      },
+      {
+        "id": "e",
+        "text": "gsx/ owns ground-handling package sources"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "Generated app-assets are not source; the other paths own the stated concern.",
+    "remediation": [
+      "docs/repository-guide.md#root-files",
+      "docs/repository-guide.md#api",
+      "docs/repository-guide.md#web"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/database.js",
+      "web/src/main.tsx",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "repository-navigation-007",
+    "moduleId": "repository-navigation",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "source-generated-layout",
+      "trace-search"
+    ],
+    "prompt": "Order a feature trace from interface to side effect.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Find the matching Express route"
+      },
+      {
+        "id": "b",
+        "text": "Search visible text or API call in the frontend"
+      },
+      {
+        "id": "c",
+        "text": "Follow SQL and helper calls"
+      },
+      {
+        "id": "d",
+        "text": "Identify response, audit, and other visible state"
+      }
+    ],
+    "answer": [
+      "b",
+      "a",
+      "c",
+      "d"
+    ],
+    "explanation": "The trace begins at user-facing evidence, crosses the API contract, and ends at durable and returned effects.",
+    "remediation": [
+      "docs/repository-guide.md#site-untracked",
+      "docs/repository-guide.md#node_modules-untracked",
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "web/vite.config.ts",
+      "web/src/App.tsx:confirmBooking",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "repository-navigation-008",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "root-api-layout",
+      "web-layout"
+    ],
+    "prompt": "A new API response field appears in App.tsx. Which files should be inspected together?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "server.js handler, web api consumer, and types.ts"
+      },
+      {
+        "id": "b",
+        "text": "Only styles.css"
+      },
+      {
+        "id": "c",
+        "text": "Only package-lock.json"
+      },
+      {
+        "id": "d",
+        "text": "Only PowerPoint"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The server contract, caller, and TypeScript shape must agree.",
+    "remediation": [
+      "docs/repository-guide.md#root-files",
+      "docs/repository-guide.md#api",
+      "docs/repository-guide.md#web"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/database.js",
+      "web/src/main.tsx",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "repository-navigation-009",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "web-layout",
+      "docs-scripts-layout"
+    ],
+    "prompt": "The Windows exporter behaves differently from the repository script. What should be compared?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "SHA-256 of scripts source and the deployed D:\\Creations copy"
+      },
+      {
+        "id": "b",
+        "text": "The React component tree"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL indexes"
+      },
+      {
+        "id": "d",
+        "text": "Browser localStorage"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The Windows copy executes; hash comparison proves whether it matches repository source.",
+    "remediation": [
+      "docs/repository-guide.md#web",
+      "docs/repository-guide.md#docs",
+      "docs/repository-guide.md#scripts"
+    ],
+    "sourceRefs": [
+      "web/src/main.tsx",
+      "web/src/App.tsx",
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "gsx/airdash-gsx-handling/build.py"
+    ]
+  },
+  {
+    "id": "repository-navigation-010",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "docs-scripts-layout",
+      "source-generated-layout"
+    ],
+    "prompt": "A new public image should survive builds. Where should its canonical source usually be added?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "web/public/assets"
+      },
+      {
+        "id": "b",
+        "text": "site/app-assets only"
+      },
+      {
+        "id": "c",
+        "text": "api/node_modules"
+      },
+      {
+        "id": "d",
+        "text": "database volume"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Vite copies web/public assets into site, making the file reproducible.",
+    "remediation": [
+      "docs/repository-guide.md#docs",
+      "docs/repository-guide.md#scripts",
+      "docs/repository-guide.md#site-untracked"
+    ],
+    "sourceRefs": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "gsx/airdash-gsx-handling/build.py",
+      ".gitignore",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "repository-navigation-011",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "source-generated-layout",
+      "trace-search"
+    ],
+    "prompt": "A bundle marker is missing after editing site/app-assets directly and rebuilding. Why?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The edit targeted generated output and the build regenerated from web/src"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL removed the CSS"
+      },
+      {
+        "id": "c",
+        "text": "Git cannot track JavaScript"
+      },
+      {
+        "id": "d",
+        "text": "Caddy strips source text"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Generated files are replaced; durable edits belong in source.",
+    "remediation": [
+      "docs/repository-guide.md#site-untracked",
+      "docs/repository-guide.md#node_modules-untracked",
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "web/vite.config.ts",
+      "web/src/App.tsx:confirmBooking",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "repository-navigation-012",
+    "moduleId": "repository-navigation",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "trace-search",
+      "root-api-layout"
+    ],
+    "prompt": "You need the code that decides a report outcome. Which evidence path is best?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Search analyzeFlightOutcome, read flightOutcome.js, its caller in server.js, and its test"
+      },
+      {
+        "id": "b",
+        "text": "Guess from framework convention"
+      },
+      {
+        "id": "c",
+        "text": "Edit every route"
+      },
+      {
+        "id": "d",
+        "text": "Read only the CSS"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Symbol, caller, and test form an inspectable ownership and execution trace.",
+    "remediation": [
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight",
+      "docs/local-development.md#finding-the-code-for-something-you-see",
+      "docs/repository-guide.md#root-files"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:confirmBooking",
+      "api/src/server.js:app.post(\"/assignments\")",
+      "api/src/server.js",
+      "api/src/database.js"
+    ]
+  }
+]

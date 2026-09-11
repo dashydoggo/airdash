@@ -1,0 +1,539 @@
+[
+  {
+    "id": "dependencies-build-001",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "dependency-classes"
+    ],
+    "prompt": "What is a transitive dependency?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A package imported by a direct dependency"
+      },
+      {
+        "id": "b",
+        "text": "A Git branch"
+      },
+      {
+        "id": "c",
+        "text": "A production route"
+      },
+      {
+        "id": "d",
+        "text": "A database constraint"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Transitive packages enter the tree through direct dependencies.",
+    "remediation": [
+      "docs/foundations.md#what-a-dependency-is"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json"
+    ]
+  },
+  {
+    "id": "dependencies-build-002",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "manifest-lock-semver"
+    ],
+    "prompt": "What does package-lock.json record?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only the project name"
+      },
+      {
+        "id": "b",
+        "text": "The exact complete dependency tree and integrity data"
+      },
+      {
+        "id": "c",
+        "text": "Environment secrets"
+      },
+      {
+        "id": "d",
+        "text": "Frontend screenshots"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The lock file fixes direct and transitive versions for reproducible installation.",
+    "remediation": [
+      "docs/foundations.md#package-manifests-and-lock-files",
+      "docs/foundations.md#semantic-versioning"
+    ],
+    "sourceRefs": [
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "dependencies-build-003",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "reproducible-install-supply"
+    ],
+    "prompt": "Why does airDash use npm ci for setup?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It silently upgrades packages"
+      },
+      {
+        "id": "b",
+        "text": "It restores the locked tree and fails on manifest disagreement"
+      },
+      {
+        "id": "c",
+        "text": "It deploys production"
+      },
+      {
+        "id": "d",
+        "text": "It runs migrations"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Clean install favors reproducibility over changing dependency intent.",
+    "remediation": [
+      "docs/foundations.md#installing-dependencies",
+      "docs/foundations.md#supply-chain-risk"
+    ],
+    "sourceRefs": [
+      "docs/installation.md#install-dependencies"
+    ]
+  },
+  {
+    "id": "dependencies-build-004",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "compile-bundle-hash"
+    ],
+    "prompt": "What produces the hashed frontend JavaScript and CSS files?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "PostgreSQL"
+      },
+      {
+        "id": "b",
+        "text": "Vite after TypeScript checking"
+      },
+      {
+        "id": "c",
+        "text": "PM2 logs"
+      },
+      {
+        "id": "d",
+        "text": "GitHub issues"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The web build runs tsc -b and Vite, which bundles and names output by content hash.",
+    "remediation": [
+      "docs/foundations.md#compilation-and-bundling",
+      "docs/architecture.md#build-and-publication-architecture"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "dependencies-build-005",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "source-artifact-boundary"
+    ],
+    "prompt": "Which path is generated frontend output?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "web/src/App.tsx"
+      },
+      {
+        "id": "b",
+        "text": "site/app-assets/index-<hash>.js"
+      },
+      {
+        "id": "c",
+        "text": "api/src/server.js"
+      },
+      {
+        "id": "d",
+        "text": "docs/architecture.md"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The site app-assets files are generated from web source.",
+    "remediation": [
+      "docs/foundations.md#source-versus-build-artifacts",
+      "docs/repository-guide.md#site-untracked"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "dependencies-build-006",
+    "moduleId": "dependencies-build",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "dependency-classes",
+      "manifest-lock-semver",
+      "reproducible-install-supply"
+    ],
+    "prompt": "Select every supply-chain control currently used.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Few direct dependencies"
+      },
+      {
+        "id": "b",
+        "text": "Exact manifest versions"
+      },
+      {
+        "id": "c",
+        "text": "Lock-file integrity hashes"
+      },
+      {
+        "id": "d",
+        "text": "Review of dependency updates"
+      },
+      {
+        "id": "e",
+        "text": "Installing similarly named packages without checking"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Small surface, exact intent, integrity, and review reduce risk; unchecked names increase typosquatting risk.",
+    "remediation": [
+      "docs/foundations.md#what-a-dependency-is",
+      "docs/foundations.md#package-manifests-and-lock-files",
+      "docs/foundations.md#semantic-versioning"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json",
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "dependencies-build-007",
+    "moduleId": "dependencies-build",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "compile-bundle-hash",
+      "source-artifact-boundary"
+    ],
+    "prompt": "Order the production frontend build effects.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Nginx immediately sees the rewritten bind-mounted files"
+      },
+      {
+        "id": "b",
+        "text": "TypeScript checks the project"
+      },
+      {
+        "id": "c",
+        "text": "Vite emits hashed bundles and rewrites site/index.html"
+      },
+      {
+        "id": "d",
+        "text": "postbuild normalizes permissions"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Checking precedes bundling, permissions follow output, and the read-only bind mount exposes host changes immediately.",
+    "remediation": [
+      "docs/foundations.md#compilation-and-bundling",
+      "docs/architecture.md#build-and-publication-architecture",
+      "docs/foundations.md#source-versus-build-artifacts"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "dependencies-build-008",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "dependency-classes",
+      "manifest-lock-semver"
+    ],
+    "prompt": "A new library is needed only by Vite during build. Where should it be declared?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "web devDependencies at an exact version"
+      },
+      {
+        "id": "b",
+        "text": "api runtime dependencies"
+      },
+      {
+        "id": "c",
+        "text": "api/.env"
+      },
+      {
+        "id": "d",
+        "text": "site/downloads"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Build-only frontend tooling belongs in web devDependencies and the lock file.",
+    "remediation": [
+      "docs/foundations.md#what-a-dependency-is",
+      "docs/foundations.md#package-manifests-and-lock-files",
+      "docs/foundations.md#semantic-versioning"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json",
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "dependencies-build-009",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "manifest-lock-semver",
+      "reproducible-install-supply"
+    ],
+    "prompt": "package.json and package-lock.json disagree. What should a reviewer conclude?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "npm ci correctly refuses the inconsistent contract"
+      },
+      {
+        "id": "b",
+        "text": "Delete the lock and deploy"
+      },
+      {
+        "id": "c",
+        "text": "The database is corrupt"
+      },
+      {
+        "id": "d",
+        "text": "The browser cache is stale"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Manifest intent and resolved tree must be updated together deliberately.",
+    "remediation": [
+      "docs/foundations.md#package-manifests-and-lock-files",
+      "docs/foundations.md#semantic-versioning",
+      "docs/foundations.md#installing-dependencies"
+    ],
+    "sourceRefs": [
+      "api/package-lock.json",
+      "web/package-lock.json",
+      "docs/installation.md#install-dependencies"
+    ]
+  },
+  {
+    "id": "dependencies-build-010",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "reproducible-install-supply",
+      "compile-bundle-hash"
+    ],
+    "prompt": "The isolated build succeeds but a new literal marker is absent. What is the likely interpretation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The build may not have used the edited source or the marker is generated dynamically"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL needs a restart"
+      },
+      {
+        "id": "c",
+        "text": "The VAPID key expired"
+      },
+      {
+        "id": "d",
+        "text": "Git fetch removed the string"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The marker check proves source inclusion only for a literal that survives bundling.",
+    "remediation": [
+      "docs/foundations.md#installing-dependencies",
+      "docs/foundations.md#supply-chain-risk",
+      "docs/foundations.md#compilation-and-bundling"
+    ],
+    "sourceRefs": [
+      "docs/installation.md#install-dependencies",
+      "web/package.json",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "dependencies-build-011",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "compile-bundle-hash",
+      "source-artifact-boundary"
+    ],
+    "prompt": "A developer runs Vite with --emptyOutDir against site/. What is at risk?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only temporary logs"
+      },
+      {
+        "id": "b",
+        "text": "Operational downloads and assets no build regenerates"
+      },
+      {
+        "id": "c",
+        "text": "Git commits on GitHub"
+      },
+      {
+        "id": "d",
+        "text": "The auth service cookie only"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The project intentionally disables directory emptying because site contains operational content beside generated bundles.",
+    "remediation": [
+      "docs/foundations.md#compilation-and-bundling",
+      "docs/architecture.md#build-and-publication-architecture",
+      "docs/foundations.md#source-versus-build-artifacts"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "dependencies-build-012",
+    "moduleId": "dependencies-build",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "source-artifact-boundary",
+      "dependency-classes"
+    ],
+    "prompt": "Which review response best protects the source/artifact boundary?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Edit a minified bundle for speed"
+      },
+      {
+        "id": "b",
+        "text": "Make the source change, run typed isolated build, verify marker, and publish through the documented build"
+      },
+      {
+        "id": "c",
+        "text": "Commit node_modules"
+      },
+      {
+        "id": "d",
+        "text": "Put secrets in a Vite constant"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Source is reviewable and reproducible; generated output and browser code are not places for durable edits or secrets.",
+    "remediation": [
+      "docs/foundations.md#source-versus-build-artifacts",
+      "docs/repository-guide.md#site-untracked",
+      "docs/foundations.md#what-a-dependency-is"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "web/vite.config.ts",
+      "api/package.json",
+      "web/package.json"
+    ]
+  }
+]

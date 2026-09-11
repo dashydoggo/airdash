@@ -190,6 +190,20 @@ You may also see `Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR
 
 None of these commands contact a database or a network service. They write only TypeScript build-information files under `web/` ending in `.tsbuildinfo`, which are ignored by Git.
 
+## Start the interactive academy
+
+The academy has no third-party dependencies and does not require PostgreSQL, Docker, `api/.env`, or a login. Validate and run it from the repository root:
+
+```bash
+npm --prefix academy run validate
+npm --prefix academy test
+npm --prefix academy start
+```
+
+Expected: the validator prints `airDash Academy curriculum verified`, all Node tests pass, and the server prints `airDash Academy listening on http://127.0.0.1:4174/academy/`. Open that address. The server binds only the loopback interface, progress remains in browser `localStorage`, and practical API/frontend checks report **blocked** rather than success until their dependencies are installed.
+
+Press Ctrl+C to stop the server. No repository file is written by normal learning activity.
+
 ## Create the environment file
 
 Purpose: give the API its configuration. The API reads `api/.env` at startup through the `dotenv` package.

@@ -4,6 +4,18 @@ Definitions of every project-specific term, acronym, status value, and named ide
 
 ## Terms
 
+**Active recall.** Producing or selecting an answer before seeing the explanation, rather than recognizing visible material. The academy records active-recall attempts with confidence.
+
+**Academy.** The dependency-free local application under `academy/` that turns canonical documentation into prerequisite modules, assessment, practical checks, cumulative examinations, delayed review, and capstone evidence. See [academy guide](../academy/README.md).
+
+**Confidence calibration.** Comparing stated confidence from 1 through 5 with actual correctness. An incorrect response at confidence 4 or 5 is an overconfident misconception and blocks a module gate until remediated.
+
+**Evidence level.** One of seven academy states: Unseen, Introduced, Recalled, Applied, Demonstrated, Retained, and Integrated. Each has explicit evidence requirements in the [mastery model](../academy/MASTERY_MODEL.md).
+
+**Mastery gate.** The complete set of prerequisite, study, concept, examination, skill-minimum, lab, and misconception conditions required before a module is demonstrated. It is stricter than a quiz pass.
+
+**Spaced repetition.** Scheduling retrieval after increasing delays. The academy uses 1, 3, 7, 14, 30, 60, and 120 days after successful progression, with a 10-minute retry after failure.
+
 **Aircraft.** One airframe in the fleet, identified by its registration such as `N574AD`. Stored in `airdash.aircraft`. See [data model](data-model.md#aircraft).
 
 **Announcement.** See organization update.
@@ -23,6 +35,8 @@ Definitions of every project-specific term, acronym, status value, and named ide
 **Brief.** The seventeen-card onboarding walkthrough shown to a pilot once per brief version. See [features](features.md#hangar-portal).
 
 **Caddy.** The edge reverse proxy container `dashy-caddy` that terminates TLS and routes `/api/*` to the API and everything else to Nginx. See [architecture](architecture.md#production-runtime-topology).
+
+**Capstone.** The final integrated academy exercise: a controlled repository change, tests, documentation, validation, diff and pull-request evidence, risk and rollback analysis, incident diagnosis, and an own-words explanation scored against a 100-point rubric by a human reviewer.
 
 **Commercial designator.** `D1`, the two-character airline code used on SimBrief paperwork, so a flight appears as `D1101`. Distinct from the callsign `AIR DASH` and the display prefix `AIR`.
 

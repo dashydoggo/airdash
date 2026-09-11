@@ -1,0 +1,531 @@
+[
+  {
+    "id": "postgres-data-001",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "relational-model"
+    ],
+    "prompt": "Where do airDash tables live?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Database airdash, schema public only"
+      },
+      {
+        "id": "b",
+        "text": "Database dashyden, schema airdash"
+      },
+      {
+        "id": "c",
+        "text": "A JSON file in web/src"
+      },
+      {
+        "id": "d",
+        "text": "The PM2 dump"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Production shares dashyden with other services and isolates objects under the airdash schema.",
+    "remediation": [
+      "docs/foundations.md#persistent-data-and-databases",
+      "docs/data-model.md#overview"
+    ],
+    "sourceRefs": [
+      "api/src/database.js"
+    ]
+  },
+  {
+    "id": "postgres-data-002",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "keys-relationships"
+    ],
+    "prompt": "What does a foreign key enforce?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A referenced key exists in another table"
+      },
+      {
+        "id": "b",
+        "text": "Every text value is encrypted"
+      },
+      {
+        "id": "c",
+        "text": "A route is public"
+      },
+      {
+        "id": "d",
+        "text": "A process restarts"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Foreign keys prevent enforced relationships from pointing at absent parent rows.",
+    "remediation": [
+      "docs/foundations.md#primary-keys-foreign-keys-and-relationships",
+      "docs/data-model.md#overview"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "postgres-data-003",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "constraints-indexes"
+    ],
+    "prompt": "What business rule does assignments_active_pilot enforce?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A pilot has at most one active assignment"
+      },
+      {
+        "id": "b",
+        "text": "A pilot has one browser"
+      },
+      {
+        "id": "c",
+        "text": "Every route has one aircraft forever"
+      },
+      {
+        "id": "d",
+        "text": "Only the owner may read assignments"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The partial unique index applies to BOOKED, ACTIVE, and PIREP_SUBMITTED rows per pilot.",
+    "remediation": [
+      "docs/foundations.md#constraints-and-indexes",
+      "docs/data-model.md#assignments"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:assignments_active_pilot"
+    ]
+  },
+  {
+    "id": "postgres-data-004",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "transactions-pool"
+    ],
+    "prompt": "When is pool.connect required instead of pool.query?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "For a multi-statement transaction that must stay on one connection"
+      },
+      {
+        "id": "b",
+        "text": "For every read-only SELECT"
+      },
+      {
+        "id": "c",
+        "text": "For CSS"
+      },
+      {
+        "id": "d",
+        "text": "For a Git commit"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "BEGIN, related statements, COMMIT or ROLLBACK must use one dedicated client.",
+    "remediation": [
+      "docs/foundations.md#transactions-and-isolation",
+      "docs/foundations.md#connection-pools"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "postgres-data-005",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "migrations-lifecycles"
+    ],
+    "prompt": "What makes the current migration repeatable?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "IF NOT EXISTS, guarded constraints, and ON CONFLICT behavior"
+      },
+      {
+        "id": "b",
+        "text": "Deleting the database first"
+      },
+      {
+        "id": "c",
+        "text": "A browser cookie"
+      },
+      {
+        "id": "d",
+        "text": "A force push"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Idempotent statements converge when startup runs migrate repeatedly.",
+    "remediation": [
+      "docs/foundations.md#migrations-and-seed-data",
+      "docs/data-model.md#migration-behavior"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "postgres-data-006",
+    "moduleId": "postgres-data",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "relational-model",
+      "keys-relationships",
+      "constraints-indexes"
+    ],
+    "prompt": "Select every database mechanism that protects assignment integrity.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Foreign keys to pilot, route, and aircraft"
+      },
+      {
+        "id": "b",
+        "text": "CHECK on status"
+      },
+      {
+        "id": "c",
+        "text": "Partial unique indexes for active pilot and aircraft"
+      },
+      {
+        "id": "d",
+        "text": "A React disabled button only"
+      },
+      {
+        "id": "e",
+        "text": "NOT NULL columns"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The database independently enforces structure and concurrency; the UI is not a database invariant.",
+    "remediation": [
+      "docs/foundations.md#persistent-data-and-databases",
+      "docs/data-model.md#overview",
+      "docs/foundations.md#primary-keys-foreign-keys-and-relationships"
+    ],
+    "sourceRefs": [
+      "api/src/database.js",
+      "api/src/database.js:migrate",
+      "api/src/database.js:assignments_active_pilot"
+    ]
+  },
+  {
+    "id": "postgres-data-007",
+    "moduleId": "postgres-data",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "transactions-pool",
+      "migrations-lifecycles"
+    ],
+    "prompt": "Order a safe non-additive migration deployment.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Deploy and verify the API"
+      },
+      {
+        "id": "b",
+        "text": "Back up the database"
+      },
+      {
+        "id": "c",
+        "text": "Test the migration twice on a fresh local database"
+      },
+      {
+        "id": "d",
+        "text": "Review existing rows against the new rule"
+      }
+    ],
+    "answer": [
+      "c",
+      "d",
+      "b",
+      "a"
+    ],
+    "explanation": "Fresh idempotency and data compatibility are proved before the production backup and deployment.",
+    "remediation": [
+      "docs/foundations.md#transactions-and-isolation",
+      "docs/foundations.md#connection-pools",
+      "docs/foundations.md#migrations-and-seed-data"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "api/src/server.js",
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "postgres-data-008",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "relational-model",
+      "keys-relationships"
+    ],
+    "prompt": "A pilot base code logically refers to bases.code but has no foreign key. What does that imply?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The API must enforce valid active bases and deletion rules"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL cascades automatically"
+      },
+      {
+        "id": "c",
+        "text": "Any code becomes safe"
+      },
+      {
+        "id": "d",
+        "text": "The relationship does not exist"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Logical relationships rely on handlers and can outlive parent rows unless explicitly guarded.",
+    "remediation": [
+      "docs/foundations.md#persistent-data-and-databases",
+      "docs/data-model.md#overview",
+      "docs/foundations.md#primary-keys-foreign-keys-and-relationships"
+    ],
+    "sourceRefs": [
+      "api/src/database.js",
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "postgres-data-009",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "keys-relationships",
+      "constraints-indexes"
+    ],
+    "prompt": "A second active booking fails even though an earlier SELECT saw no assignment. Why?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A partial unique index correctly resolved a concurrency race"
+      },
+      {
+        "id": "b",
+        "text": "CSS changed status"
+      },
+      {
+        "id": "c",
+        "text": "The table lacks a primary key"
+      },
+      {
+        "id": "d",
+        "text": "JSON cannot hold IDs"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Application prechecks improve messages but cannot replace the atomic database uniqueness decision.",
+    "remediation": [
+      "docs/foundations.md#primary-keys-foreign-keys-and-relationships",
+      "docs/data-model.md#overview",
+      "docs/foundations.md#constraints-and-indexes"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate",
+      "api/src/database.js:assignments_active_pilot"
+    ]
+  },
+  {
+    "id": "postgres-data-010",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "constraints-indexes",
+      "transactions-pool"
+    ],
+    "prompt": "Several rows must change together during booking. Which design preserves all-or-nothing behavior?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "One transaction with row locks on a dedicated client"
+      },
+      {
+        "id": "b",
+        "text": "Independent pool.query writes with no rollback"
+      },
+      {
+        "id": "c",
+        "text": "Browser localStorage"
+      },
+      {
+        "id": "d",
+        "text": "A Markdown table"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The assignment, aircraft, and optional schedule updates share one transaction.",
+    "remediation": [
+      "docs/foundations.md#constraints-and-indexes",
+      "docs/data-model.md#assignments",
+      "docs/foundations.md#transactions-and-isolation"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:assignments_active_pilot",
+      "api/src/database.js:pool",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "postgres-data-011",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "transactions-pool",
+      "migrations-lifecycles"
+    ],
+    "prompt": "A new CHECK constraint fails during startup because existing rows violate it. What is the correct response?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use the backup and either correct rows deliberately or revise the constraint before restart"
+      },
+      {
+        "id": "b",
+        "text": "Drop all production tables"
+      },
+      {
+        "id": "c",
+        "text": "Ignore PM2 restarts"
+      },
+      {
+        "id": "d",
+        "text": "Edit generated frontend files"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Compatibility with existing durable data is part of migration correctness and requires an explicit backed-up plan.",
+    "remediation": [
+      "docs/foundations.md#transactions-and-isolation",
+      "docs/foundations.md#connection-pools",
+      "docs/foundations.md#migrations-and-seed-data"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "api/src/server.js",
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "postgres-data-012",
+    "moduleId": "postgres-data",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "migrations-lifecycles",
+      "relational-model"
+    ],
+    "prompt": "Why does API source rollback not fully reverse a failed schema release?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Previously applied columns, constraints, or data changes remain in PostgreSQL"
+      },
+      {
+        "id": "b",
+        "text": "Node.js caches Git forever"
+      },
+      {
+        "id": "c",
+        "text": "Caddy rewrites SQL"
+      },
+      {
+        "id": "d",
+        "text": "CSS cannot be reverted"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Migration state is durable and the project has no automatic down migration; reversal must be planned from backup and statements.",
+    "remediation": [
+      "docs/foundations.md#migrations-and-seed-data",
+      "docs/data-model.md#migration-behavior",
+      "docs/foundations.md#persistent-data-and-databases"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate",
+      "api/src/database.js"
+    ]
+  }
+]

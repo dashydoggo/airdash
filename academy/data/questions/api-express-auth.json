@@ -1,0 +1,533 @@
+[
+  {
+    "id": "api-express-auth-001",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "express-lifecycle"
+    ],
+    "prompt": "Which global middleware runs immediately before route matching in server.js?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "requireAirDashOrigin"
+      },
+      {
+        "id": "b",
+        "text": "requireOwner on every route"
+      },
+      {
+        "id": "c",
+        "text": "A database restore"
+      },
+      {
+        "id": "d",
+        "text": "The Vite plugin"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "After JSON and security-header middleware, requireAirDashOrigin is registered globally.",
+    "remediation": [
+      "docs/architecture.md#middleware-order",
+      "docs/api-reference.md#handler-locations"
+    ],
+    "sourceRefs": [
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "api-express-auth-002",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "auth-authorization"
+    ],
+    "prompt": "What does requireOwner compare?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The route path with a base code"
+      },
+      {
+        "id": "b",
+        "text": "The authenticated user ID with OWNER_ID"
+      },
+      {
+        "id": "c",
+        "text": "The browser color scheme"
+      },
+      {
+        "id": "d",
+        "text": "The PostgreSQL version with Node.js"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Owner authorization requires a resolved identity whose ID equals the configured owner ID.",
+    "remediation": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "api-express-auth-003",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "validation-errors"
+    ],
+    "prompt": "What does clean(value, maximum) return for a non-string?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The original object"
+      },
+      {
+        "id": "b",
+        "text": "An empty string"
+      },
+      {
+        "id": "c",
+        "text": "A SQL NULL automatically"
+      },
+      {
+        "id": "d",
+        "text": "The maximum"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The helper rejects non-string text input by producing an empty string.",
+    "remediation": [
+      "docs/security.md#input-validation",
+      "docs/api-reference.md#request-and-response-format"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:clean"
+    ]
+  },
+  {
+    "id": "api-express-auth-004",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "sql-transactions"
+    ],
+    "prompt": "How are request values inserted into SQL?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "String concatenation"
+      },
+      {
+        "id": "b",
+        "text": "Parameterized placeholders such as $1 with a separate values array"
+      },
+      {
+        "id": "c",
+        "text": "eval"
+      },
+      {
+        "id": "d",
+        "text": "HTML attributes"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The pg client sends query text and values separately to prevent input from becoming SQL syntax.",
+    "remediation": [
+      "docs/foundations.md#queries-and-parameters",
+      "docs/data-model.md#transaction-boundaries-and-consistency"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "api-express-auth-005",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "api-client-contract"
+    ],
+    "prompt": "What does web/src/api.ts throw for a non-success response?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "ApiError with message and status"
+      },
+      {
+        "id": "b",
+        "text": "A PostgreSQL constraint"
+      },
+      {
+        "id": "c",
+        "text": "A Git conflict"
+      },
+      {
+        "id": "d",
+        "text": "Nothing"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The shared wrapper parses the body and turns non-2xx responses into ApiError.",
+    "remediation": [
+      "docs/api-reference.md",
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts",
+      "web/src/types.ts"
+    ]
+  },
+  {
+    "id": "api-express-auth-006",
+    "moduleId": "api-express-auth",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "express-lifecycle",
+      "auth-authorization",
+      "validation-errors"
+    ],
+    "prompt": "Select every layer that can deny an attempted pilot mutation.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Global Origin validation"
+      },
+      {
+        "id": "b",
+        "text": "requireUser or requireOwner"
+      },
+      {
+        "id": "c",
+        "text": "An ACTIVE pilot or ownership check inside the handler"
+      },
+      {
+        "id": "d",
+        "text": "A hidden browser button only"
+      },
+      {
+        "id": "e",
+        "text": "Database constraints"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The browser is untrusted; server middleware, handler checks, and database constraints provide layered enforcement.",
+    "remediation": [
+      "docs/architecture.md#middleware-order",
+      "docs/api-reference.md#handler-locations",
+      "docs/security.md#authentication-flow"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/auth.js",
+      "api/src/server.js:clean"
+    ]
+  },
+  {
+    "id": "api-express-auth-007",
+    "moduleId": "api-express-auth",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "sql-transactions",
+      "api-client-contract"
+    ],
+    "prompt": "Order a transactional assignment mutation.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Release the client in finally"
+      },
+      {
+        "id": "b",
+        "text": "BEGIN and lock required rows"
+      },
+      {
+        "id": "c",
+        "text": "Run parameterized writes"
+      },
+      {
+        "id": "d",
+        "text": "COMMIT, or ROLLBACK in catch"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "One borrowed client begins, coordinates, writes, commits or rolls back, and is always released.",
+    "remediation": [
+      "docs/foundations.md#queries-and-parameters",
+      "docs/data-model.md#transaction-boundaries-and-consistency",
+      "docs/api-reference.md"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/assignments\")",
+      "web/src/api.ts",
+      "web/src/types.ts"
+    ]
+  },
+  {
+    "id": "api-express-auth-008",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "express-lifecycle",
+      "auth-authorization"
+    ],
+    "prompt": "A new owner endpoint is hidden in the Admin page but has only requireUser. What must change?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use requireOwner on the route and retain handler validation"
+      },
+      {
+        "id": "b",
+        "text": "Rename the button"
+      },
+      {
+        "id": "c",
+        "text": "Store isOwner in localStorage"
+      },
+      {
+        "id": "d",
+        "text": "Make it a GET mutation"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "UI hiding is not authority; owner middleware must guard the API route.",
+    "remediation": [
+      "docs/architecture.md#middleware-order",
+      "docs/api-reference.md#handler-locations",
+      "docs/security.md#authentication-flow"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "api-express-auth-009",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "auth-authorization",
+      "validation-errors"
+    ],
+    "prompt": "An active pilot receives 404 Only your booked flight can be started. Which condition should be inspected?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Assignment ownership and status BOOKED"
+      },
+      {
+        "id": "b",
+        "text": "The Google Fonts request"
+      },
+      {
+        "id": "c",
+        "text": "The package-lock version"
+      },
+      {
+        "id": "d",
+        "text": "The Caddy certificate only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The start UPDATE matches ID, caller discord_id, and BOOKED status; failure of any yields no row.",
+    "remediation": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model",
+      "docs/security.md#input-validation"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js",
+      "api/src/server.js:clean"
+    ]
+  },
+  {
+    "id": "api-express-auth-010",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "validation-errors",
+      "sql-transactions"
+    ],
+    "prompt": "A request field accepts AVAILABLE, INSPECTION, or RETIRED. Which validation is appropriate before SQL?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Explicit allow-list plus clean/uppercase"
+      },
+      {
+        "id": "b",
+        "text": "Concatenate any string into the query"
+      },
+      {
+        "id": "c",
+        "text": "A CSS media query"
+      },
+      {
+        "id": "d",
+        "text": "Trust the select element"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The browser can be modified; enumerations are revalidated server-side and then parameterized.",
+    "remediation": [
+      "docs/security.md#input-validation",
+      "docs/api-reference.md#request-and-response-format",
+      "docs/foundations.md#queries-and-parameters"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:clean",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "api-express-auth-011",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "sql-transactions",
+      "api-client-contract"
+    ],
+    "prompt": "Two pilots race for one aircraft and one request receives PostgreSQL code 23505. What should the API do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Return a readable 409 after rollback"
+      },
+      {
+        "id": "b",
+        "text": "Retry an INSERT forever"
+      },
+      {
+        "id": "c",
+        "text": "Expose the stack and database URL"
+      },
+      {
+        "id": "d",
+        "text": "Delete the first booking"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The partial unique index is the final concurrency guard; the loser rolls back and receives a conflict.",
+    "remediation": [
+      "docs/foundations.md#queries-and-parameters",
+      "docs/data-model.md#transaction-boundaries-and-consistency",
+      "docs/api-reference.md"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/assignments\")",
+      "web/src/api.ts",
+      "web/src/types.ts"
+    ]
+  },
+  {
+    "id": "api-express-auth-012",
+    "moduleId": "api-express-auth",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": false,
+    "concepts": [
+      "api-client-contract",
+      "express-lifecycle"
+    ],
+    "prompt": "Which route change is backward-compatible and correctly reviewed?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Add a non-sensitive optional response field, update consumer type and API reference, and smoke test it"
+      },
+      {
+        "id": "b",
+        "text": "Expose vatsim_cid through public /live"
+      },
+      {
+        "id": "c",
+        "text": "Remove requireUser because the frontend is private"
+      },
+      {
+        "id": "d",
+        "text": "Return raw error stacks"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "An additive non-sensitive field can be compatible when contract, type, test, and public-data classification are reviewed.",
+    "remediation": [
+      "docs/api-reference.md",
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight",
+      "docs/architecture.md#middleware-order"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts",
+      "web/src/types.ts",
+      "api/src/server.js"
+    ]
+  }
+]

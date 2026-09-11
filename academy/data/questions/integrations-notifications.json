@@ -1,0 +1,546 @@
+[
+  {
+    "id": "integrations-notifications-001",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "simbrief-integration"
+    ],
+    "prompt": "Which host is accepted for a manual SimBrief XML import?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "www.simbrief.com"
+      },
+      {
+        "id": "b",
+        "text": "Any HTTPS host"
+      },
+      {
+        "id": "c",
+        "text": "localhost only"
+      },
+      {
+        "id": "d",
+        "text": "api.volanta.app"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The importer restricts protocol, hostname, and XML path pattern.",
+    "remediation": [
+      "docs/api-reference.md#get-assignmentsidsimbrief-generate",
+      "docs/architecture.md#external-integrations"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:importSimBrief",
+      "api/src/recoveryMissions.js:buildSimBriefDispatchParams"
+    ]
+  },
+  {
+    "id": "integrations-notifications-002",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "volanta-vatsim"
+    ],
+    "prompt": "What identifier does the Volanta importer extract from a public flight link?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A UUID"
+      },
+      {
+        "id": "b",
+        "text": "A database password"
+      },
+      {
+        "id": "c",
+        "text": "A Git hash only"
+      },
+      {
+        "id": "d",
+        "text": "A CSS class"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The public flight UUID is used to call the fixed Volanta API endpoint.",
+    "remediation": [
+      "docs/api-reference.md#post-volantaimport",
+      "docs/features.md#hangar-portal"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:importVolanta",
+      "web/src/flightPlan.ts"
+    ]
+  },
+  {
+    "id": "integrations-notifications-003",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "notifications-push"
+    ],
+    "prompt": "Where is notification read state authoritative?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "notification_history.read_at"
+      },
+      {
+        "id": "b",
+        "text": "A dismissed CSS class"
+      },
+      {
+        "id": "c",
+        "text": "The push provider only"
+      },
+      {
+        "id": "d",
+        "text": "The Vite cache"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Server history makes read state consistent across browsers and delivery channels.",
+    "remediation": [
+      "docs/features.md#notifications",
+      "docs/architecture.md#service-worker-and-push"
+    ],
+    "sourceRefs": [
+      "api/src/notifications.js",
+      "api/src/push.js",
+      "web/public/airdash-sw.js"
+    ]
+  },
+  {
+    "id": "integrations-notifications-004",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "map-external"
+    ],
+    "prompt": "Are map aircraft positions live simulator telemetry?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Yes, exact telemetry every second"
+      },
+      {
+        "id": "b",
+        "text": "No, they are estimates from assignment timing and route geometry"
+      },
+      {
+        "id": "c",
+        "text": "Only when VAPID is set"
+      },
+      {
+        "id": "d",
+        "text": "They come from PostgreSQL WAL"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The map estimates position; Volanta is not polled as live telemetry by the browser map.",
+    "remediation": [
+      "docs/architecture.md#external-integrations",
+      "docs/features.md#network-map-map"
+    ],
+    "sourceRefs": [
+      "web/src/AdvancedNetworkMap.tsx",
+      "web/index.html"
+    ]
+  },
+  {
+    "id": "integrations-notifications-005",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "windows-packages"
+    ],
+    "prompt": "Where must PowerPoint COM automation run?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "An interactive Windows desktop session"
+      },
+      {
+        "id": "b",
+        "text": "Any Linux shell"
+      },
+      {
+        "id": "c",
+        "text": "A browser service worker"
+      },
+      {
+        "id": "d",
+        "text": "Inside PostgreSQL"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Office COM is not supported by this exporter from SSH session 0 or a service.",
+    "remediation": [
+      "docs/powerpoint-automation.md",
+      "docs/features.md#downloads-and-simulator-content"
+    ],
+    "sourceRefs": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "scripts/build-msfs2020-liveries.py"
+    ]
+  },
+  {
+    "id": "integrations-notifications-006",
+    "moduleId": "integrations-notifications",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "simbrief-integration",
+      "volanta-vatsim",
+      "notifications-push"
+    ],
+    "prompt": "Select every external-integration control implemented by the API.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "HTTPS and host/path restrictions for SimBrief"
+      },
+      {
+        "id": "b",
+        "text": "Response size limits"
+      },
+      {
+        "id": "c",
+        "text": "Request timeouts"
+      },
+      {
+        "id": "d",
+        "text": "Assignment route and aircraft validation"
+      },
+      {
+        "id": "e",
+        "text": "Executing provider text as JavaScript"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Provider data is bounded and validated; it is parsed, never executed.",
+    "remediation": [
+      "docs/api-reference.md#get-assignmentsidsimbrief-generate",
+      "docs/architecture.md#external-integrations",
+      "docs/api-reference.md#post-volantaimport"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:importSimBrief",
+      "api/src/recoveryMissions.js:buildSimBriefDispatchParams",
+      "api/src/integrations.js:importVolanta",
+      "web/src/flightPlan.ts"
+    ]
+  },
+  {
+    "id": "integrations-notifications-007",
+    "moduleId": "integrations-notifications",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "map-external",
+      "windows-packages"
+    ],
+    "prompt": "Order a successful Windows launch workflow.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Launcher starts Steam app 2537590"
+      },
+      {
+        "id": "b",
+        "text": "Exporter validates template and data"
+      },
+      {
+        "id": "c",
+        "text": "PowerPoint renders to a temporary file"
+      },
+      {
+        "id": "d",
+        "text": "Exporter verifies hash and atomically replaces the destination"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "MSFS starts only after validated, complete, hash-verified replacement.",
+    "remediation": [
+      "docs/architecture.md#external-integrations",
+      "docs/features.md#network-map-map",
+      "docs/powerpoint-automation.md"
+    ],
+    "sourceRefs": [
+      "web/src/AdvancedNetworkMap.tsx",
+      "web/index.html",
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "scripts/build-msfs2020-liveries.py"
+    ]
+  },
+  {
+    "id": "integrations-notifications-008",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "simbrief-integration",
+      "volanta-vatsim"
+    ],
+    "prompt": "A recovery ferry OFP has passengers 0 but cargo is missing. What should the API do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Reject it because both fields must be explicitly zero"
+      },
+      {
+        "id": "b",
+        "text": "Assume missing means zero"
+      },
+      {
+        "id": "c",
+        "text": "Approve because the route matches"
+      },
+      {
+        "id": "d",
+        "text": "Convert cargo to pilot remarks"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Recovery payload validation requires explicit zero passengers and explicit zero cargo.",
+    "remediation": [
+      "docs/api-reference.md#get-assignmentsidsimbrief-generate",
+      "docs/architecture.md#external-integrations",
+      "docs/api-reference.md#post-volantaimport"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:importSimBrief",
+      "api/src/recoveryMissions.js:buildSimBriefDispatchParams",
+      "api/src/integrations.js:importVolanta",
+      "web/src/flightPlan.ts"
+    ]
+  },
+  {
+    "id": "integrations-notifications-009",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "volanta-vatsim",
+      "notifications-push"
+    ],
+    "prompt": "A read notification reappears after its source report changes status. Why?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The changed payload creates a different event_key and a new history row"
+      },
+      {
+        "id": "b",
+        "text": "localStorage forgot every account"
+      },
+      {
+        "id": "c",
+        "text": "Caddy duplicated the database"
+      },
+      {
+        "id": "d",
+        "text": "The browser cannot mark read"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Event keys include a stable serialization hash, so a meaningful source change is a new event.",
+    "remediation": [
+      "docs/api-reference.md#post-volantaimport",
+      "docs/features.md#hangar-portal",
+      "docs/features.md#notifications"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:importVolanta",
+      "web/src/flightPlan.ts",
+      "api/src/notifications.js",
+      "api/src/push.js"
+    ]
+  },
+  {
+    "id": "integrations-notifications-010",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "notifications-push",
+      "map-external"
+    ],
+    "prompt": "A new notification group should appear in the generic bell history. What is essential on the API side?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Add it to notificationGroups, query it, and normalize title/body/href"
+      },
+      {
+        "id": "b",
+        "text": "Only add a CSS class"
+      },
+      {
+        "id": "c",
+        "text": "Store it in the service worker cache"
+      },
+      {
+        "id": "d",
+        "text": "Change the Caddyfile"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "History synchronization iterates the registered groups and normalizes each candidate into a durable record.",
+    "remediation": [
+      "docs/features.md#notifications",
+      "docs/architecture.md#service-worker-and-push",
+      "docs/architecture.md#external-integrations"
+    ],
+    "sourceRefs": [
+      "api/src/notifications.js",
+      "api/src/push.js",
+      "web/public/airdash-sw.js",
+      "web/src/AdvancedNetworkMap.tsx"
+    ]
+  },
+  {
+    "id": "integrations-notifications-011",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "map-external",
+      "windows-packages"
+    ],
+    "prompt": "The real exporter over SSH reports an OutOfMemory-like PowerPoint error, but DryRun passes. What is the likely cause?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Office COM is running in non-interactive session 0"
+      },
+      {
+        "id": "b",
+        "text": "The PostgreSQL pool is full"
+      },
+      {
+        "id": "c",
+        "text": "The livery SHA is wrong"
+      },
+      {
+        "id": "d",
+        "text": "React StrictMode rendered twice"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The documented misleading error is characteristic of unsupported non-interactive COM execution.",
+    "remediation": [
+      "docs/architecture.md#external-integrations",
+      "docs/features.md#network-map-map",
+      "docs/powerpoint-automation.md"
+    ],
+    "sourceRefs": [
+      "web/src/AdvancedNetworkMap.tsx",
+      "web/index.html",
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "scripts/build-msfs2020-liveries.py"
+    ]
+  },
+  {
+    "id": "integrations-notifications-012",
+    "moduleId": "integrations-notifications",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "windows-packages",
+      "simbrief-integration"
+    ],
+    "prompt": "Why may the SimBrief importer not accept an arbitrary URL supplied by a pilot?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It would turn the server into an unbounded request proxy and weaken provider trust validation"
+      },
+      {
+        "id": "b",
+        "text": "XML can never contain text"
+      },
+      {
+        "id": "c",
+        "text": "HTTPS is always unsafe"
+      },
+      {
+        "id": "d",
+        "text": "Only browsers can fetch URLs"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Fixed provider, protocol, path, timeout, and size controls constrain server-side request behavior and untrusted response handling.",
+    "remediation": [
+      "docs/powerpoint-automation.md",
+      "docs/features.md#downloads-and-simulator-content",
+      "docs/api-reference.md#get-assignmentsidsimbrief-generate"
+    ],
+    "sourceRefs": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "scripts/build-msfs2020-liveries.py",
+      "api/src/integrations.js:importSimBrief",
+      "api/src/recoveryMissions.js:buildSimBriefDispatchParams"
+    ]
+  }
+]

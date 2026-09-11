@@ -32,6 +32,12 @@ The [architecture](architecture.md#trust-boundaries) page draws the boundaries. 
 | Browser to API | The API | The browser | The browser is treated as untrusted. Hidden controls are a convenience; every rule is re-checked server-side. |
 | API to filesystem | The filesystem | Request content | Only `POST /profile/image` writes files, with a type allow-list, size limits, and a file name derived from the authenticated user's ID, never from the request. |
 
+### Local academy boundary
+
+The academy is not an authenticated production service. Its server binds only `127.0.0.1`, stores no progress server-side, and does not call the production API or database. Static serving uses an allow-list and rejects `.git`, `node_modules`, `site`, and `api/.env`; `api/.env.example` is explicitly safe. Responses set a self-only Content Security Policy, `no-store`, `nosniff`, `DENY`, and `no-referrer` headers.
+
+Practical execution accepts only a checker ID present in `academy/checks.mjs`. Checkers invoke fixed executable and argument arrays with `shell: false` and a reduced environment, redact credential-like output, limit buffers and time, serialize execution, and may write only an isolated frontend build under the operating-system temporary directory. They never accept command text, read `api/.env`, print environment variables, mutate Git, run a migration, contact an application endpoint, deploy, restore, or restart a process. Browser progress remains editable user-controlled evidence and is not a tamper-proof credential.
+
 ## Authentication flow
 
 Authentication is delegated entirely to the dashydoggo.com Discord login service. airDash does not store passwords, tokens, or sessions.

@@ -2,13 +2,13 @@
 
 This documentation explains what airDash is, how it is built, how to install and run it, how to change it safely, how to deploy and operate it, and how to recover it. The intended reader ranges from a complete beginner who has never opened a terminal to the operator responsible for production. Every page defines specialized terms where they first appear, and every procedure states where it runs, what it changes, and how to verify the result.
 
-**Last verified:** September 10, 2026, against commit `5f2e27c` on branch `release/airdash-platform-20260910`.
+**Technical reference last verified:** September 10, 2026, against source commit `5f2e27c`. **Academy last verified:** September 11, 2026, against merged documentation commit `291860f` and the same source behavior.
 
 ## Where to begin
 
-If you do not know where to start, read the [start-here guide](start-here.md). It provides an ordered reading path for beginners, contributors, experienced developers, API consumers, operators, and security reviewers, and it states what you should understand after each stage.
+Complete beginners should start with the [interactive airDash Academy](../academy/README.md). It turns the canonical pages below into 21 prerequisite modules with active recall, application and diagnosis questions, practical checks, cumulative examinations, delayed review, and a human-reviewed capstone. Run it locally; progress never leaves the browser.
 
-If you are a beginner, the [learning path](learning-path.md) is the curriculum. It orders every page below into lessons with objectives, exercises, and checkpoints, and it ends with a guided contribution exercise.
+Readers who need reference material rather than a mastery sequence should use the [start-here guide](start-here.md). The [learning path](learning-path.md) remains the human-readable syllabus and exercise companion for the academy.
 
 ## Documentation map
 
@@ -16,8 +16,10 @@ Pages are classified as introductory (teaching material that assumes little), re
 
 | Page | Class | Purpose |
 |---|---|---|
+| [Interactive airDash Academy](../academy/README.md) | Interactive curriculum | Local dashboard, adaptive practice, practical checks, examinations, progress, and capstone. |
+| [Academy mastery model](../academy/MASTERY_MODEL.md) | Evidence standard | Evidence levels, module and cumulative gates, delayed review, scoring, confidence calibration, and proof limits. |
 | [Start here](start-here.md) | Introductory | Reading paths by audience and the outcome of each stage. |
-| [Learning path](learning-path.md) | Introductory | Ordered beginner curriculum with objectives, exercises, and checkpoints. |
+| [Learning path](learning-path.md) | Introductory | Human-readable syllabus with longer guided exercises, hints, and checkpoints; the academy records progression evidence. |
 | [Project overview](project-overview.md) | Introductory | Purpose, scope, supported and unsupported use, actors and roles, status. |
 | [Foundations](foundations.md) | Introductory | Operating system, shell, Git, JavaScript and TypeScript, dependencies, HTTP and APIs, databases, testing, and build concepts, each tied to airDash code. |
 | [Installation](installation.md) | Procedure | Tool installation on macOS, Linux, and Windows; obtaining the source; installing dependencies; creating `api/.env`; PostgreSQL setup. |
@@ -47,7 +49,7 @@ Pages are classified as introductory (teaching material that assumes little), re
 
 ## How the pages relate
 
-The [architecture](architecture.md) page is the canonical description of components and flows. The [API reference](api-reference.md) and [data model](data-model.md) are the canonical descriptions of the two public contracts: the HTTP routes and the schema. The [configuration](configuration.md) page is the canonical list of settings. Other pages link to these three rather than restating them. When you find a fact stated in two places, the reference page wins, and the other page should be corrected to link to it.
+The [architecture](architecture.md) page is the canonical description of components and flows. The [API reference](api-reference.md) and [data model](data-model.md) are the canonical descriptions of the two public contracts: the HTTP routes and the schema. The [configuration](configuration.md) page is the canonical list of settings. Other pages link to these three rather than restating them. The academy assesses these references and source evidence but does not replace them; when academy data and a canonical reference disagree, investigate the implementation and correct both. When two prose pages disagree, the designated canonical reference wins.
 
 ## Change classification
 
@@ -63,6 +65,7 @@ Use this table to determine which validation and deployment procedure applies to
 | Caddyfile | Domain, TLS, reverse proxy | Not required | Not required, but a shared Caddy reload is required | Not required |
 | Windows automation under `scripts/` | PowerShell exporter or launcher | Not required | Only if the API payload also changes | Not required |
 | Documentation under `docs/` | Any page | Not required | Not required | Not required |
+| Academy engine, server, tests, or data under `academy/` | Learning behavior, concept, question, lab, exam, checker, or capstone | Not required | Not required | Not required |
 
 ## Maintenance triggers
 
@@ -78,12 +81,14 @@ Documentation is correct only while it matches the implementation. The following
 | Change a deployment step, container, mount, or port | [Deployment](deployment.md), [operations](operations.md), and [backup and recovery](backup-and-recovery.md). |
 | Change a user-visible page or workflow | [Features](features.md) and the [glossary](glossary.md) if a term changed. |
 | Add a dependency or change a version | [Installation](installation.md), [foundations](foundations.md#dependency-foundations), and [known limitations](known-limitations.md) if the change constrains anything. |
-| Add or change a test script | [Testing](testing.md) and `package.json`. |
-| Discover a constraint or tradeoff | [Known limitations](known-limitations.md). |
+| Add or change a test script | [Testing](testing.md), the relevant `package.json`, and academy testing concepts and checkers. |
+| Discover a constraint or tradeoff | [Known limitations](known-limitations.md) and the affected academy diagnosis or operations questions. |
+| Change any concept, command, route, table, security boundary, deployment, or recovery behavior | Update the matching object in `academy/data/concepts.json`, its module question bank, practical evidence where applicable, source references, and cumulative critical-concept coverage; run `npm --prefix academy run validate` and `npm --prefix academy test`. |
+| Change the academy engine, schema, scoring, retention, checker allow-list, or evidence claim | Update `academy/MASTERY_MODEL.md`, `academy/SCHEMA.md`, tests, this index, and [known limitations](known-limitations.md); never weaken a gate to conceal missing coverage. |
 
 ## Documentation conventions
 
-- Commands run from the repository root unless a `cd` is shown. The repository root is the directory that contains `README.md`, `api/`, and `web/`.
+- Commands run from the repository root unless a `cd` is shown. The repository root is the directory that contains `README.md`, `api/`, `web/`, and `academy/`.
 - Production paths refer to `/opt/dashy-database/projects/airdash` on the production host. Local paths are written relative to wherever you cloned the repository.
 - Placeholders are written in angle brackets, such as `<timestamp>` or `<your-discord-id>`, and must be replaced before running the command.
 - Bold `Note`, `Important`, and `Warning` labels mark caveats in ascending order of severity.

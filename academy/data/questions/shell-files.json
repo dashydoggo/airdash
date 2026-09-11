@@ -1,0 +1,540 @@
+[
+  {
+    "id": "shell-files-001",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "filesystem-paths"
+    ],
+    "prompt": "From which location is a relative path resolved?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The filesystem root in every case"
+      },
+      {
+        "id": "b",
+        "text": "The process working directory"
+      },
+      {
+        "id": "c",
+        "text": "The user home directory in every case"
+      },
+      {
+        "id": "d",
+        "text": "The directory named in .gitignore"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A relative path is interpreted from the current working directory.",
+    "remediation": [
+      "docs/foundations.md#files-directories-and-paths"
+    ],
+    "sourceRefs": [
+      "web/vite.config.ts:outDir",
+      "api/ecosystem.config.js:cwd"
+    ]
+  },
+  {
+    "id": "shell-files-002",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "permissions-processes"
+    ],
+    "prompt": "What does mode 600 on api/.env permit?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Owner read and write only"
+      },
+      {
+        "id": "b",
+        "text": "Everyone read, owner write"
+      },
+      {
+        "id": "c",
+        "text": "Owner execute only"
+      },
+      {
+        "id": "d",
+        "text": "Group and others read only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Mode 600 grants the owning user read and write with no group or other access.",
+    "remediation": [
+      "docs/foundations.md#file-permissions-and-executable-files",
+      "docs/foundations.md#processes-services-and-signals"
+    ],
+    "sourceRefs": [
+      "web/package.json:postbuild",
+      "api/src/server.js:shutdown"
+    ]
+  },
+  {
+    "id": "shell-files-003",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "streams-exit-codes"
+    ],
+    "prompt": "Which exit code convention indicates success?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "-1"
+      },
+      {
+        "id": "b",
+        "text": "0"
+      },
+      {
+        "id": "c",
+        "text": "1"
+      },
+      {
+        "id": "d",
+        "text": "127 only"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "By convention, zero is success and a nonzero value is failure.",
+    "remediation": [
+      "docs/foundations.md#standard-input-output-and-error-and-exit-codes"
+    ],
+    "sourceRefs": [
+      "api/package.json:scripts.check"
+    ]
+  },
+  {
+    "id": "shell-files-004",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "ports-environment"
+    ],
+    "prompt": "What does 127.0.0.1 identify?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Every interface on every host"
+      },
+      {
+        "id": "b",
+        "text": "The current machine loopback interface"
+      },
+      {
+        "id": "c",
+        "text": "The Docker registry"
+      },
+      {
+        "id": "d",
+        "text": "A public DNS resolver"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Loopback traffic stays on the current machine.",
+    "remediation": [
+      "docs/foundations.md#network-ports-and-localhost",
+      "docs/foundations.md#environment-variables"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:PORT",
+      "api/src/auth.js:AUTH_URL"
+    ]
+  },
+  {
+    "id": "shell-files-005",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "shell-safety"
+    ],
+    "prompt": "What does 2>&1 do in a shell command?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Sends stdin to two programs"
+      },
+      {
+        "id": "b",
+        "text": "Sends stderr to the same destination as stdout"
+      },
+      {
+        "id": "c",
+        "text": "Runs the command twice"
+      },
+      {
+        "id": "d",
+        "text": "Redirects stdout into stdin"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "File descriptor 2 is stderr and 1 is stdout; 2>&1 points stderr at stdout current destination.",
+    "remediation": [
+      "docs/foundations.md#shells-commands-quoting-pipes-and-redirection",
+      "docs/debugging.md#port-already-in-use"
+    ],
+    "sourceRefs": [
+      "docs/local-development.md",
+      "docs/deployment.md"
+    ]
+  },
+  {
+    "id": "shell-files-006",
+    "moduleId": "shell-files",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "filesystem-paths",
+      "permissions-processes",
+      "streams-exit-codes"
+    ],
+    "prompt": "Select every correct statement about the frontend postbuild command.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "find walks site directories and files"
+      },
+      {
+        "id": "b",
+        "text": "chmod 755 makes directories traversable by Nginx"
+      },
+      {
+        "id": "c",
+        "text": "chmod 644 makes files readable without making them executable"
+      },
+      {
+        "id": "d",
+        "text": "The command changes PostgreSQL ownership"
+      },
+      {
+        "id": "e",
+        "text": "A zero exit code is required for npm build success"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The script normalizes generated site permissions and its exit status participates in npm success; it does not touch PostgreSQL.",
+    "remediation": [
+      "docs/foundations.md#files-directories-and-paths",
+      "docs/foundations.md#file-permissions-and-executable-files",
+      "docs/foundations.md#processes-services-and-signals"
+    ],
+    "sourceRefs": [
+      "web/vite.config.ts:outDir",
+      "api/ecosystem.config.js:cwd",
+      "web/package.json:postbuild",
+      "api/src/server.js:shutdown"
+    ]
+  },
+  {
+    "id": "shell-files-007",
+    "moduleId": "shell-files",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "ports-environment",
+      "shell-safety"
+    ],
+    "prompt": "Put the documented API smoke-test shell steps in the safe order.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Capture smoke_pid=$!"
+      },
+      {
+        "id": "b",
+        "text": "Start PORT=39150 node src/server.js in the background"
+      },
+      {
+        "id": "c",
+        "text": "Send read requests to port 39150"
+      },
+      {
+        "id": "d",
+        "text": "Kill \"$smoke_pid\""
+      }
+    ],
+    "answer": [
+      "b",
+      "a",
+      "c",
+      "d"
+    ],
+    "explanation": "The process must start before its PID can be captured, then it can be tested and stopped explicitly.",
+    "remediation": [
+      "docs/foundations.md#network-ports-and-localhost",
+      "docs/foundations.md#environment-variables",
+      "docs/foundations.md#shells-commands-quoting-pipes-and-redirection"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:PORT",
+      "api/src/auth.js:AUTH_URL",
+      "docs/local-development.md",
+      "docs/deployment.md"
+    ]
+  },
+  {
+    "id": "shell-files-008",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "filesystem-paths",
+      "permissions-processes"
+    ],
+    "prompt": "The API starts from the repository root and cannot find its .env file. Which correction matches the project?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Move .env into site"
+      },
+      {
+        "id": "b",
+        "text": "Run from api/ or use npm --prefix api start"
+      },
+      {
+        "id": "c",
+        "text": "Make .env world-readable"
+      },
+      {
+        "id": "d",
+        "text": "Change every import to an absolute path"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "dotenv resolves .env from the process working directory; the ecosystem file and npm prefix establish api/ as cwd.",
+    "remediation": [
+      "docs/foundations.md#files-directories-and-paths",
+      "docs/foundations.md#file-permissions-and-executable-files",
+      "docs/foundations.md#processes-services-and-signals"
+    ],
+    "sourceRefs": [
+      "web/vite.config.ts:outDir",
+      "api/ecosystem.config.js:cwd",
+      "web/package.json:postbuild",
+      "api/src/server.js:shutdown"
+    ]
+  },
+  {
+    "id": "shell-files-009",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "permissions-processes",
+      "streams-exit-codes"
+    ],
+    "prompt": "A validation command prints a warning but exits 0 and its expected verification line is present. What is the primary result?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Failure because stderr was nonempty"
+      },
+      {
+        "id": "b",
+        "text": "Success, with the warning recorded separately"
+      },
+      {
+        "id": "c",
+        "text": "Unknown because exit codes are irrelevant"
+      },
+      {
+        "id": "d",
+        "text": "Delete the warning log"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Exit status and expected evidence determine pass; warnings still deserve interpretation but are not automatically failures.",
+    "remediation": [
+      "docs/foundations.md#file-permissions-and-executable-files",
+      "docs/foundations.md#processes-services-and-signals",
+      "docs/foundations.md#standard-input-output-and-error-and-exit-codes"
+    ],
+    "sourceRefs": [
+      "web/package.json:postbuild",
+      "api/src/server.js:shutdown",
+      "api/package.json:scripts.check"
+    ]
+  },
+  {
+    "id": "shell-files-010",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "streams-exit-codes",
+      "ports-environment"
+    ],
+    "prompt": "An API process already listens on 3006. How should a smoke test avoid disrupting it?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Kill the existing process"
+      },
+      {
+        "id": "b",
+        "text": "Start a second process on an unused port such as 39150"
+      },
+      {
+        "id": "c",
+        "text": "Bind both to 3006"
+      },
+      {
+        "id": "d",
+        "text": "Restart Caddy first"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A temporary process uses a distinct port while production remains online.",
+    "remediation": [
+      "docs/foundations.md#standard-input-output-and-error-and-exit-codes",
+      "docs/foundations.md#network-ports-and-localhost",
+      "docs/foundations.md#environment-variables"
+    ],
+    "sourceRefs": [
+      "api/package.json:scripts.check",
+      "api/src/server.js:PORT",
+      "api/src/auth.js:AUTH_URL"
+    ]
+  },
+  {
+    "id": "shell-files-011",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "ports-environment",
+      "shell-safety"
+    ],
+    "prompt": "A backgrounded mock auth command reports EADDRINUSE on 39151. What is the safest first action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Use rm -rf on /tmp"
+      },
+      {
+        "id": "b",
+        "text": "Inspect the listener PID with ss or lsof before stopping it"
+      },
+      {
+        "id": "c",
+        "text": "Restart every PM2 process"
+      },
+      {
+        "id": "d",
+        "text": "Open the port to the network"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Read-only listener inspection identifies the existing process and avoids killing an unrelated service.",
+    "remediation": [
+      "docs/foundations.md#network-ports-and-localhost",
+      "docs/foundations.md#environment-variables",
+      "docs/foundations.md#shells-commands-quoting-pipes-and-redirection"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:PORT",
+      "api/src/auth.js:AUTH_URL",
+      "docs/local-development.md",
+      "docs/deployment.md"
+    ]
+  },
+  {
+    "id": "shell-files-012",
+    "moduleId": "shell-files",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "shell-safety",
+      "filesystem-paths"
+    ],
+    "prompt": "Which command pattern best contains a temporary directory change?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "cd web; run build; remain there silently"
+      },
+      {
+        "id": "b",
+        "text": "( cd web && run the command )"
+      },
+      {
+        "id": "c",
+        "text": "sudo cd web"
+      },
+      {
+        "id": "d",
+        "text": "export PWD=web"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A subshell scopes the working-directory change and returns the parent shell to its original directory.",
+    "remediation": [
+      "docs/foundations.md#shells-commands-quoting-pipes-and-redirection",
+      "docs/debugging.md#port-already-in-use",
+      "docs/foundations.md#files-directories-and-paths"
+    ],
+    "sourceRefs": [
+      "docs/local-development.md",
+      "docs/deployment.md",
+      "web/vite.config.ts:outDir",
+      "api/ecosystem.config.js:cwd"
+    ]
+  }
+]

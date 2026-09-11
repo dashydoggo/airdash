@@ -73,6 +73,7 @@ If the pilot does not file before the deadline, the assignment expiry job marks 
 | Process management | PM2 with a systemd unit | PM2 7.0.1 | Host |
 | Simulator packages | Python 3 build scripts | 3.12.11 | `scripts/`, `gsx/` |
 | Desktop automation | PowerShell 5.1 and PowerPoint COM | Windows | `scripts/` |
+| Interactive academy | Browser ES modules and a loopback Node.js server, no third-party dependencies | Node.js 22.12 or later | `academy/` |
 
 The [architecture](architecture.md) page describes how these layers connect.
 

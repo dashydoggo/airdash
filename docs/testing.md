@@ -1,12 +1,12 @@
 # Testing
 
-This page describes how airDash is tested today, how to run each kind of check, how to read a failure, how to add tests, and what a contributor is expected to run before proposing a change. It is honest about coverage: automated tests exist for the pure calculation modules only, and everything else is verified by a documented manual procedure.
+This page describes how the production airDash application and local academy are tested, how to run each check, how to read a failure, and what a contributor must run before proposing a change. It remains honest about coverage: production automated tests cover pure API calculation modules, while route handlers and the production frontend still rely on smoke, type, build, and manual checks. The academy adds automated engine, progress, curriculum, checker, and server-boundary tests; those tests do not increase production route or browser coverage.
 
 ## Test strategy
 
 The API separates pure logic from input and output. Modules that compute something from their arguments (`streaks.js`, `flightOutcome.js`, `recoveryMissions.js`, and the parsing and gate functions in `integrations.js`) have no database or network dependency and are covered by assertion scripts that run in well under a second. Modules that talk to the database or to remote services (`server.js`, `database.js`, `notifications.js`, `push.js`, `gates.js`, `aircraftGates.js`) are verified by starting a real API process against a real database and calling routes, which this page calls the smoke test. The frontend is verified by the TypeScript compiler and an isolated production build, plus a visual check in a browser.
 
-There is no test framework, no test runner, no coverage tool, and no continuous integration service. Tests use Node.js's built-in `node:assert/strict` and are plain scripts invoked through `npm run`. This keeps the dependency count at zero for testing, at the cost of no test discovery, no per-test reporting, and no coverage numbers.
+The production API calculation tests use `node:assert/strict` as plain scripts. The academy uses Node.js's built-in `node:test` runner with the same zero-dependency approach, which provides discovery, isolated named cases, duration, and aggregate reporting. Neither package has a third-party test framework or a coverage tool, and the repository still has no continuous integration service.
 
 ## Test categories
 
@@ -18,11 +18,14 @@ There is no test framework, no test runner, no coverage tool, and no continuous 
 | Isolated build | Frontend compiles and bundles | `web/vite.config.ts` | see [local development](local-development.md#frontend-validation-sequence) | 1 s |
 | Smoke test | API starts, migrates, and answers real requests | manual procedure below | manual | 1 to 2 min |
 | Visual check | Pages render and behave | browser | manual | varies |
+| Academy curriculum validation | IDs, DAG, references, coverage, critical evidence, question quality, exam feasibility, checker mapping, capstone | `academy/validate.mjs` | `npm --prefix academy run validate` | under 1 s |
+| Academy automated tests | Grading, sampling, scoring, retention, progress import, gates, fixed checkers, validator failures, server boundaries | `academy/test/*.test.mjs` | `npm --prefix academy test` | about 1 s without frontend build checkers |
+| Academy local smoke | Browser shell, all JSON banks, CSP, status API, checker execution, blocked secret/generated paths | `academy/server.mjs` | included in academy server tests; fixed-port curl smoke during release validation | under 1 min |
 | Windows parse check and dry run | PowerShell scripts parse and plan correctly | `scripts/*.ps1` | see [powerpoint-automation.md](powerpoint-automation.md#updating-a-script) | 10 s |
 
 ## Directory layout and naming
 
-Test scripts live in `api/scripts/` and are named `test-<subject>.js`. Each is registered in `api/package.json` as `test:<subject>`. There is no `test` script that runs everything; run each command. The frontend has no test directory.
+Production API test scripts live in `api/scripts/` and are named `test-<subject>.js`; each is registered as `test:<subject>`, and there is no production `test` script that runs everything. The production frontend has no test directory. Academy tests live in `academy/test/`, use the `*.test.mjs` convention, and run together through `npm --prefix academy test` or by focused engine and server scripts in `academy/package.json`.
 
 ## Running the unit tests
 
@@ -73,6 +76,29 @@ There is no way to run one assertion in isolation other than editing the script.
 - `buildRecoveryMission` proposes flight `9015` for source assignment 15, from `KPUB` to `KDEN`, 45 minutes, zero payload, and returns `null` when the aircraft is not at the recovery airport.
 - `buildSimBriefDispatchParams` adds `pax=0` and `cargo=0` and the ferry remark for recovery ferries and omits them for standard flights.
 - `assignmentExperienceMultiplier` returns 1 for recovery ferries and 1.75 for a 120-minute standard mission.
+
+## Running academy validation and tests
+
+From the repository root:
+
+```bash
+npm --prefix academy run validate
+npm --prefix academy test
+```
+
+The validator prints `airDash Academy curriculum verified` and counts the modules, concepts, questions, critical questions, labs, examinations, capstones, and checker allow-list. The test command currently runs 47 cases across:
+
+- Answer normalization and all five question types.
+- Seeded deterministic shuffling and balanced examination sampling.
+- Difficulty weighting, skill and module scores, and critical misses.
+- The fixed review schedule and high-confidence misconception remediation.
+- Progress import schema, timestamp, score, ID, settings, and inspected-evidence validation.
+- Complete module prerequisite and gate behavior.
+- All fixed static checkers, API syntax, API unit scripts, and blocked dependency behavior.
+- Curriculum negative fixtures for duplicate IDs, missing coverage, weak wording, invalid answers, arbitrary checker IDs, and final-exam distribution.
+- Loopback server redirect, static assets, all 21 question banks, CSP and security headers, blocked secret and generated paths, Origin enforcement, request-size limit, unknown IDs, and fixed checker execution.
+
+A curriculum validator pass proves internal consistency and inspectable reference existence. It does not prove every explanation is semantically correct; reviewers must compare changed content with implementation evidence.
 
 ## Reading a failure
 

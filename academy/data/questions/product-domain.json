@@ -1,0 +1,546 @@
+[
+  {
+    "id": "product-domain-001",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "onboarding-assignment"
+    ],
+    "prompt": "What creates a pilot row?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Application approval by the owner"
+      },
+      {
+        "id": "b",
+        "text": "Opening the home page"
+      },
+      {
+        "id": "c",
+        "text": "Downloading a livery anonymously"
+      },
+      {
+        "id": "d",
+        "text": "The schedule timer"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The application decision transaction allocates a pilot number and inserts the pilot on approval.",
+    "remediation": [
+      "docs/features.md#join-join",
+      "docs/data-model.md#assignments"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/applications\")",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  },
+  {
+    "id": "product-domain-002",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "dispatch-gates"
+    ],
+    "prompt": "Which assignment status is displayed as FLYING?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "ACTIVE"
+      },
+      {
+        "id": "b",
+        "text": "BOOKED"
+      },
+      {
+        "id": "c",
+        "text": "EXPIRED"
+      },
+      {
+        "id": "d",
+        "text": "CANCELLED"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "ACTIVE is the database and API value; the frontend relabels it for pilots.",
+    "remediation": [
+      "docs/features.md#flight-board-flights",
+      "docs/features.md#hangar-portal"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:selectGate",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "product-domain-003",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "reports-outcomes"
+    ],
+    "prompt": "Which outcomes receive a 0.9 credit multiplier?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only COMPLETED"
+      },
+      {
+        "id": "b",
+        "text": "DIVERTED and INCOMPLETE"
+      },
+      {
+        "id": "c",
+        "text": "Every report"
+      },
+      {
+        "id": "d",
+        "text": "Only REJECTED"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Non-complete approved outcomes receive 90 percent of eligible block time.",
+    "remediation": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#pireps"
+    ],
+    "sourceRefs": [
+      "api/src/flightOutcome.js:analyzeFlightOutcome",
+      "api/src/server.js:app.post(\"/pireps\")"
+    ]
+  },
+  {
+    "id": "product-domain-004",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "credit-aircraft"
+    ],
+    "prompt": "What landing rate triggers automatic inspection?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "At or below -450 feet per minute"
+      },
+      {
+        "id": "b",
+        "text": "Exactly zero only"
+      },
+      {
+        "id": "c",
+        "text": "Any positive rate"
+      },
+      {
+        "id": "d",
+        "text": "No landing rate can trigger one"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Approval places the aircraft in a 48-hour inspection when landing rate is -450 or lower.",
+    "remediation": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#aircraft"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:applyPirepReview",
+      "api/src/streaks.js"
+    ]
+  },
+  {
+    "id": "product-domain-005",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "schedule-admin-news"
+    ],
+    "prompt": "Is the Schedule page a booking interface at the documented commit?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Yes, every row has a book button"
+      },
+      {
+        "id": "b",
+        "text": "No, it is a read-only timetable even though the API accepts schedule fields"
+      },
+      {
+        "id": "c",
+        "text": "Only for visitors"
+      },
+      {
+        "id": "d",
+        "text": "Only during backups"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The component polls and filters schedule rows but contains no booking action.",
+    "remediation": [
+      "docs/features.md#schedule-schedule",
+      "docs/features.md#administration-admin",
+      "docs/features.md#news-hub-news-newsslug"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:ensureSchedule",
+      "api/src/database.js:publishOrgUpdate"
+    ]
+  },
+  {
+    "id": "product-domain-006",
+    "moduleId": "product-domain",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "onboarding-assignment",
+      "dispatch-gates",
+      "reports-outcomes"
+    ],
+    "prompt": "Select every invariant checked during a standard booking.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Pilot is ACTIVE"
+      },
+      {
+        "id": "b",
+        "text": "Pilot has no other active assignment"
+      },
+      {
+        "id": "c",
+        "text": "Aircraft is AVAILABLE at the route origin"
+      },
+      {
+        "id": "d",
+        "text": "Route is ACTIVE"
+      },
+      {
+        "id": "e",
+        "text": "A browser button was visible"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "The server transaction and unique indexes enforce operational state; interface visibility is not an invariant.",
+    "remediation": [
+      "docs/features.md#join-join",
+      "docs/data-model.md#assignments",
+      "docs/features.md#flight-board-flights"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/applications\")",
+      "api/src/server.js:app.post(\"/assignments\")",
+      "api/src/integrations.js:selectGate",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "product-domain-007",
+    "moduleId": "product-domain",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "credit-aircraft",
+      "schedule-admin-news"
+    ],
+    "prompt": "Order approval side effects for a completed report conceptually.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Update pilot credit"
+      },
+      {
+        "id": "b",
+        "text": "Derive eligible time and award"
+      },
+      {
+        "id": "c",
+        "text": "Move aircraft and update cycles/status"
+      },
+      {
+        "id": "d",
+        "text": "Complete assignment and write audit"
+      }
+    ],
+    "answer": [
+      "b",
+      "a",
+      "c",
+      "d"
+    ],
+    "explanation": "Credit is computed before durable updates, then pilot, aircraft, assignment, and audit reflect the approved decision.",
+    "remediation": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#aircraft",
+      "docs/features.md#schedule-schedule"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:applyPirepReview",
+      "api/src/streaks.js",
+      "api/src/server.js:ensureSchedule",
+      "api/src/database.js:publishOrgUpdate"
+    ]
+  },
+  {
+    "id": "product-domain-008",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "onboarding-assignment",
+      "dispatch-gates"
+    ],
+    "prompt": "A cancelled future scheduled booking was still BOOKED. What should happen to its schedule row?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Reopen it and clear assignment_id"
+      },
+      {
+        "id": "b",
+        "text": "Delete every route"
+      },
+      {
+        "id": "c",
+        "text": "Leave it TAKEN forever"
+      },
+      {
+        "id": "d",
+        "text": "Publish a press release"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Structured cancellation reopens a future schedule row when the flight had not started.",
+    "remediation": [
+      "docs/features.md#join-join",
+      "docs/data-model.md#assignments",
+      "docs/features.md#flight-board-flights"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.post(\"/applications\")",
+      "api/src/server.js:app.post(\"/assignments\")",
+      "api/src/integrations.js:selectGate",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "product-domain-009",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "dispatch-gates",
+      "reports-outcomes"
+    ],
+    "prompt": "A Volanta record ended without verified arrival after 70 percent of planned distance and the SimBrief plan has an alternate. Where is the aircraft repositioned?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The filed alternate"
+      },
+      {
+        "id": "b",
+        "text": "Always the destination"
+      },
+      {
+        "id": "c",
+        "text": "Always the origin"
+      },
+      {
+        "id": "d",
+        "text": "The owner home directory"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "An INCOMPLETE outcome past the 50 percent decision point uses the filed alternate.",
+    "remediation": [
+      "docs/features.md#flight-board-flights",
+      "docs/features.md#hangar-portal",
+      "docs/features.md#pilot-report-report"
+    ],
+    "sourceRefs": [
+      "api/src/integrations.js:selectGate",
+      "api/src/server.js",
+      "api/src/flightOutcome.js:analyzeFlightOutcome",
+      "api/src/server.js:app.post(\"/pireps\")"
+    ]
+  },
+  {
+    "id": "product-domain-010",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "reports-outcomes",
+      "credit-aircraft"
+    ],
+    "prompt": "A 120-minute standard mission is completed with eligible time 120. Which experience rule applies?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Standard mission multiplier 1.75 before streak bonus"
+      },
+      {
+        "id": "b",
+        "text": "Recovery multiplier zero"
+      },
+      {
+        "id": "c",
+        "text": "Always 2.5 regardless of time"
+      },
+      {
+        "id": "d",
+        "text": "No experience"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The standard mission formula is 1 + (minutes/240 * 1.5), giving 1.75 at 120; recovery missions use 1.0.",
+    "remediation": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#pireps",
+      "docs/data-model.md#aircraft"
+    ],
+    "sourceRefs": [
+      "api/src/flightOutcome.js:analyzeFlightOutcome",
+      "api/src/server.js:app.post(\"/pireps\")",
+      "api/src/server.js:applyPirepReview",
+      "api/src/streaks.js"
+    ]
+  },
+  {
+    "id": "product-domain-011",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "credit-aircraft",
+      "schedule-admin-news"
+    ],
+    "prompt": "An aircraft remains ASSIGNED and its report is PIREP_SUBMITTED. What is the expected operator action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Review the report; approval or rejection transitions the aircraft"
+      },
+      {
+        "id": "b",
+        "text": "Update the row manually first"
+      },
+      {
+        "id": "c",
+        "text": "Delete PostgreSQL files"
+      },
+      {
+        "id": "d",
+        "text": "Restart Caddy"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The active report review is the legitimate state transition; direct edits bypass audit and consistency.",
+    "remediation": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#aircraft",
+      "docs/features.md#schedule-schedule"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:applyPirepReview",
+      "api/src/streaks.js",
+      "api/src/server.js:ensureSchedule",
+      "api/src/database.js:publishOrgUpdate"
+    ]
+  },
+  {
+    "id": "product-domain-012",
+    "moduleId": "product-domain",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "schedule-admin-news",
+      "onboarding-assignment"
+    ],
+    "prompt": "A public News Hub query should return which records?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only is_public rows with a slug and published_at at or before now"
+      },
+      {
+        "id": "b",
+        "text": "Every internal update and creator identity"
+      },
+      {
+        "id": "c",
+        "text": "Drafts with null slug"
+      },
+      {
+        "id": "d",
+        "text": "Application introductions"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The public route filters explicit publication state and omits private creator and full internal data.",
+    "remediation": [
+      "docs/features.md#schedule-schedule",
+      "docs/features.md#administration-admin",
+      "docs/features.md#news-hub-news-newsslug"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:ensureSchedule",
+      "api/src/database.js:publishOrgUpdate",
+      "api/src/server.js:app.post(\"/applications\")",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ]
+  }
+]

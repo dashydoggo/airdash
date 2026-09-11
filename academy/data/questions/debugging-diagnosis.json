@@ -1,0 +1,503 @@
+[
+  {
+    "id": "debugging-diagnosis-001",
+    "moduleId": "debugging-diagnosis",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "symptom-diagnosis"
+    ],
+    "prompt": "Symptom-first debugging changes state before collecting evidence.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "The method starts with observations and read-only diagnostics, then changes state only after distinguishing causes.",
+    "remediation": [
+      "docs/debugging.md#symptom-index"
+    ],
+    "sourceRefs": [
+      "docs/debugging.md"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-002",
+    "moduleId": "debugging-diagnosis",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "logs-health"
+    ],
+    "prompt": "Which endpoint is the primary public API health check?",
+    "answer": [],
+    "accepted": [
+      "https://air.dashydoggo.com/api/health",
+      "/api/health"
+    ],
+    "explanation": "The production health route is exposed at /api/health through Caddy.",
+    "remediation": [
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.get(\"/health\")"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-003",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "database-api-failure"
+    ],
+    "prompt": "What verified event can crash the API through an unhandled pg pool error?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Restarting or stopping PostgreSQL while idle pooled connections exist"
+      },
+      {
+        "id": "b",
+        "text": "Opening the News Hub"
+      },
+      {
+        "id": "c",
+        "text": "Running git status"
+      },
+      {
+        "id": "d",
+        "text": "Changing text scale"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The pool emits an unhandled error when PostgreSQL terminates idle connections.",
+    "remediation": [
+      "docs/debugging.md#database-unavailable",
+      "docs/debugging.md#api-exits-at-startup"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-004",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "auth-build-conflicts"
+    ],
+    "prompt": "What error identifies the committed Vite proxy prefix defect?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Cannot GET /api/health"
+      },
+      {
+        "id": "b",
+        "text": "PIREP rejected"
+      },
+      {
+        "id": "c",
+        "text": "Vapid key generated"
+      },
+      {
+        "id": "d",
+        "text": "SHA256SUMS OK"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Vite forwards /api/health unchanged while Express defines /health.",
+    "remediation": [
+      "docs/debugging.md#session-not-recognized",
+      "docs/debugging.md#development-proxy-returns-404",
+      "docs/debugging.md#booking-conflicts"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-005",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "safe-escalation"
+    ],
+    "prompt": "When should an operator escalate rather than improvise?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Before destructive restore, shared infrastructure restart, access-control change, or unclear data mutation"
+      },
+      {
+        "id": "b",
+        "text": "Whenever grep returns no match"
+      },
+      {
+        "id": "c",
+        "text": "Before opening any documentation"
+      },
+      {
+        "id": "d",
+        "text": "Only after data loss"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "High-impact or uncertain action requires the owner and a reversible plan.",
+    "remediation": [
+      "docs/debugging.md#escalation"
+    ],
+    "sourceRefs": [
+      "docs/deployment.md",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-006",
+    "moduleId": "debugging-diagnosis",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "symptom-diagnosis",
+      "logs-health",
+      "database-api-failure"
+    ],
+    "prompt": "Select every read-only observation useful when the public health endpoint fails.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "PM2 process status"
+      },
+      {
+        "id": "b",
+        "text": "Listener on port 3006"
+      },
+      {
+        "id": "c",
+        "text": "Direct localhost health request"
+      },
+      {
+        "id": "d",
+        "text": "Container status and API logs"
+      },
+      {
+        "id": "e",
+        "text": "Deleting the database volume"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "These observations distinguish edge, process, listener, and dependency failure without changing state.",
+    "remediation": [
+      "docs/debugging.md#symptom-index",
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs"
+    ],
+    "sourceRefs": [
+      "docs/debugging.md",
+      "api/src/server.js:app.get(\"/health\")",
+      "api/src/database.js:pool",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-007",
+    "moduleId": "debugging-diagnosis",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "auth-build-conflicts",
+      "safe-escalation"
+    ],
+    "prompt": "Order safe correction of a newly deployed API startup failure.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Verify health and PM2 stability"
+      },
+      {
+        "id": "b",
+        "text": "Read logs and identify the exact startup failure"
+      },
+      {
+        "id": "c",
+        "text": "Run targeted validation on the corrected or previous source"
+      },
+      {
+        "id": "d",
+        "text": "Restart or roll back the API using the documented procedure"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Diagnosis and validation precede a controlled restart or rollback, followed by live verification.",
+    "remediation": [
+      "docs/debugging.md#session-not-recognized",
+      "docs/debugging.md#development-proxy-returns-404",
+      "docs/debugging.md#booking-conflicts"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/vite.config.ts",
+      "docs/deployment.md",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-008",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "symptom-diagnosis",
+      "logs-health"
+    ],
+    "prompt": "The browser says data is unavailable, direct port 3006 health works, and the public endpoint fails. Which layer is implicated?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Caddy or public edge routing"
+      },
+      {
+        "id": "b",
+        "text": "The PostgreSQL query itself"
+      },
+      {
+        "id": "c",
+        "text": "The streak calculation"
+      },
+      {
+        "id": "d",
+        "text": "The local Vite type checker"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "A direct healthy API isolates the fault upstream at edge routing, DNS, TLS, or Caddy.",
+    "remediation": [
+      "docs/debugging.md#symptom-index",
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs"
+    ],
+    "sourceRefs": [
+      "docs/debugging.md",
+      "api/src/server.js:app.get(\"/health\")"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-009",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "logs-health",
+      "database-api-failure"
+    ],
+    "prompt": "PostgreSQL is back, but PM2 shows airdash-api errored after many fast restarts. What is the next safe action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Confirm pg_isready, inspect logs, then explicitly restart airdash-api and verify health"
+      },
+      {
+        "id": "b",
+        "text": "Delete docker_pgdata"
+      },
+      {
+        "id": "c",
+        "text": "Restore an old dump immediately"
+      },
+      {
+        "id": "d",
+        "text": "Force-push source"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The dependency must be ready before restarting a process that exhausted its automatic retry limit.",
+    "remediation": [
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs",
+      "docs/debugging.md#database-unavailable"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.get(\"/health\")",
+      "api/src/database.js:pool",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-010",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "database-api-failure",
+      "auth-build-conflicts"
+    ],
+    "prompt": "A signed-in user gets Invalid request origin on POST. Which distinction matters?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Origin validation is failing before identity authorization"
+      },
+      {
+        "id": "b",
+        "text": "The database table is absent"
+      },
+      {
+        "id": "c",
+        "text": "A bundle hash is stale"
+      },
+      {
+        "id": "d",
+        "text": "The landing rate is zero"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The global mutation-origin check runs before requireUser or requireOwner.",
+    "remediation": [
+      "docs/debugging.md#database-unavailable",
+      "docs/debugging.md#api-exits-at-startup",
+      "docs/debugging.md#session-not-recognized"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "api/ecosystem.config.js",
+      "api/src/auth.js",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-011",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "auth-build-conflicts",
+      "safe-escalation"
+    ],
+    "prompt": "A booking returns 409 selected aircraft or pilot now has an active assignment. What does that indicate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The concurrency invariant rejected a race; refresh state rather than bypassing it"
+      },
+      {
+        "id": "b",
+        "text": "TLS failed"
+      },
+      {
+        "id": "c",
+        "text": "The API route is missing"
+      },
+      {
+        "id": "d",
+        "text": "The livery is corrupt"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The unique index and translated conflict are expected concurrency protection.",
+    "remediation": [
+      "docs/debugging.md#session-not-recognized",
+      "docs/debugging.md#development-proxy-returns-404",
+      "docs/debugging.md#booking-conflicts"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/vite.config.ts",
+      "docs/deployment.md",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis-012",
+    "moduleId": "debugging-diagnosis",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "safe-escalation",
+      "symptom-diagnosis"
+    ],
+    "prompt": "A proposed fix is restart every shared service until the symptom disappears. What is the correct response?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Reject it; preserve evidence, isolate the failing layer, state blast radius, and restart only the owning component if justified"
+      },
+      {
+        "id": "b",
+        "text": "Approve because restarts have no effect"
+      },
+      {
+        "id": "c",
+        "text": "Drop all schemas first"
+      },
+      {
+        "id": "d",
+        "text": "Hide the logs"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Random shared restarts erase evidence and can widen impact; diagnosis and scoped action are required.",
+    "remediation": [
+      "docs/debugging.md#escalation",
+      "docs/debugging.md#symptom-index"
+    ],
+    "sourceRefs": [
+      "docs/deployment.md",
+      "docs/backup-and-recovery.md",
+      "docs/debugging.md"
+    ]
+  }
+]

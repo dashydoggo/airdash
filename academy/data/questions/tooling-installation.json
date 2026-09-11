@@ -1,0 +1,536 @@
+[
+  {
+    "id": "tooling-installation-001",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "toolchain-versions"
+    ],
+    "prompt": "Which Node.js line is verified for the project?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Node.js 12 only"
+      },
+      {
+        "id": "b",
+        "text": "Node.js 24.x"
+      },
+      {
+        "id": "c",
+        "text": "Deno only"
+      },
+      {
+        "id": "d",
+        "text": "Any browser without Node.js"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Node.js 24.x is verified; the Vite toolchain accepts the documented minimum ranges.",
+    "remediation": [
+      "docs/installation.md#required-software"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json"
+    ]
+  },
+  {
+    "id": "tooling-installation-002",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "dependency-install"
+    ],
+    "prompt": "Which command installs the exact API dependency tree?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "npm --prefix api ci"
+      },
+      {
+        "id": "b",
+        "text": "npm install -g express"
+      },
+      {
+        "id": "c",
+        "text": "node api/package.json"
+      },
+      {
+        "id": "d",
+        "text": "docker pull npm"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "npm ci reads the API lock file, recreates node_modules, and refuses lock mismatch.",
+    "remediation": [
+      "docs/installation.md#install-dependencies"
+    ],
+    "sourceRefs": [
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "tooling-installation-003",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "local-postgres"
+    ],
+    "prompt": "What does the local PostgreSQL Docker volume preserve?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only terminal history"
+      },
+      {
+        "id": "b",
+        "text": "Database files across container replacement"
+      },
+      {
+        "id": "c",
+        "text": "The frontend bundle"
+      },
+      {
+        "id": "d",
+        "text": "Git branches"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The named volume stores PostgreSQL data independently of the container lifecycle.",
+    "remediation": [
+      "docs/installation.md#install-postgresql",
+      "docs/installation.md#create-the-schema"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "tooling-installation-004",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "environment-file"
+    ],
+    "prompt": "Which local file must never be committed?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "api/.env"
+      },
+      {
+        "id": "b",
+        "text": "api/.env.example"
+      },
+      {
+        "id": "c",
+        "text": "api/package.json"
+      },
+      {
+        "id": "d",
+        "text": "docs/configuration.md"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "api/.env may contain database and VAPID credentials and is intentionally ignored.",
+    "remediation": [
+      "docs/installation.md#create-the-environment-file",
+      "docs/configuration.md#template-file"
+    ],
+    "sourceRefs": [
+      "api/.env.example",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "tooling-installation-005",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "local-processes"
+    ],
+    "prompt": "Which four elements form the complete local runtime?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Caddy, AWS, Lambda, Redis"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL, mock auth, API, Vite"
+      },
+      {
+        "id": "c",
+        "text": "GitHub, Discord, PowerPoint, Nginx only"
+      },
+      {
+        "id": "d",
+        "text": "Two browsers and Docker Hub"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The documented local topology uses a database, local identity stub, Express process, and frontend development server.",
+    "remediation": [
+      "docs/local-development.md#the-three-local-processes",
+      "docs/local-development.md#normal-shutdown"
+    ],
+    "sourceRefs": [
+      "docs/local-development.md",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "tooling-installation-006",
+    "moduleId": "tooling-installation",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "toolchain-versions",
+      "dependency-install",
+      "local-postgres"
+    ],
+    "prompt": "Select the checks that prove a clean tool and database starting state.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "node --version"
+      },
+      {
+        "id": "b",
+        "text": "npm --version"
+      },
+      {
+        "id": "c",
+        "text": "git --version"
+      },
+      {
+        "id": "d",
+        "text": "pg_isready or an equivalent connection check"
+      },
+      {
+        "id": "e",
+        "text": "Editing package-lock.json by hand"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Version commands and a database readiness check produce inspectable evidence; manual lock edits undermine reproducibility.",
+    "remediation": [
+      "docs/installation.md#required-software",
+      "docs/installation.md#install-dependencies",
+      "docs/installation.md#install-postgresql"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json",
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "tooling-installation-007",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "environment-file",
+      "local-processes"
+    ],
+    "prompt": "Which precedence order controls an API variable?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Code default, then .env, then process environment"
+      },
+      {
+        "id": "b",
+        "text": "Process environment, then .env, then code default"
+      },
+      {
+        "id": "c",
+        "text": "Browser localStorage, then PostgreSQL"
+      },
+      {
+        "id": "d",
+        "text": "Caddy, then CSS, then Git"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Existing process variables win because dotenv does not overwrite them; then .env; then code fallback.",
+    "remediation": [
+      "docs/installation.md#create-the-environment-file",
+      "docs/configuration.md#template-file",
+      "docs/local-development.md#the-three-local-processes"
+    ],
+    "sourceRefs": [
+      "api/.env.example",
+      ".gitignore",
+      "docs/local-development.md",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "tooling-installation-008",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "toolchain-versions",
+      "dependency-install"
+    ],
+    "prompt": "npm ci reports EBADENGINE for Vite. What should be corrected first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Upgrade Node.js to a supported version"
+      },
+      {
+        "id": "b",
+        "text": "Delete web/src"
+      },
+      {
+        "id": "c",
+        "text": "Change the production database password"
+      },
+      {
+        "id": "d",
+        "text": "Disable TypeScript strict mode"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The engine error indicates the runtime version does not satisfy the package contract.",
+    "remediation": [
+      "docs/installation.md#required-software",
+      "docs/installation.md#install-dependencies"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json",
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ]
+  },
+  {
+    "id": "tooling-installation-009",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "dependency-install",
+      "local-postgres"
+    ],
+    "prompt": "A container fails with port 5432 already allocated. Which local correction preserves the existing database service?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Delete the existing PostgreSQL volume"
+      },
+      {
+        "id": "b",
+        "text": "Publish the scratch container on another loopback host port and update DATABASE_URL"
+      },
+      {
+        "id": "c",
+        "text": "Bind both containers to 5432"
+      },
+      {
+        "id": "d",
+        "text": "Expose port 5432 publicly"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A different host port such as 55432 isolates the scratch service and must match the local connection URL.",
+    "remediation": [
+      "docs/installation.md#install-dependencies",
+      "docs/installation.md#install-postgresql",
+      "docs/installation.md#create-the-schema"
+    ],
+    "sourceRefs": [
+      "api/package-lock.json",
+      "web/package-lock.json",
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "tooling-installation-010",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "local-postgres",
+      "environment-file"
+    ],
+    "prompt": "Which local environment value is safe and appropriate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A copied production DATABASE_URL"
+      },
+      {
+        "id": "b",
+        "text": "A URL for the learner-owned local database with a local password placeholder"
+      },
+      {
+        "id": "c",
+        "text": "The VAPID private key from production"
+      },
+      {
+        "id": "d",
+        "text": "An owner cookie in .env"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Local services receive local credentials; production secrets and sessions are never copied.",
+    "remediation": [
+      "docs/installation.md#install-postgresql",
+      "docs/installation.md#create-the-schema",
+      "docs/installation.md#create-the-environment-file"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate",
+      "api/.env.example",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "tooling-installation-011",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "environment-file",
+      "local-processes"
+    ],
+    "prompt": "A browser sends a cookie but local /me still returns 401. What should be verified first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Mock auth is listening and AUTH_URL points to it"
+      },
+      {
+        "id": "b",
+        "text": "The fleet livery ZIP hash"
+      },
+      {
+        "id": "c",
+        "text": "Caddy production logs only"
+      },
+      {
+        "id": "d",
+        "text": "The News Hub category"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "requireUser delegates to AUTH_URL; a missing or misconfigured mock makes any cookie resolve to no user.",
+    "remediation": [
+      "docs/installation.md#create-the-environment-file",
+      "docs/configuration.md#template-file",
+      "docs/local-development.md#the-three-local-processes"
+    ],
+    "sourceRefs": [
+      "api/.env.example",
+      ".gitignore",
+      "docs/local-development.md",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "tooling-installation-012",
+    "moduleId": "tooling-installation",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "local-processes",
+      "toolchain-versions"
+    ],
+    "prompt": "After local practice, which shutdown sequence is expected?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Drop every table"
+      },
+      {
+        "id": "b",
+        "text": "Ctrl+C for Vite, API, and mock auth; stop the optional local database while preserving its volume"
+      },
+      {
+        "id": "c",
+        "text": "Force-kill PID 1"
+      },
+      {
+        "id": "d",
+        "text": "Restart the production host"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The local processes terminate normally and the database volume can remain for the next session.",
+    "remediation": [
+      "docs/local-development.md#the-three-local-processes",
+      "docs/local-development.md#normal-shutdown",
+      "docs/installation.md#required-software"
+    ],
+    "sourceRefs": [
+      "docs/local-development.md",
+      "web/vite.config.ts",
+      "api/package.json",
+      "web/package.json"
+    ]
+  }
+]
