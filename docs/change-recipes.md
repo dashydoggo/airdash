@@ -8,7 +8,7 @@ Every recipe assumes you are at the project root:
 cd /opt/dashy-database/projects/airdash
 ```
 
-Every recipe ends by pointing to one of two deployment procedures in the [deployment and operations guide](deployment-and-operations.md): a frontend-only deployment (build, no restart) or an API deployment (restart, no build). Do not skip the release backup those procedures require.
+Every recipe ends by pointing to one of two deployment procedures in the [deployment guide](deployment.md): a frontend-only deployment (build, no restart) or an API deployment (restart, no build). Do not skip the release backup those procedures require.
 
 ## Change the Portal pilot and base line
 
@@ -92,7 +92,7 @@ All three checks must succeed. Had step 2 been skipped, the type check would hav
 
 ### 6. Deploy
 
-Follow [Deploy a frontend-only change](deployment-and-operations.md#deploy-a-frontend-only-change). After the build, open `https://air.dashydoggo.com/portal` and confirm the heading intro shows the icon followed by `AD0001; KATL.`
+Follow [Deploy a frontend-only change](deployment.md#deploy-a-frontend-only-change). After the build, open `https://air.dashydoggo.com/portal` and confirm the heading intro shows the icon followed by `AD0001; KATL.`
 
 ### Variations
 
@@ -196,14 +196,18 @@ export interface Assignment { ...; departure_gate?: string | null; ... }
 ```bash
 npm --prefix api run check
 npm --prefix api run test:streaks
-cd api && PORT=39150 node src/server.js > /tmp/smoke.log 2>&1 & sleep 3
+cd api
+PORT=39150 node src/server.js > /tmp/smoke.log 2>&1 &
+smoke_pid=$!
+sleep 3
 curl -fsS http://127.0.0.1:39150/live | grep -o '"departure_gate":"[^"]*"' | head -1
-kill %1; cd ..
+kill "$smoke_pid"
+cd ..
 ```
 
 ### 5. Deploy
 
-Follow [Deploy an API-only change](deployment-and-operations.md#deploy-an-api-only-change). If the UI also changed, then follow the frontend-only procedure.
+Follow [Deploy an API-only change](deployment.md#deploy-an-api-only-change). If the UI also changed, then follow the frontend-only procedure.
 
 ## Add a new API endpoint
 
@@ -247,7 +251,7 @@ ALTER TABLE airdash.pilots ADD COLUMN IF NOT EXISTS favorite_airport TEXT;
 
 ### 2. Back up
 
-Run both the [release backup](deployment-and-operations.md#release-backup) and the [database backup](deployment-and-operations.md#database-backup).
+Run both the [release backup](backup-and-recovery.md#release-backup) and the [database backup](backup-and-recovery.md#database-backup).
 
 ### 3. Validate
 
@@ -255,9 +259,13 @@ The temporary-process smoke test applies the migration, which is the real test:
 
 ```bash
 npm --prefix api run check
-cd api && PORT=39150 node src/server.js > /tmp/smoke.log 2>&1 & sleep 4
+cd api
+PORT=39150 node src/server.js > /tmp/smoke.log 2>&1 &
+smoke_pid=$!
+sleep 4
 grep -i error /tmp/smoke.log || echo no-startup-errors
-kill %1; cd ..
+kill "$smoke_pid"
+cd ..
 docker exec dashy-postgres psql -U dashy -d dashyden -Atc \
   "SELECT column_name FROM information_schema.columns WHERE table_schema='airdash' AND table_name='pilots' AND column_name='favorite_airport';"
 ```
@@ -266,7 +274,7 @@ The last command prints the column name if the migration succeeded.
 
 ### 4. Deploy
 
-Follow [Deploy an API-only change](deployment-and-operations.md#deploy-an-api-only-change). Because the temporary process already applied the migration, the production restart finds the column present and continues.
+Follow [Deploy an API-only change](deployment.md#deploy-an-api-only-change). Because the temporary process already applied the migration, the production restart finds the column present and continues.
 
 ### 5. Use the column
 
@@ -274,21 +282,24 @@ Read or write it in a route as in the previous recipes. Add it to `types.ts` if 
 
 ## Add a notification type
 
-**Classification:** API and frontend. Restart and build required.
+**Classification:** API, and frontend only if the new group needs its own rendering. Restart required; build only if the frontend changes.
 
-Pilot notifications are assembled in `app.get("/notifications", ...)` in `server.js`. Owner notifications are in `app.get("/admin/notifications", ...)`.
+Notifications are server-authoritative. `getNotificationPayload` in `api/src/notifications.js` runs one query per group, `normalizeRecord` turns each row into a title, body, and link, and `syncNotificationHistory` inserts new records into `airdash.notification_history` keyed by `(discord_id, event_key)`. The frontend reads the `history` array and the unread `total`; it does not compute anything per group.
 
-1. **API:** add a query to the `Promise.all` array, add its rows to the response object, and add its `rowCount` to `total`. This is how `aircraft` was added for equipment alerts.
-2. **Frontend fingerprint:** add the new group name to the `notificationGroups` array in `web/src/notificationState.ts` so dismissal works. Without this, the new group is never counted as dismissible and will reappear after Clear.
-3. **Frontend type:** add the optional array to `NotificationPayload` in the same file.
-4. **Frontend rendering:** in `Layout`, add a `notif?.newGroup?.map(...)` block that renders a `Link` per item, following the existing pattern.
-5. Validate both sequences and deploy API first, then frontend.
+1. **API, group name:** add the new group to the `notificationGroups` array in `api/src/notifications.js`. Groups not in this array are never synchronized into history.
+2. **API, query:** in `getNotificationPayload`, add a query to the owner branch, the pilot branch, or both, and add its rows to the returned object under the new group name. Include in the selected columns whatever `normalizeRecord` needs, and an `id` or other identity column so `eventKey` is stable. Return an empty array for the branch that does not use the group, as `expired: []` does for the owner.
+3. **API, rendering:** add a `case "<newGroup>":` to the `switch` in `normalizeRecord` that sets `title`, `body`, and `href`. The `href` should be a page route with an anchor the page understands, such as `/portal#portal-updates`.
+4. **Frontend type:** add the optional array to `NotificationPayload` in `web/src/notificationState.ts` so that pages which read the raw group (the Hangar reads `progress`, `orgUpdates`, and `aircraft`) can type it.
+5. **Frontend rendering:** nothing is required for the bell panel, which renders `history` generically. Add page-specific rendering only if the Hangar or Administration should show the group in its own section.
+6. Validate the API sequence and call `GET /notifications` in the smoke test to see the new records appear in `history`. Deploy the API first, then the frontend if it changed.
+
+Records that change produce a new `event_key` and therefore a new notification; design the selected columns so that irrelevant changes (for example a `reviewed_at` timestamp that updates on every save) do not create duplicates.
 
 ## Change the SimBrief or VATSIM remark
 
 **Classification:** API for SimBrief generation, frontend for the VATSIM pre-file URL.
 
-The SimBrief `manualrmk` is set in the `/assignments/:id/simbrief-generate` route in `server.js`. The VATSIM remark builder is `buildVatsimRemark` in `web/src/flightPlan.ts`. Change the literal text, validate the relevant side, and deploy the relevant side. Keep the site name inside `RMK/` and avoid hyphens in the remark text, which ICAO treats as field delimiters.
+The SimBrief `manualrmk` is set in `buildSimBriefDispatchParams` in `api/src/recoveryMissions.js`, which `GET /assignments/:id/simbrief-generate` calls; there is one remark for standard flights and one for recovery ferries. The VATSIM remark is built in `web/src/flightPlan.ts` from the constants `AIRDASH_CALLSIGN_REMARK` and `AIRDASH_SITE_REMARK` by `completeRemark` and `appendAirDashRemark`. Change the literal text, validate the relevant side (`npm --prefix api run test:flight-outcomes` asserts the ferry remark), and deploy the relevant side. Keep the site name inside `RMK/` and avoid hyphens in the remark text, which ICAO treats as field delimiters.
 
 ## Publish a new static asset
 

@@ -1,108 +1,90 @@
 # airDash documentation
 
-This documentation explains how airDash is structured, how requests move through the system, how to change source code safely, how to validate a release, and how to operate or recover the production service. The intended reader does not need prior experience with React, Node.js, PostgreSQL, Docker, Nginx, Caddy, or PM2.
+This documentation explains what airDash is, how it is built, how to install and run it, how to change it safely, how to deploy and operate it, and how to recover it. The intended reader ranges from a complete beginner who has never opened a terminal to the operator responsible for production. Every page defines specialized terms where they first appear, and every procedure states where it runs, what it changes, and how to verify the result.
 
-**Last verified:** September 10, 2026
+**Last verified:** September 10, 2026, against commit `5f2e27c` on branch `release/airdash-platform-20260910`.
+
+## Where to begin
+
+If you do not know where to start, read the [start-here guide](start-here.md). It provides an ordered reading path for beginners, contributors, experienced developers, API consumers, operators, and security reviewers, and it states what you should understand after each stage.
+
+If you are a beginner, the [learning path](learning-path.md) is the curriculum. It orders every page below into lessons with objectives, exercises, and checkpoints, and it ends with a guided contribution exercise.
 
 ## Documentation map
 
-| Guide | Purpose |
-|---|---|
-| [Platform architecture](architecture.md) | Explains components, request flow, source layout, runtime topology, security boundaries, and current limitations. |
-| [Backend and database reference](backend-reference.md) | Describes API route groups, authentication middleware, integrations, background jobs, and all 13 database tables. |
-| [Development guide](development.md) | Explains prerequisites, safe editing, frontend and API development, validation commands, and debugging. |
-| [Deployment and operations guide](deployment-and-operations.md) | Provides backup, frontend deployment, API deployment, health checks, logging, rollback, and recovery procedures. |
-| [Common change recipes](change-recipes.md) | Provides inspectable examples for text, icons, CSS, routes, API fields, database migrations, notifications, and static files. |
-| [PowerPoint and MSFS video automation](powerpoint-automation.md) | Explains the Windows PowerPoint template, dynamic assignment fields, exporter, launcher, and troubleshooting. |
-| [Platform design](designdoc.md) | Records product decisions and historical plans. It is not the current operations manual. |
-| [Documentation style standard](documentation-style.md) | Defines the required writing style for durable airDash documentation. |
+Pages are classified as introductory (teaching material that assumes little), reference (authoritative facts about the current implementation), or procedure (step-by-step instructions that change or inspect a system).
 
-## Zero-to-hero learning path
+| Page | Class | Purpose |
+|---|---|---|
+| [Start here](start-here.md) | Introductory | Reading paths by audience and the outcome of each stage. |
+| [Learning path](learning-path.md) | Introductory | Ordered beginner curriculum with objectives, exercises, and checkpoints. |
+| [Project overview](project-overview.md) | Introductory | Purpose, scope, supported and unsupported use, actors and roles, status. |
+| [Foundations](foundations.md) | Introductory | Operating system, shell, Git, JavaScript and TypeScript, dependencies, HTTP and APIs, databases, testing, and build concepts, each tied to airDash code. |
+| [Installation](installation.md) | Procedure | Tool installation on macOS, Linux, and Windows; obtaining the source; installing dependencies; creating `api/.env`; PostgreSQL setup. |
+| [Local development](local-development.md) | Procedure | Running the API and frontend locally, the mock authentication service, the edit-validate loop, and the isolated build. |
+| [Configuration](configuration.md) | Reference | Every environment variable, the `settings` table, build configuration, and configuration precedence. |
+| [Architecture](architecture.md) | Reference | Components, request lifecycle, background work, startup and shutdown, trust boundaries, and tradeoffs. |
+| [Repository guide](repository-guide.md) | Reference | Every directory and important file, whether it is handwritten or generated, and a traced execution path. |
+| [Features](features.md) | Reference | Every page and workflow, the rules it enforces, and the code that implements it. |
+| [API reference](api-reference.md) | Reference | All 57 Express routes with authorization, parameters, validation, responses, side effects, and handlers. |
+| [Data model](data-model.md) | Reference | All 15 PostgreSQL tables, the sequence, indexes, constraints, lifecycles, and migration behavior. |
+| [Testing](testing.md) | Reference and procedure | Test strategy, the two test scripts, the temporary-process smoke test, and expectations for new code. |
+| [Debugging](debugging.md) | Procedure | Troubleshooting organized by observable symptom. |
+| [Security](security.md) | Reference | Assets, trust boundaries, authentication, authorization, secrets, input validation, audit, and reporting. |
+| [Deployment](deployment.md) | Procedure | Frontend, API, combined, static, and configuration deployments with verification and rollback. |
+| [Operations](operations.md) | Procedure | Health, logs, background jobs, housekeeping, audit review, and incident diagnosis. |
+| [Backup and recovery](backup-and-recovery.md) | Procedure | Release backups, database dumps, restore, and recovery of each runtime component. |
+| [Contributing](contributing.md) | Procedure | Branching, commits, pull requests, review standards, and the guided contribution exercise. |
+| [Releases](releases.md) | Procedure | How a change becomes a production release and how a release is recorded. |
+| [Change recipes](change-recipes.md) | Procedure | Worked examples for common code changes. |
+| [PowerPoint and MSFS video automation](powerpoint-automation.md) | Reference and procedure | The Windows exporter, launcher, template rules, and troubleshooting. |
+| [Glossary](glossary.md) | Reference | Definitions of every project term and acronym. |
+| [FAQ](faq.md) | Reference | Short answers to recurring questions with links to the authoritative page. |
+| [Known limitations](known-limitations.md) | Reference | Constraints, technical debt, and unresolved contradictions. |
+| [Coverage map](coverage-map.md) | Reference | Maps each concept to its source, configuration, tests, documentation, and validation method. |
+| [Platform design](designdoc.md) | Historical | Product decisions and earlier plans. It is not the current operations manual. |
+| [Documentation style standard](documentation-style.md) | Reference | The required writing style for durable documentation. |
 
-Follow these sections in order when learning the platform.
+## How the pages relate
 
-### 1. Learn the source and runtime distinction
-
-Read [Source layout](architecture.md#source-layout) and [Production runtime topology](architecture.md#production-runtime-topology).
-
-The most important distinction is that source files and production files are different artifacts:
-
-- `web/src/` contains editable frontend source.
-- `api/src/` contains editable API source.
-- `site/` contains the published static website.
-- The PM2 process has API code loaded in memory until it is restarted.
-- PostgreSQL stores durable operational data separately from source code.
-
-### 2. Learn the request path
-
-Read [Request flow](architecture.md#request-flow).
-
-A browser request first reaches Caddy. Caddy sends page and asset requests to Nginx, but sends `/api/*` requests to the PM2 API process. The API reads PostgreSQL and validates the existing dashydoggo.com Discord session when authentication is required.
-
-### 3. Learn safe local inspection
-
-Read [Read-only inspection](development.md#read-only-inspection).
-
-Start with commands that do not change anything:
-
-```bash
-cd /opt/dashy-database/projects/airdash
-curl -fsS https://air.dashydoggo.com/api/health
-pm2 show airdash-api
-docker ps --filter name=dashy-airdash --filter name=dashy-postgres --filter name=dashy-caddy
-```
-
-### 4. Make a frontend-only change
-
-Follow [Change the Portal pilot and base line](change-recipes.md#change-the-portal-pilot-and-base-line). This worked example changes a text-only `Page` intro into React content containing a home icon and the value `AD0001; KATL.`
-
-A frontend-only change normally touches `web/src/`, passes TypeScript and an isolated build, and then publishes through `npm --prefix web run build`. It does not require an API restart.
-
-### 5. Make a backend change
-
-Read [Backend development](development.md#backend-development) and [Deploy an API-only change](deployment-and-operations.md#deploy-an-api-only-change).
-
-An API change normally touches `api/src/`, passes the API syntax check and applicable tests, and requires `pm2 restart airdash-api` before production uses the new code.
-
-### 6. Understand database changes
-
-Read [Database architecture](backend-reference.md#database-architecture) and [Add a database column](change-recipes.md#add-a-database-column).
-
-The migration function is additive and runs at API startup. A database change can affect durable data, so create a database backup before a substantive schema or data migration.
-
-### 7. Learn deployment and rollback
-
-Read the complete [deployment and operations guide](deployment-and-operations.md).
-
-The current project does not have Git history. A release backup is therefore the rollback boundary. Do not skip the backup step.
-
-### 8. Learn the Windows automation
-
-Read [PowerPoint and MSFS video automation](powerpoint-automation.md) after understanding the website and API. The PowerPoint exporter consumes the public live-flight API and must run in the interactive Windows desktop session.
+The [architecture](architecture.md) page is the canonical description of components and flows. The [API reference](api-reference.md) and [data model](data-model.md) are the canonical descriptions of the two public contracts: the HTTP routes and the schema. The [configuration](configuration.md) page is the canonical list of settings. Other pages link to these three rather than restating them. When you find a fact stated in two places, the reference page wins, and the other page should be corrected to link to it.
 
 ## Change classification
 
-Use this table to determine which validation and deployment procedure applies.
+Use this table to determine which validation and deployment procedure applies to a change.
 
-| Changed area | Examples | Build required | PM2 restart required | Database backup recommended |
-|---|---|---:|---:|---:|
-| Frontend source | JSX, CSS, icons, browser state | Yes | No | No |
-| API source | Endpoint, validation, response field | No frontend build unless UI also changed | Yes | Usually no |
-| Database migration | Table, column, index, seed | No frontend build unless UI also changed | Yes | Yes |
-| Static site file | Image, download, manifest | Usually no Vite build | No | No |
-| Nginx configuration | Cache or SPA routing | No | No, but Nginx reload or recreation may be needed | No |
-| Caddy configuration | Domain, TLS, reverse proxy | No | No, but shared Caddy reload is required | No |
-| Windows automation | PowerShell exporter or launcher | No | Only if API payload also changes | No |
+| Changed area | Examples | Frontend build | API restart | Database backup |
+|---|---|---|---|---|
+| Frontend source under `web/src/` | JSX, CSS, icons, browser state | Required | Not required | Not required |
+| API source under `api/src/` | Route, validation, response field | Only if the UI also changed | Required | Recommended when data changes |
+| Migration statement in `api/src/database.js` | Table, column, index, seed | Only if the UI also changed | Required | Required |
+| Static site file under `site/assets/` or `site/downloads/` | Image, download, manifest | Not required | Not required | Not required |
+| `nginx.conf` | Cache headers, SPA fallback | Not required | Not required, but Nginx reload is required | Not required |
+| Caddyfile | Domain, TLS, reverse proxy | Not required | Not required, but a shared Caddy reload is required | Not required |
+| Windows automation under `scripts/` | PowerShell exporter or launcher | Not required | Only if the API payload also changes | Not required |
+| Documentation under `docs/` | Any page | Not required | Not required | Not required |
 
-## Current operational constraints
+## Maintenance triggers
 
-- The project has no dedicated staging environment.
-- Vite development mode proxies to the production API on host port 3006.
-- The project is excluded from Git tracking.
-- Frontend builds publish directly into the live bind-mounted `site/` directory.
-- API restarts cause a brief interruption for in-flight API requests.
-- Database migrations are implemented in application code rather than a versioned migration framework.
-- Old hashed frontend bundles accumulate because `emptyOutDir` is disabled to preserve manually managed static files and downloads.
-- Notification dismissal state is browser-specific local storage, not account-wide server state.
+Documentation is correct only while it matches the implementation. The following changes require the listed documentation update in the same pull request.
 
-These constraints do not prevent safe operation, but each constraint changes how a developer must validate, back up, and deploy a change.
+| Change | Update |
+|---|---|
+| Add, rename, or remove an environment variable | [Configuration](configuration.md), `api/.env.example`, and the [coverage map](coverage-map.md). |
+| Add, change, or remove an Express route | [API reference](api-reference.md), the route count in [architecture](architecture.md), and [features](features.md) if user-visible. |
+| Add a table, column, index, or constraint | [Data model](data-model.md) and the table count in [architecture](architecture.md). |
+| Change a background job interval or behavior | [Architecture](architecture.md#background-work) and [operations](operations.md). |
+| Change how authentication or authorization works | [Security](security.md) and [architecture](architecture.md#trust-boundaries). |
+| Change a deployment step, container, mount, or port | [Deployment](deployment.md), [operations](operations.md), and [backup and recovery](backup-and-recovery.md). |
+| Change a user-visible page or workflow | [Features](features.md) and the [glossary](glossary.md) if a term changed. |
+| Add a dependency or change a version | [Installation](installation.md), [foundations](foundations.md#dependency-foundations), and [known limitations](known-limitations.md) if the change constrains anything. |
+| Add or change a test script | [Testing](testing.md) and `package.json`. |
+| Discover a constraint or tradeoff | [Known limitations](known-limitations.md). |
+
+## Documentation conventions
+
+- Commands run from the repository root unless a `cd` is shown. The repository root is the directory that contains `README.md`, `api/`, and `web/`.
+- Production paths refer to `/opt/dashy-database/projects/airdash` on the production host. Local paths are written relative to wherever you cloned the repository.
+- Placeholders are written in angle brackets, such as `<timestamp>` or `<your-discord-id>`, and must be replaced before running the command.
+- Bold `Note`, `Important`, and `Warning` labels mark caveats in ascending order of severity.
+- Every page follows the [documentation style standard](documentation-style.md).
