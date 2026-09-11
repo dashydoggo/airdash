@@ -386,7 +386,7 @@ Most JavaScript packages use semantic versioning, written `major.minor.patch`. A
 
 ```bash
 npm --prefix api ci
-npm --prefix web ci
+npm --prefix web ci --include=dev
 ```
 
 Each command reads `<prefix>/package-lock.json`, downloads the packages from the npm registry over HTTPS, verifies each package against its recorded hash, and writes `<prefix>/node_modules/`. Rerunning it is safe and idempotent.

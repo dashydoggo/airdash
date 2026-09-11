@@ -44,7 +44,7 @@ The shortest verified path from a clone to a passing validation run does not req
 git clone git@github.com:dashydoggo/airdash.git
 cd airdash
 npm --prefix api ci
-npm --prefix web ci
+npm --prefix web ci --include=dev
 npm --prefix api run check
 npm --prefix api run test:streaks
 npm --prefix api run test:flight-outcomes

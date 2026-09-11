@@ -32,7 +32,7 @@ Status values: **Documented** means the page describes the concept at the depth 
 
 | Command | Purpose | Defined in | Documentation | Validation | Status |
 |---|---|---|---|---|---|
-| `npm --prefix api ci`, `npm --prefix web ci` | Install | lock files | [installation](installation.md#install-dependencies) | Present `node_modules` verified; package counts read from lock files | Documented |
+| `npm --prefix api ci`, `npm --prefix web ci --include=dev` | Install | lock files | [installation](installation.md#install-dependencies) | Present `node_modules` verified; package counts read from lock files | Documented |
 | `npm --prefix academy run validate` | Validate curriculum schema, references, source evidence, coverage, critical evidence, exams, labs, capstone, and question quality | `academy/validate.mjs` | [academy schema](../academy/SCHEMA.md#coverage-invariants) | Run against complete data and negative regression fixtures | Documented |
 | `npm --prefix academy test` | Run engine, progress, checker, validator, and server tests | `academy/test/` | [academy guide](../academy/README.md#maintainer-commands) | 47 tests pass | Documented |
 | `npm --prefix academy start` | Start local academy on `127.0.0.1:4174` | `academy/server.mjs` | [academy guide](../academy/README.md#start-the-academy) | Started on an ephemeral loopback port in server tests; fixed-port smoke performed during final validation | Documented |

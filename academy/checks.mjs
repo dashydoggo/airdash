@@ -349,13 +349,13 @@ async function apiUnitTests() {
 }
 
 async function webTypecheck() {
-  if (!existsSync(path.join(repositoryRoot, "web/node_modules"))) return { passed: false, status: "blocked", message: "Install frontend dependencies with npm --prefix web ci first.", observations: {} }
+  if (!existsSync(path.join(repositoryRoot, "web/node_modules"))) return { passed: false, status: "blocked", message: "Install frontend dependencies with npm --prefix web ci --include=dev first.", observations: {} }
   const result = await runFixed(npmExecutable, ["--prefix", "web", "run", "typecheck"], { timeout: 120_000 })
   return { ...result, message: result.passed ? "The TypeScript project passes strict type checking." : "The frontend type check failed." }
 }
 
 async function isolatedWebBuild() {
-  if (!existsSync(path.join(repositoryRoot, "web/node_modules"))) return { passed: false, status: "blocked", message: "Install frontend dependencies with npm --prefix web ci first.", observations: {} }
+  if (!existsSync(path.join(repositoryRoot, "web/node_modules"))) return { passed: false, status: "blocked", message: "Install frontend dependencies with npm --prefix web ci --include=dev first.", observations: {} }
   const output = await mkdtemp(path.join(tmpdir(), "airdash-academy-build-"))
   try {
     const result = await runFixed(npmExecutable, ["exec", "vite", "--", "build", "--outDir", output, "--emptyOutDir"], { cwd: path.join(repositoryRoot, "web"), timeout: 180_000 })

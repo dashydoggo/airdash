@@ -183,7 +183,7 @@ docker exec dashy-caddy caddy reload --config /etc/caddy/Caddyfile
 
 ## Recover the deployed frontend
 
-Use the [frontend rollback](deployment.md#roll-back-the-frontend) with a release backup, or rebuild from the correct commit with `git checkout <commit> && npm --prefix web ci && npm --prefix web run build`. A rebuild reproduces byte-identical bundles for the same source and dependency versions; this was confirmed on the evening of September 10, 2026, when an isolated build of commit `5f2e27c` produced the same hashes (`index-Dg7CDhf-.js`, `index-BFsZchn3.css`) that the live site referenced at that time. Later the same evening the site was rebuilt from uncommitted working-tree changes and now references different hashes, which is expected: the hash follows the source.
+Use the [frontend rollback](deployment.md#roll-back-the-frontend) with a release backup, or rebuild from the correct commit with `git checkout <commit> && npm --prefix web ci --include=dev && npm --prefix web run build`. A rebuild reproduces byte-identical bundles for the same source and dependency versions; this was confirmed on the evening of September 10, 2026, when an isolated build of commit `5f2e27c` produced the same hashes (`index-Dg7CDhf-.js`, `index-BFsZchn3.css`) that the live site referenced at that time. Later the same evening the site was rebuilt from uncommitted working-tree changes and now references different hashes, which is expected: the hash follows the source.
 
 ## Recover uploaded profile images
 
@@ -198,7 +198,7 @@ Livery packages are built by `scripts/build-msfs2020-liveries.py` (MSFS 2020) an
 Order of operations to rebuild on a new host. Each step names its prerequisite.
 
 1. Install the tools per [installation](installation.md) and Docker, PM2, and Caddy per the homelab's own procedures (outside this repository).
-2. Clone the repository to `/opt/dashy-database/projects/airdash` and check out the release branch. Run `npm --prefix api ci` and `npm --prefix web ci`.
+2. Clone the repository to `/opt/dashy-database/projects/airdash` and check out the release branch. Run `npm --prefix api ci` and `npm --prefix web ci --include=dev`.
 3. Recreate `api/.env` from the owner's password manager. Without it, the API cannot reach the database and push subscriptions cannot be served.
 4. Start PostgreSQL with the `docker_pgdata` volume if it survived, or create an empty database and restore the latest `airdash-db-*.dump` with the procedure above.
 5. Start the API with `pm2 start api/ecosystem.config.js` and `pm2 save`; `migrate()` brings the schema current.

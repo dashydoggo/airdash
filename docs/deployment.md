@@ -66,7 +66,7 @@ git pull --ff-only origin release/airdash-platform-20260910
 git log --oneline -1
 ```
 
-`git status --porcelain` must print nothing; if it does, someone edited production files directly, and you must reconcile that before pulling (see [debugging](debugging.md) and talk to the owner). `--ff-only` refuses to create a merge commit, which keeps the host identical to GitHub. If dependencies changed in the commit, also run `npm --prefix api ci` and `npm --prefix web ci`.
+`git status --porcelain` must print nothing; if it does, someone edited production files directly, and you must reconcile that before pulling (see [debugging](debugging.md) and talk to the owner). `--ff-only` refuses to create a merge commit, which keeps the host identical to GitHub. If dependencies changed in the commit, also run `npm --prefix api ci` and `npm --prefix web ci --include=dev`.
 
 ## Deploy a frontend-only change
 
