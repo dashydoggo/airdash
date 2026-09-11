@@ -1,0 +1,16 @@
+{
+  "name": "airdash-academy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "validate": "node validate.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:engine": "node --test test/engine.test.mjs test/progress.test.mjs",
+    "test:server": "node --test test/server.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

@@ -1,0 +1,515 @@
+[
+  {
+    "id": "contribution-capstone-001",
+    "moduleId": "contribution-capstone",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "scope-branch"
+    ],
+    "prompt": "Contributors should commit directly to the release branch when no protection rule blocks it.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "The workflow requires a focused branch and pull request even when GitHub does not enforce the rule.",
+    "remediation": [
+      "docs/contributing.md#before-you-start",
+      "docs/contributing.md#branches"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "contribution-capstone-002",
+    "moduleId": "contribution-capstone",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "code-validation"
+    ],
+    "prompt": "Which API command must run after any backend source edit?",
+    "answer": [],
+    "accepted": [
+      "npm --prefix api run check",
+      "npm run check --prefix api"
+    ],
+    "explanation": "The syntax check covers every documented API source file and is part of the backend validation sequence.",
+    "remediation": [
+      "docs/contributing.md#coding-standards",
+      "docs/contributing.md#validation-checklist"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json"
+    ]
+  },
+  {
+    "id": "contribution-capstone-003",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "documentation-maintenance"
+    ],
+    "prompt": "What change requires updating configuration.md and api/.env.example?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A new environment variable"
+      },
+      {
+        "id": "b",
+        "text": "A CSS color only"
+      },
+      {
+        "id": "c",
+        "text": "A new Git branch"
+      },
+      {
+        "id": "d",
+        "text": "A pilot report row"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The maintenance trigger ties runtime configuration source and canonical reference together.",
+    "remediation": [
+      "docs/README.md#maintenance-triggers",
+      "academy/SCHEMA.md#coverage-invariants"
+    ],
+    "sourceRefs": [
+      "docs/coverage-map.md",
+      "academy/validate.mjs"
+    ]
+  },
+  {
+    "id": "contribution-capstone-004",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "commit-pr-review"
+    ],
+    "prompt": "Why stage specific paths instead of git add .?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "To prevent unrelated, generated, or secret files from entering the commit"
+      },
+      {
+        "id": "b",
+        "text": "To disable review"
+      },
+      {
+        "id": "c",
+        "text": "To rebuild the database"
+      },
+      {
+        "id": "d",
+        "text": "To change Caddy"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Specific staging makes commit scope explicit and protects against ambient working-tree changes.",
+    "remediation": [
+      "docs/contributing.md#commits",
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "contribution-capstone-005",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "integrated-evidence"
+    ],
+    "prompt": "What additional evidence is required before capstone integration?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A human review of artifacts and explanation"
+      },
+      {
+        "id": "b",
+        "text": "Only a self-selected score"
+      },
+      {
+        "id": "c",
+        "text": "A 100 percent first quiz"
+      },
+      {
+        "id": "d",
+        "text": "A public credential claim"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The academy cannot independently evaluate authorship, reasoning quality, or real-world performance.",
+    "remediation": [
+      "docs/contributing.md#guided-contribution-exercise",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove"
+    ],
+    "sourceRefs": [
+      "academy/MASTERY_MODEL.md",
+      "academy/data/capstones.json"
+    ]
+  },
+  {
+    "id": "contribution-capstone-006",
+    "moduleId": "contribution-capstone",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "scope-branch",
+      "code-validation",
+      "documentation-maintenance"
+    ],
+    "prompt": "Select every required property of a complete contribution.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Agreed problem and scope"
+      },
+      {
+        "id": "b",
+        "text": "Controlled implementation"
+      },
+      {
+        "id": "c",
+        "text": "Applicable tests and full validation"
+      },
+      {
+        "id": "d",
+        "text": "Canonical documentation updates"
+      },
+      {
+        "id": "e",
+        "text": "Reviewed diff with risk and rollback"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "explanation": "Implementation, evidence, documentation, reviewability, and operational planning form one deliverable.",
+    "remediation": [
+      "docs/contributing.md#before-you-start",
+      "docs/contributing.md#branches",
+      "docs/contributing.md#coding-standards"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md",
+      "api/package.json",
+      "web/package.json",
+      "docs/coverage-map.md"
+    ]
+  },
+  {
+    "id": "contribution-capstone-007",
+    "moduleId": "contribution-capstone",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "commit-pr-review",
+      "integrated-evidence"
+    ],
+    "prompt": "Order the contribution path.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Push and open a pull request with evidence"
+      },
+      {
+        "id": "b",
+        "text": "Trace the feature and define scope"
+      },
+      {
+        "id": "c",
+        "text": "Implement a small change and tests"
+      },
+      {
+        "id": "d",
+        "text": "Run validation, update docs, and review the diff"
+      },
+      {
+        "id": "e",
+        "text": "Create the focused branch"
+      }
+    ],
+    "answer": [
+      "b",
+      "e",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Scope and branch precede implementation; evidence and self-review precede remote review.",
+    "remediation": [
+      "docs/contributing.md#commits",
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/contributing.md",
+      "academy/MASTERY_MODEL.md",
+      "academy/data/capstones.json"
+    ]
+  },
+  {
+    "id": "contribution-capstone-008",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "scope-branch",
+      "code-validation"
+    ],
+    "prompt": "A proposed change touches App.tsx, server.js, and database.js but the pieces can be separated. What should the contributor do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Split into smaller pull requests with independent evidence"
+      },
+      {
+        "id": "b",
+        "text": "Hide the extra files"
+      },
+      {
+        "id": "c",
+        "text": "Stage everything as one commit"
+      },
+      {
+        "id": "d",
+        "text": "Deploy before review"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Small focused changes reduce conflict, regression, and review complexity.",
+    "remediation": [
+      "docs/contributing.md#before-you-start",
+      "docs/contributing.md#branches",
+      "docs/contributing.md#coding-standards"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md",
+      "api/package.json",
+      "web/package.json"
+    ]
+  },
+  {
+    "id": "contribution-capstone-009",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "code-validation",
+      "documentation-maintenance"
+    ],
+    "prompt": "A new route passes syntax but the API reference and academy bank are unchanged. Is the contribution complete?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "No; contract, coverage map, maintenance trigger, and assessments must follow the route change"
+      },
+      {
+        "id": "b",
+        "text": "Yes, syntax is sufficient"
+      },
+      {
+        "id": "c",
+        "text": "Yes, docs never change"
+      },
+      {
+        "id": "d",
+        "text": "Only if the route is owner-only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Documentation and learning coverage are maintained alongside implementation contracts.",
+    "remediation": [
+      "docs/contributing.md#coding-standards",
+      "docs/contributing.md#validation-checklist",
+      "docs/README.md#maintenance-triggers"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "web/package.json",
+      "docs/coverage-map.md",
+      "academy/validate.mjs"
+    ]
+  },
+  {
+    "id": "contribution-capstone-010",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "documentation-maintenance",
+      "commit-pr-review"
+    ],
+    "prompt": "git diff shows an unrelated screenshot and api/.env beside the intended docs change. What is the safe action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Stage only intended docs paths, remove the secret from staging, and leave unrelated work untouched"
+      },
+      {
+        "id": "b",
+        "text": "Use git add ."
+      },
+      {
+        "id": "c",
+        "text": "Delete the screenshot without asking"
+      },
+      {
+        "id": "d",
+        "text": "Commit the environment file separately"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Specific staging preserves concurrent work and excludes secrets.",
+    "remediation": [
+      "docs/README.md#maintenance-triggers",
+      "academy/SCHEMA.md#coverage-invariants",
+      "docs/contributing.md#commits"
+    ],
+    "sourceRefs": [
+      "docs/coverage-map.md",
+      "academy/validate.mjs",
+      ".gitignore",
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "contribution-capstone-011",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "commit-pr-review",
+      "integrated-evidence"
+    ],
+    "prompt": "A capstone rubric shows 95 points but a critical security criterion has zero evidence. What is the result?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Not passed"
+      },
+      {
+        "id": "b",
+        "text": "Passed because total exceeds 90"
+      },
+      {
+        "id": "c",
+        "text": "Professionally certified"
+      },
+      {
+        "id": "d",
+        "text": "Automatically merged"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Every critical criterion must have nonzero inspectable evidence in addition to the total threshold.",
+    "remediation": [
+      "docs/contributing.md#commits",
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/contributing.md",
+      "academy/MASTERY_MODEL.md",
+      "academy/data/capstones.json"
+    ]
+  },
+  {
+    "id": "contribution-capstone-012",
+    "moduleId": "contribution-capstone",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "integrated-evidence",
+      "scope-branch"
+    ],
+    "prompt": "Which final claim is supported after delayed reviews, final exam, capstone artifacts, and human review?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The learner produced integrated evidence under the documented conditions, with stated limitations"
+      },
+      {
+        "id": "b",
+        "text": "The learner is guaranteed never to make a production mistake"
+      },
+      {
+        "id": "c",
+        "text": "The academy is formally accredited"
+      },
+      {
+        "id": "d",
+        "text": "No further review is needed"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The strongest honest claim reports observed evidence and limits; professional performance still requires repeated real independent work.",
+    "remediation": [
+      "docs/contributing.md#guided-contribution-exercise",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove",
+      "docs/contributing.md#before-you-start"
+    ],
+    "sourceRefs": [
+      "academy/MASTERY_MODEL.md",
+      "academy/data/capstones.json",
+      "docs/contributing.md"
+    ]
+  }
+]

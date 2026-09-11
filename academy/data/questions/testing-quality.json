@@ -1,0 +1,502 @@
+[
+  {
+    "id": "testing-quality-001",
+    "moduleId": "testing-quality",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "test-strategy"
+    ],
+    "prompt": "A unit test normally checks one function in isolation.",
+    "answer": [
+      "true"
+    ],
+    "explanation": "Unit tests isolate a small unit; integration and end-to-end tests cross more boundaries.",
+    "remediation": [
+      "docs/testing.md#test-strategy",
+      "docs/testing.md#test-categories"
+    ],
+    "sourceRefs": [
+      "api/scripts/test-streaks.js",
+      "api/scripts/test-flight-outcomes.js"
+    ]
+  },
+  {
+    "id": "testing-quality-002",
+    "moduleId": "testing-quality",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "assertions-determinism"
+    ],
+    "prompt": "Which exit code means a test script succeeded?",
+    "answer": [],
+    "accepted": [
+      "0",
+      "zero"
+    ],
+    "explanation": "The process convention uses exit code zero for success.",
+    "remediation": [
+      "docs/testing.md#reading-a-failure",
+      "docs/foundations.md#assertions-fixtures-fakes-and-determinism"
+    ],
+    "sourceRefs": [
+      "api/scripts/test-streaks.js"
+    ]
+  },
+  {
+    "id": "testing-quality-003",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "api-validation"
+    ],
+    "prompt": "What does npm --prefix api run check do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Executes node --check on the documented API source files"
+      },
+      {
+        "id": "b",
+        "text": "Queries production data"
+      },
+      {
+        "id": "c",
+        "text": "Builds the React site"
+      },
+      {
+        "id": "d",
+        "text": "Runs PowerPoint"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The syntax script parses API files without executing application startup.",
+    "remediation": [
+      "docs/testing.md#running-the-unit-tests"
+    ],
+    "sourceRefs": [
+      "api/package.json:scripts"
+    ]
+  },
+  {
+    "id": "testing-quality-004",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "frontend-validation"
+    ],
+    "prompt": "Which frontend check writes production-like output to a temporary directory?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The isolated Vite build"
+      },
+      {
+        "id": "b",
+        "text": "git status"
+      },
+      {
+        "id": "c",
+        "text": "pg_isready"
+      },
+      {
+        "id": "d",
+        "text": "requireOwner"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The isolated build overrides outDir so site/ remains unchanged.",
+    "remediation": [
+      "docs/local-development.md#frontend-validation-sequence",
+      "docs/testing.md#frontend-verification"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "testing-quality-005",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "smoke-ci-limits"
+    ],
+    "prompt": "What does the API smoke test prove that node --check does not?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The process can start, migrate, listen, and answer selected real routes"
+      },
+      {
+        "id": "b",
+        "text": "Every browser is accessible"
+      },
+      {
+        "id": "c",
+        "text": "All code has 100 percent coverage"
+      },
+      {
+        "id": "d",
+        "text": "Production restore is safe"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Smoke testing executes startup and request paths rather than parse syntax only.",
+    "remediation": [
+      "docs/testing.md#smoke-test",
+      "docs/testing.md#continuous-integration"
+    ],
+    "sourceRefs": [
+      "docs/testing.md",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "testing-quality-006",
+    "moduleId": "testing-quality",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "test-strategy",
+      "assertions-determinism",
+      "api-validation"
+    ],
+    "prompt": "Select every property of a high-quality project test.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Deterministic inputs and time"
+      },
+      {
+        "id": "b",
+        "text": "Exact inspectable assertions"
+      },
+      {
+        "id": "c",
+        "text": "Isolation from unrelated external state when practical"
+      },
+      {
+        "id": "d",
+        "text": "A pass obtained by rerunning until green"
+      },
+      {
+        "id": "e",
+        "text": "A failure that identifies the violated behavior"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "Tests should be repeatable and diagnostic; intermittent reruns do not establish correctness.",
+    "remediation": [
+      "docs/testing.md#test-strategy",
+      "docs/testing.md#test-categories",
+      "docs/testing.md#reading-a-failure"
+    ],
+    "sourceRefs": [
+      "api/scripts/test-streaks.js",
+      "api/scripts/test-flight-outcomes.js",
+      "api/package.json:scripts"
+    ]
+  },
+  {
+    "id": "testing-quality-007",
+    "moduleId": "testing-quality",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "frontend-validation",
+      "smoke-ci-limits"
+    ],
+    "prompt": "Order the frontend validation sequence.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Run a visual browser check"
+      },
+      {
+        "id": "b",
+        "text": "Run the TypeScript type check"
+      },
+      {
+        "id": "c",
+        "text": "Build into a temporary directory"
+      },
+      {
+        "id": "d",
+        "text": "Search the artifact for a change marker"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Static contract checking precedes bundling, inclusion proof, then visual behavior.",
+    "remediation": [
+      "docs/local-development.md#frontend-validation-sequence",
+      "docs/testing.md#frontend-verification",
+      "docs/testing.md#smoke-test"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts",
+      "docs/testing.md",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "testing-quality-008",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "test-strategy",
+      "assertions-determinism"
+    ],
+    "prompt": "A pure function gains a new boundary case. What evidence should be added?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A deterministic assertion in the matching test script"
+      },
+      {
+        "id": "b",
+        "text": "Only a screenshot"
+      },
+      {
+        "id": "c",
+        "text": "A production database edit"
+      },
+      {
+        "id": "d",
+        "text": "A Caddy restart"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Pure behavior belongs in a repeatable unit assertion with explicit input and expected output.",
+    "remediation": [
+      "docs/testing.md#test-strategy",
+      "docs/testing.md#test-categories",
+      "docs/testing.md#reading-a-failure"
+    ],
+    "sourceRefs": [
+      "api/scripts/test-streaks.js",
+      "api/scripts/test-flight-outcomes.js"
+    ]
+  },
+  {
+    "id": "testing-quality-009",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "assertions-determinism",
+      "api-validation"
+    ],
+    "prompt": "An assertion prints actual 5 and expected 6. What should happen next?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Decide whether code or expectation is wrong from intended behavior, then fix that side"
+      },
+      {
+        "id": "b",
+        "text": "Swap values until it passes"
+      },
+      {
+        "id": "c",
+        "text": "Delete the test"
+      },
+      {
+        "id": "d",
+        "text": "Ignore the exit code"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "A test failure is evidence of disagreement; the intended contract determines which side changes.",
+    "remediation": [
+      "docs/testing.md#reading-a-failure",
+      "docs/foundations.md#assertions-fixtures-fakes-and-determinism",
+      "docs/testing.md#running-the-unit-tests"
+    ],
+    "sourceRefs": [
+      "api/scripts/test-streaks.js",
+      "api/package.json:scripts"
+    ]
+  },
+  {
+    "id": "testing-quality-010",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "api-validation",
+      "frontend-validation"
+    ],
+    "prompt": "A frontend type check passes but Vite cannot bundle an import. What does that show?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Type checking and bundling detect different failure classes"
+      },
+      {
+        "id": "b",
+        "text": "The database is corrupt"
+      },
+      {
+        "id": "c",
+        "text": "The test suite is complete"
+      },
+      {
+        "id": "d",
+        "text": "The route became public"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "No single frontend check substitutes for the build pipeline.",
+    "remediation": [
+      "docs/testing.md#running-the-unit-tests",
+      "docs/local-development.md#frontend-validation-sequence",
+      "docs/testing.md#frontend-verification"
+    ],
+    "sourceRefs": [
+      "api/package.json:scripts",
+      "web/package.json",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "testing-quality-011",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "frontend-validation",
+      "smoke-ci-limits"
+    ],
+    "prompt": "A smoke test on the production host includes a migration. What critical fact must be addressed first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The temporary process loads production .env and can apply the migration to production"
+      },
+      {
+        "id": "b",
+        "text": "The port color"
+      },
+      {
+        "id": "c",
+        "text": "The home-page screenshot count"
+      },
+      {
+        "id": "d",
+        "text": "The GitHub issue title"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "A smoke process executes migrate against the configured database; backup and risk review precede it.",
+    "remediation": [
+      "docs/local-development.md#frontend-validation-sequence",
+      "docs/testing.md#frontend-verification",
+      "docs/testing.md#smoke-test"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "web/vite.config.ts",
+      "docs/testing.md",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "testing-quality-012",
+    "moduleId": "testing-quality",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "smoke-ci-limits",
+      "test-strategy"
+    ],
+    "prompt": "There is no CI and route handlers lack automated tests. How must a pull request report confidence?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "List exact local checks, smoke requests and results, manual checks, and what remains unverified"
+      },
+      {
+        "id": "b",
+        "text": "Say tests passed without commands"
+      },
+      {
+        "id": "c",
+        "text": "Claim complete coverage"
+      },
+      {
+        "id": "d",
+        "text": "Hide manual steps"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Evidence and limitations must be explicit when automation is incomplete.",
+    "remediation": [
+      "docs/testing.md#smoke-test",
+      "docs/testing.md#continuous-integration",
+      "docs/testing.md#test-strategy"
+    ],
+    "sourceRefs": [
+      "docs/testing.md",
+      "api/src/server.js",
+      "api/scripts/test-streaks.js",
+      "api/scripts/test-flight-outcomes.js"
+    ]
+  }
+]

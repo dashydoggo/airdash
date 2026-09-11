@@ -1,0 +1,590 @@
+[
+  {
+    "id": "orientation",
+    "order": 1,
+    "title": "Project orientation and learning method",
+    "summary": "Explain what airDash does, who uses it, and how academy evidence works.",
+    "prerequisites": [],
+    "phase": "orientation",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply"
+    ],
+    "requiredLabs": [
+      "lab-orientation-navigation"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/orientation.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/project-overview.md",
+      "docs/start-here.md",
+      "academy/MASTERY_MODEL.md"
+    ]
+  },
+  {
+    "id": "shell-files",
+    "order": 2,
+    "title": "Files, shells, processes, and safe commands",
+    "summary": "Operate a terminal safely and reason about the operating-system mechanisms airDash uses.",
+    "prerequisites": [
+      "orientation"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-workspace-structure"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/shell-files.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#computer-and-operating-system-foundations"
+    ]
+  },
+  {
+    "id": "tooling-installation",
+    "order": 3,
+    "title": "Tools and reproducible installation",
+    "summary": "Install, verify, configure, and safely reset the project toolchain.",
+    "prerequisites": [
+      "shell-files"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-toolchain"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/tooling-installation.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/installation.md",
+      "docs/local-development.md"
+    ]
+  },
+  {
+    "id": "git-github",
+    "order": 4,
+    "title": "Git, GitHub, and recoverable change",
+    "summary": "Use the real branch and review workflow while preserving work and avoiding destructive recovery.",
+    "prerequisites": [
+      "tooling-installation"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-git-repository"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/git-github.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#source-control-foundations",
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "javascript-node",
+    "order": 5,
+    "title": "JavaScript and the Node.js runtime",
+    "summary": "Read and reason about the JavaScript mechanisms used by the API.",
+    "prerequisites": [
+      "git-github"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose"
+    ],
+    "requiredLabs": [
+      "lab-api-syntax"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/javascript-node.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#language-and-runtime-foundations"
+    ]
+  },
+  {
+    "id": "typescript-react",
+    "order": 6,
+    "title": "TypeScript, React, and browser state",
+    "summary": "Trace typed frontend code from entry point through components, state, routing, and API calls.",
+    "prerequisites": [
+      "javascript-node"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure"
+    ],
+    "requiredLabs": [
+      "lab-web-typecheck"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/typescript-react.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics",
+      "docs/architecture.md#frontend-architecture"
+    ]
+  },
+  {
+    "id": "dependencies-build",
+    "order": 7,
+    "title": "Dependencies, compilation, and build artifacts",
+    "summary": "Reproduce dependency installation and distinguish editable source from generated output.",
+    "prerequisites": [
+      "typescript-react"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-package-locks"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/dependencies-build.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#dependency-foundations",
+      "docs/foundations.md#build-and-deployment-foundations"
+    ]
+  },
+  {
+    "id": "web-http",
+    "order": 8,
+    "title": "Networking, HTTP, browser origins, and APIs",
+    "summary": "Trace a request across DNS, TLS, Caddy, Express, cookies, status codes, and JSON.",
+    "prerequisites": [
+      "dependencies-build"
+    ],
+    "phase": "development-foundations",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure"
+    ],
+    "requiredLabs": [
+      "lab-route-inventory"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/web-http.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#web-and-api-foundations",
+      "docs/architecture.md#request-lifecycle"
+    ]
+  },
+  {
+    "id": "api-express-auth",
+    "order": 9,
+    "title": "Express routes, authentication, authorization, and transactions",
+    "summary": "Read a route as an untrusted-input boundary and preserve its authorization and atomicity.",
+    "prerequisites": [
+      "web-http"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-security-boundaries"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/api-express-auth.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/architecture.md#backend-architecture",
+      "docs/api-reference.md#conventions",
+      "docs/security.md#authorization-model"
+    ]
+  },
+  {
+    "id": "postgres-data",
+    "order": 10,
+    "title": "PostgreSQL, integrity, migrations, and data lifecycles",
+    "summary": "Reason from tables and constraints to concurrency-safe behavior and recoverable schema change.",
+    "prerequisites": [
+      "api-express-auth"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-schema-inventory"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/postgres-data.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/foundations.md#database-foundations",
+      "docs/data-model.md"
+    ]
+  },
+  {
+    "id": "architecture-runtime",
+    "order": 11,
+    "title": "Architecture, startup, jobs, failures, and scaling",
+    "summary": "Explain every runtime component and predict behavior during startup, shutdown, and dependency failure.",
+    "prerequisites": [
+      "postgres-data"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-architecture-inventory"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/architecture-runtime.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "id": "repository-navigation",
+    "order": 12,
+    "title": "Repository ownership, source layout, and execution tracing",
+    "summary": "Find the owning source without guessing and trace a user action to its final side effect.",
+    "prerequisites": [
+      "architecture-runtime"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-source-generated"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/repository-navigation.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/repository-guide.md"
+    ]
+  },
+  {
+    "id": "product-domain",
+    "order": 13,
+    "title": "Pilot, flight, report, aircraft, and administration workflows",
+    "summary": "Apply the domain invariants behind every user-facing workflow.",
+    "prerequisites": [
+      "repository-navigation"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-domain-route-trace"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/product-domain.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/features.md",
+      "docs/api-reference.md"
+    ]
+  },
+  {
+    "id": "integrations-notifications",
+    "order": 14,
+    "title": "External integrations, notifications, and simulator automation",
+    "summary": "Explain provider controls, push delivery, maps, PowerPoint, and simulator package boundaries.",
+    "prerequisites": [
+      "product-domain"
+    ],
+    "phase": "application-development",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-integration-static"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/integrations-notifications.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/architecture.md#external-integrations",
+      "docs/features.md#notifications",
+      "docs/powerpoint-automation.md"
+    ]
+  },
+  {
+    "id": "testing-quality",
+    "order": 15,
+    "title": "Testing strategy and executable quality evidence",
+    "summary": "Select the correct test layer, interpret failure output, and add deterministic evidence.",
+    "prerequisites": [
+      "integrations-notifications"
+    ],
+    "phase": "system-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-api-validation"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/testing-quality.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/testing.md"
+    ]
+  },
+  {
+    "id": "debugging-diagnosis",
+    "order": 16,
+    "title": "Symptom-first debugging and safe remediation",
+    "summary": "Distinguish similar failures with evidence before changing production state.",
+    "prerequisites": [
+      "testing-quality"
+    ],
+    "phase": "system-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-documentation-links"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/debugging-diagnosis.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/debugging.md"
+    ]
+  },
+  {
+    "id": "security",
+    "order": 17,
+    "title": "Security assets, trust boundaries, secrets, and incident response",
+    "summary": "Preserve authentication, authorization, validation, privacy, and supply-chain boundaries.",
+    "prerequisites": [
+      "debugging-diagnosis"
+    ],
+    "phase": "system-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-secret-scan"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/security.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/security.md"
+    ]
+  },
+  {
+    "id": "deployment-release",
+    "order": 18,
+    "title": "Deployment, rollback, and release identity",
+    "summary": "Classify, validate, back up, deploy, verify, and roll back each change class.",
+    "prerequisites": [
+      "security"
+    ],
+    "phase": "production-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-deployment-readiness"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/deployment-release.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/deployment.md",
+      "docs/releases.md"
+    ]
+  },
+  {
+    "id": "operations-observability",
+    "order": 19,
+    "title": "Health, logs, jobs, capacity, and incident diagnosis",
+    "summary": "Operate the live topology with read-only evidence and explicit escalation boundaries.",
+    "prerequisites": [
+      "deployment-release"
+    ],
+    "phase": "production-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-operations-inspection"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/operations-observability.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/operations.md"
+    ]
+  },
+  {
+    "id": "backup-recovery",
+    "order": 20,
+    "title": "Backup, destructive restore, component recovery, and disaster order",
+    "summary": "Protect each state class and distinguish reversible recovery from destructive restoration.",
+    "prerequisites": [
+      "operations-observability"
+    ],
+    "phase": "production-engineering",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-backup-plan"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/backup-recovery.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "contribution-capstone",
+    "order": 21,
+    "title": "Contribution, review, integrated execution, and evidence limits",
+    "summary": "Deliver a controlled change with tests, documentation, review, and honest evidence claims.",
+    "prerequisites": [
+      "backup-recovery"
+    ],
+    "phase": "professional-practice",
+    "requiredSkills": [
+      "recall",
+      "explain",
+      "apply",
+      "diagnose",
+      "secure",
+      "operate"
+    ],
+    "requiredLabs": [
+      "lab-contribution-branch"
+    ],
+    "examQuestionCount": 10,
+    "questionFile": "questions/contribution-capstone.json",
+    "passPercent": 90,
+    "minimumSkillPercent": 80,
+    "references": [
+      "docs/contributing.md",
+      "academy/MASTERY_MODEL.md#capstone-evidence"
+    ]
+  }
+]

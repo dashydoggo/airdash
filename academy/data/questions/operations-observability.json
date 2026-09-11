@@ -1,0 +1,510 @@
+[
+  {
+    "id": "operations-observability-001",
+    "moduleId": "operations-observability",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "health-state"
+    ],
+    "prompt": "A green /api/health proves the static frontend bundle is the intended commit.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "The endpoint proves API and one database query only; bundle and Git state require separate checks.",
+    "remediation": [
+      "docs/operations.md#health-checks"
+    ],
+    "sourceRefs": [
+      "docs/operations.md",
+      "api/src/server.js:app.get(\"/health\")"
+    ]
+  },
+  {
+    "id": "operations-observability-002",
+    "moduleId": "operations-observability",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "logs-jobs"
+    ],
+    "prompt": "Which command manager owns the production API process?",
+    "answer": [],
+    "accepted": [
+      "pm2"
+    ],
+    "explanation": "PM2 runs airdash-api and systemd resurrects the saved PM2 list.",
+    "remediation": [
+      "docs/operations.md#logs",
+      "docs/operations.md#background-jobs"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js"
+    ]
+  },
+  {
+    "id": "operations-observability-003",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "audit-maintenance"
+    ],
+    "prompt": "Which table provides the append-only operational action history?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "airdash.audit_events"
+      },
+      {
+        "id": "b",
+        "text": "airdash.settings only"
+      },
+      {
+        "id": "c",
+        "text": "site/index.html"
+      },
+      {
+        "id": "d",
+        "text": "package-lock.json"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "audit_events records actor, action, entity, details, and time.",
+    "remediation": [
+      "docs/operations.md#audit-review",
+      "docs/operations.md#routine-maintenance"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:audit",
+      "site/app-assets"
+    ]
+  },
+  {
+    "id": "operations-observability-004",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "capacity-monitoring"
+    ],
+    "prompt": "What observability capabilities are absent?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Automated metrics, traces, and alerts"
+      },
+      {
+        "id": "b",
+        "text": "HTTP logs entirely"
+      },
+      {
+        "id": "c",
+        "text": "A health endpoint"
+      },
+      {
+        "id": "d",
+        "text": "PM2 status"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The project has health and logs but no metric pipeline, tracing, or automated paging.",
+    "remediation": [
+      "docs/operations.md#capacity-and-performance",
+      "docs/operations.md#metrics-traces-and-alerts"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "operations-observability-005",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "incident-sequence"
+    ],
+    "prompt": "What is the first class of incident action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Read-only health and state inspection"
+      },
+      {
+        "id": "b",
+        "text": "Database restore"
+      },
+      {
+        "id": "c",
+        "text": "Shared restart"
+      },
+      {
+        "id": "d",
+        "text": "Force push"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The sequence collects scoped evidence before altering state.",
+    "remediation": [
+      "docs/operations.md#incident-diagnosis",
+      "docs/operations.md#shutdown-and-startup-of-the-whole-system"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "operations-observability-006",
+    "moduleId": "operations-observability",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "health-state",
+      "logs-jobs",
+      "audit-maintenance"
+    ],
+    "prompt": "Select every independent production state check.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Public health response"
+      },
+      {
+        "id": "b",
+        "text": "PM2 status and unstable restarts"
+      },
+      {
+        "id": "c",
+        "text": "Relevant Docker container status"
+      },
+      {
+        "id": "d",
+        "text": "systemd PM2 service state"
+      },
+      {
+        "id": "e",
+        "text": "Current bundle references and Git status"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "explanation": "The complete inventory covers endpoint, process, container, boot supervision, artifact, and source state.",
+    "remediation": [
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs",
+      "docs/operations.md#background-jobs"
+    ],
+    "sourceRefs": [
+      "docs/operations.md",
+      "api/src/server.js:app.get(\"/health\")",
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js"
+    ]
+  },
+  {
+    "id": "operations-observability-007",
+    "moduleId": "operations-observability",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "capacity-monitoring",
+      "incident-sequence"
+    ],
+    "prompt": "Order the general incident diagnosis sequence.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Review recent changes and audit records"
+      },
+      {
+        "id": "b",
+        "text": "Run health inventory"
+      },
+      {
+        "id": "c",
+        "text": "Read the owning component logs and dependency state"
+      },
+      {
+        "id": "d",
+        "text": "Apply a scoped corrective action and verify"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "a",
+      "d"
+    ],
+    "explanation": "System scope precedes logs, recent-change correlation, and controlled correction.",
+    "remediation": [
+      "docs/operations.md#capacity-and-performance",
+      "docs/operations.md#metrics-traces-and-alerts",
+      "docs/operations.md#incident-diagnosis"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "web/vite.config.ts",
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "operations-observability-008",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "health-state",
+      "logs-jobs"
+    ],
+    "prompt": "PM2 restarts is 63 and unstable restarts is 0. What is the documented interpretation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Many deliberate historical restarts may be normal; current startup stability is good"
+      },
+      {
+        "id": "b",
+        "text": "The API is necessarily crashing now"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL data is lost"
+      },
+      {
+        "id": "d",
+        "text": "The frontend cannot load"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Total restarts is cumulative; unstable restarts identifies fast crash behavior.",
+    "remediation": [
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs",
+      "docs/operations.md#background-jobs"
+    ],
+    "sourceRefs": [
+      "docs/operations.md",
+      "api/src/server.js:app.get(\"/health\")",
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js"
+    ]
+  },
+  {
+    "id": "operations-observability-009",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "logs-jobs",
+      "audit-maintenance"
+    ],
+    "prompt": "No expiry-job error appears, but overdue active assignments remain for more than ten minutes. What does that show?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Silent job success cannot be assumed; the effect query indicates a job problem"
+      },
+      {
+        "id": "b",
+        "text": "The job is healthy because logs are empty"
+      },
+      {
+        "id": "c",
+        "text": "Caddy removed the rows"
+      },
+      {
+        "id": "d",
+        "text": "The browser cache changes SQL"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The expiry timer discards errors, so durable effects are the verification signal.",
+    "remediation": [
+      "docs/operations.md#logs",
+      "docs/operations.md#background-jobs",
+      "docs/operations.md#audit-review"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js",
+      "api/src/database.js:audit",
+      "site/app-assets"
+    ]
+  },
+  {
+    "id": "operations-observability-010",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "audit-maintenance",
+      "capacity-monitoring"
+    ],
+    "prompt": "site/app-assets has hundreds of old bundles. What is safe cleanup?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Identify current and retained-backup references, then delete only older unreferenced files"
+      },
+      {
+        "id": "b",
+        "text": "Run rm -rf site"
+      },
+      {
+        "id": "c",
+        "text": "Use Vite --emptyOutDir on production"
+      },
+      {
+        "id": "d",
+        "text": "Delete the latest bundle"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Rollback references and the active index define what must be retained.",
+    "remediation": [
+      "docs/operations.md#audit-review",
+      "docs/operations.md#routine-maintenance",
+      "docs/operations.md#capacity-and-performance"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:audit",
+      "site/app-assets",
+      "api/src/database.js:pool",
+      "web/vite.config.ts"
+    ]
+  },
+  {
+    "id": "operations-observability-011",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "capacity-monitoring",
+      "incident-sequence"
+    ],
+    "prompt": "A route becomes slow under growth. What should happen before scaling or tuning?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Measure the specific route and query behavior, then compare with pool and single-process limits"
+      },
+      {
+        "id": "b",
+        "text": "Add a second API immediately"
+      },
+      {
+        "id": "c",
+        "text": "Disable constraints"
+      },
+      {
+        "id": "d",
+        "text": "Delete logs"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Capacity changes follow measurement; current architecture has explicit coordination and storage constraints.",
+    "remediation": [
+      "docs/operations.md#capacity-and-performance",
+      "docs/operations.md#metrics-traces-and-alerts",
+      "docs/operations.md#incident-diagnosis"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:pool",
+      "web/vite.config.ts",
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "operations-observability-012",
+    "moduleId": "operations-observability",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "incident-sequence",
+      "health-state"
+    ],
+    "prompt": "The incident may require restarting shared PostgreSQL. What is the correct boundary?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "State impact on other services and obtain owner confirmation before the shared restart"
+      },
+      {
+        "id": "b",
+        "text": "Restart it silently"
+      },
+      {
+        "id": "c",
+        "text": "Drop the volume first"
+      },
+      {
+        "id": "d",
+        "text": "Use the frontend build as a substitute"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Shared infrastructure action has a wider blast radius and requires explicit coordination.",
+    "remediation": [
+      "docs/operations.md#incident-diagnosis",
+      "docs/operations.md#shutdown-and-startup-of-the-whole-system",
+      "docs/operations.md#health-checks"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js",
+      "docs/operations.md",
+      "api/src/server.js:app.get(\"/health\")"
+    ]
+  }
+]

@@ -1,0 +1,507 @@
+[
+  {
+    "id": "deployment-release-001",
+    "moduleId": "deployment-release",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "environment-classification"
+    ],
+    "prompt": "A frontend-only source change requires an API restart.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "A frontend build publishes bind-mounted static artifacts; the API process is unaffected.",
+    "remediation": [
+      "docs/deployment.md#environments",
+      "docs/README.md#change-classification",
+      "docs/releases.md#versioning"
+    ],
+    "sourceRefs": [
+      "docs/deployment.md",
+      "docs/releases.md"
+    ]
+  },
+  {
+    "id": "deployment-release-002",
+    "moduleId": "deployment-release",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "predeploy-backup"
+    ],
+    "prompt": "Which backup is the fast rollback point for deployed API source and active frontend bundles?",
+    "answer": [],
+    "accepted": [
+      "release backup",
+      "airdash release backup"
+    ],
+    "explanation": "The release backup copies the active index, referenced bundles, API source, manifest, and checksums.",
+    "remediation": [
+      "docs/deployment.md#pre-deployment-checklist",
+      "docs/deployment.md#get-the-code-onto-the-host"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md#release-backup"
+    ]
+  },
+  {
+    "id": "deployment-release-003",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "frontend-api-order"
+    ],
+    "prompt": "In a combined change, which side deploys first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "API, then frontend"
+      },
+      {
+        "id": "b",
+        "text": "Frontend, then API in every case"
+      },
+      {
+        "id": "c",
+        "text": "Database container last without backup"
+      },
+      {
+        "id": "d",
+        "text": "Caddy only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The API generally supports the new contract before the frontend begins depending on it.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-frontend-only-change",
+      "docs/deployment.md#deploy-an-api-only-change",
+      "docs/deployment.md#deploy-a-combined-change"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "deployment-release-004",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "migration-rollback"
+    ],
+    "prompt": "Does restoring old API source remove a column already added by migrate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Yes automatically"
+      },
+      {
+        "id": "b",
+        "text": "No, schema state remains until deliberately reversed"
+      },
+      {
+        "id": "c",
+        "text": "Only in CSS"
+      },
+      {
+        "id": "d",
+        "text": "Only if Caddy reloads"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Source and durable database schema are separate rollback domains.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-migration",
+      "docs/deployment.md#roll-back-the-api"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "deployment-release-005",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "config-postverify"
+    ],
+    "prompt": "What must happen before reloading Caddy?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Back up and validate the shared Caddyfile with owner agreement"
+      },
+      {
+        "id": "b",
+        "text": "Run --emptyOutDir on site"
+      },
+      {
+        "id": "c",
+        "text": "Drop the database"
+      },
+      {
+        "id": "d",
+        "text": "Delete every TLS certificate"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Caddy serves shared domains, so its configuration has a broad blast radius and is validated before reload.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-static-file-change",
+      "docs/deployment.md#deploy-an-nginx-configuration-change",
+      "docs/deployment.md#deploy-a-caddy-configuration-change"
+    ],
+    "sourceRefs": [
+      "nginx.conf",
+      "scripts/Update-AirDashPressStartVideo.ps1"
+    ]
+  },
+  {
+    "id": "deployment-release-006",
+    "moduleId": "deployment-release",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "environment-classification",
+      "predeploy-backup",
+      "frontend-api-order"
+    ],
+    "prompt": "Select every pre-deployment condition.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Merged intended commit"
+      },
+      {
+        "id": "b",
+        "text": "Clean production working tree"
+      },
+      {
+        "id": "c",
+        "text": "Applicable validation passed"
+      },
+      {
+        "id": "d",
+        "text": "Release backup recorded"
+      },
+      {
+        "id": "e",
+        "text": "Unreviewed production-only edits"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Production should be reproducible from reviewed Git state with evidence and rollback.",
+    "remediation": [
+      "docs/deployment.md#environments",
+      "docs/README.md#change-classification",
+      "docs/releases.md#versioning"
+    ],
+    "sourceRefs": [
+      "docs/deployment.md",
+      "docs/releases.md",
+      "docs/backup-and-recovery.md#release-backup",
+      "web/package.json"
+    ]
+  },
+  {
+    "id": "deployment-release-007",
+    "moduleId": "deployment-release",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "migration-rollback",
+      "config-postverify"
+    ],
+    "prompt": "Order a frontend-only deployment.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Verify live index, marker, API health, and browser behavior"
+      },
+      {
+        "id": "b",
+        "text": "Run frontend validation"
+      },
+      {
+        "id": "c",
+        "text": "Create the release backup"
+      },
+      {
+        "id": "d",
+        "text": "Run npm --prefix web run build"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Validation and rollback precede publication; live verification follows the build.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-migration",
+      "docs/deployment.md#roll-back-the-api",
+      "docs/deployment.md#deploy-a-static-file-change"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate",
+      "nginx.conf",
+      "scripts/Update-AirDashPressStartVideo.ps1"
+    ]
+  },
+  {
+    "id": "deployment-release-008",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "environment-classification",
+      "predeploy-backup"
+    ],
+    "prompt": "Only docs/ changed. What production action is required?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "No build or restart; merge the documentation change"
+      },
+      {
+        "id": "b",
+        "text": "Restart PostgreSQL"
+      },
+      {
+        "id": "c",
+        "text": "Build site and restart API"
+      },
+      {
+        "id": "d",
+        "text": "Reload Caddy"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Documentation in the repository has no production runtime process.",
+    "remediation": [
+      "docs/deployment.md#environments",
+      "docs/README.md#change-classification",
+      "docs/releases.md#versioning"
+    ],
+    "sourceRefs": [
+      "docs/deployment.md",
+      "docs/releases.md",
+      "docs/backup-and-recovery.md#release-backup"
+    ]
+  },
+  {
+    "id": "deployment-release-009",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "predeploy-backup",
+      "frontend-api-order"
+    ],
+    "prompt": "The live index references a new bundle but the marker is absent. What should be concluded?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The intended change may not be in the artifact; do not claim successful deployment"
+      },
+      {
+        "id": "b",
+        "text": "The database is definitely corrupt"
+      },
+      {
+        "id": "c",
+        "text": "A restart always fixes it"
+      },
+      {
+        "id": "d",
+        "text": "The marker proves success when absent"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Artifact inspection contradicts the intended release and must be resolved or rolled back.",
+    "remediation": [
+      "docs/deployment.md#pre-deployment-checklist",
+      "docs/deployment.md#get-the-code-onto-the-host",
+      "docs/deployment.md#deploy-a-frontend-only-change"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md#release-backup",
+      "web/package.json",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "deployment-release-010",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "frontend-api-order",
+      "migration-rollback"
+    ],
+    "prompt": "A migration changes a constraint. Which backups and validations are required?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Release and database backups, local migration twice, compatibility query, smoke start, then controlled API deployment"
+      },
+      {
+        "id": "b",
+        "text": "Only a screenshot"
+      },
+      {
+        "id": "c",
+        "text": "No backup because source is in Git"
+      },
+      {
+        "id": "d",
+        "text": "Caddy reload only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Constraint changes affect existing durable rows and are not reversed by source rollback.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-frontend-only-change",
+      "docs/deployment.md#deploy-an-api-only-change",
+      "docs/deployment.md#deploy-a-combined-change"
+    ],
+    "sourceRefs": [
+      "web/package.json",
+      "api/ecosystem.config.js",
+      "api/src/database.js:migrate"
+    ]
+  },
+  {
+    "id": "deployment-release-011",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "migration-rollback",
+      "config-postverify"
+    ],
+    "prompt": "A migration applied but the new API fails. Which rollback statement is accurate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Old source may run while additive schema remains, but changed constraints or data need a planned reverse or restore"
+      },
+      {
+        "id": "b",
+        "text": "git checkout always reverses data"
+      },
+      {
+        "id": "c",
+        "text": "Delete site/app-assets to restore PostgreSQL"
+      },
+      {
+        "id": "d",
+        "text": "Restart Nginx to undo SQL"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Code rollback and schema/data recovery are separate and must be planned explicitly.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-migration",
+      "docs/deployment.md#roll-back-the-api",
+      "docs/deployment.md#deploy-a-static-file-change"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:migrate",
+      "nginx.conf",
+      "scripts/Update-AirDashPressStartVideo.ps1"
+    ]
+  },
+  {
+    "id": "deployment-release-012",
+    "moduleId": "deployment-release",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "config-postverify",
+      "environment-classification"
+    ],
+    "prompt": "Production has uncommitted source edits and a different live bundle than the release branch. What should happen before the next deployment?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Stop and reconcile the deployed state into a reviewed branch or restore the release commit; do not pull over it blindly"
+      },
+      {
+        "id": "b",
+        "text": "Run git clean -fd immediately"
+      },
+      {
+        "id": "c",
+        "text": "Force-push release"
+      },
+      {
+        "id": "d",
+        "text": "Ignore the mismatch"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "A deployment from uncommitted state is not reproducible; preserve and review it before changing the working tree.",
+    "remediation": [
+      "docs/deployment.md#deploy-a-static-file-change",
+      "docs/deployment.md#deploy-an-nginx-configuration-change",
+      "docs/deployment.md#deploy-a-caddy-configuration-change"
+    ],
+    "sourceRefs": [
+      "nginx.conf",
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "docs/deployment.md",
+      "docs/releases.md"
+    ]
+  }
+]

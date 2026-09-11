@@ -1,0 +1,535 @@
+[
+  {
+    "id": "orientation-001",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "project-purpose"
+    ],
+    "prompt": "What is airDash in this repository?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A real-airline booking engine"
+      },
+      {
+        "id": "b",
+        "text": "A privately operated virtual-airline platform and durable operational record"
+      },
+      {
+        "id": "c",
+        "text": "A generic React tutorial"
+      },
+      {
+        "id": "d",
+        "text": "A Discord bot"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "airDash coordinates simulated airline operations through a public site, pilot portal, API, and database.",
+    "remediation": [
+      "docs/project-overview.md#purpose"
+    ],
+    "sourceRefs": [
+      "README.md",
+      "docs/project-overview.md:Purpose"
+    ]
+  },
+  {
+    "id": "orientation-002",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "actors-roles"
+    ],
+    "prompt": "Which actor alone may review applications and change operational settings?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Any signed-in user"
+      },
+      {
+        "id": "b",
+        "text": "Any active pilot"
+      },
+      {
+        "id": "c",
+        "text": "The owner whose Discord ID matches OWNER_DISCORD_ID"
+      },
+      {
+        "id": "d",
+        "text": "The Windows exporter"
+      }
+    ],
+    "answer": [
+      "c"
+    ],
+    "explanation": "Owner authorization is tied to one configured Discord ID and enforced by requireOwner.",
+    "remediation": [
+      "docs/project-overview.md#actors-and-roles"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:requireUser",
+      "api/src/auth.js:requireOwner"
+    ]
+  },
+  {
+    "id": "orientation-003",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "core-workflow"
+    ],
+    "prompt": "Which sequence correctly begins the core pilot workflow?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Report, approval, booking, application"
+      },
+      {
+        "id": "b",
+        "text": "Sign in, application, owner approval, booking"
+      },
+      {
+        "id": "c",
+        "text": "Booking, sign in, migration, report"
+      },
+      {
+        "id": "d",
+        "text": "Application, deployment, booking, restore"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A user signs in and applies; owner approval creates a pilot before booking becomes available.",
+    "remediation": [
+      "docs/project-overview.md#the-core-workflow"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "orientation-004",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "scope-status"
+    ],
+    "prompt": "How many production environments does the documented platform have?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "None"
+      },
+      {
+        "id": "b",
+        "text": "One"
+      },
+      {
+        "id": "c",
+        "text": "Two: staging and production"
+      },
+      {
+        "id": "d",
+        "text": "Three: test, staging, production"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The project has development environments and one production environment, with no staging environment.",
+    "remediation": [
+      "docs/project-overview.md#scope",
+      "docs/project-overview.md#project-status"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:OWNER_ID",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "orientation-005",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "canonical-docs"
+    ],
+    "prompt": "Which page is canonical for every supported environment variable?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "docs/features.md"
+      },
+      {
+        "id": "b",
+        "text": "docs/configuration.md"
+      },
+      {
+        "id": "c",
+        "text": "docs/faq.md"
+      },
+      {
+        "id": "d",
+        "text": "docs/releases.md"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Configuration is the canonical variable and setting reference.",
+    "remediation": [
+      "docs/README.md#how-the-pages-relate",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove"
+    ],
+    "sourceRefs": [
+      "docs/README.md",
+      "academy/MASTERY_MODEL.md"
+    ]
+  },
+  {
+    "id": "orientation-006",
+    "moduleId": "orientation",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "project-purpose",
+      "actors-roles",
+      "core-workflow"
+    ],
+    "prompt": "Select every statement that explains why the API, not the browser, owns flight rules.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Browser code can be modified by its user"
+      },
+      {
+        "id": "b",
+        "text": "Several actors must observe one durable state"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL constraints protect concurrent writes"
+      },
+      {
+        "id": "d",
+        "text": "CSS is unable to display status text"
+      },
+      {
+        "id": "e",
+        "text": "The owner uses a different web browser"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c"
+    ],
+    "explanation": "The browser is untrusted and distributed; shared durable rules require server validation and database invariants. CSS and browser choice are irrelevant.",
+    "remediation": [
+      "docs/project-overview.md#purpose",
+      "docs/project-overview.md#actors-and-roles",
+      "docs/project-overview.md#the-core-workflow"
+    ],
+    "sourceRefs": [
+      "README.md",
+      "docs/project-overview.md:Purpose",
+      "api/src/auth.js:requireUser",
+      "api/src/auth.js:requireOwner"
+    ]
+  },
+  {
+    "id": "orientation-007",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "explain",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "scope-status",
+      "canonical-docs"
+    ],
+    "prompt": "What is the correct relationship between academy evidence and professional competence?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A level 6 label is an accredited professional license"
+      },
+      {
+        "id": "b",
+        "text": "One perfect quiz guarantees permanent retention"
+      },
+      {
+        "id": "c",
+        "text": "Academy evidence has a defined scope and must be supplemented by real, independently reviewed work"
+      },
+      {
+        "id": "d",
+        "text": "Reading every page proves authorship of a capstone"
+      }
+    ],
+    "answer": [
+      "c"
+    ],
+    "explanation": "The academy records specific retrieval, practical, delayed, and reviewed evidence but cannot guarantee broad professional performance.",
+    "remediation": [
+      "docs/project-overview.md#scope",
+      "docs/project-overview.md#project-status",
+      "docs/README.md#how-the-pages-relate"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:OWNER_ID",
+      "api/src/server.js",
+      "docs/README.md",
+      "academy/MASTERY_MODEL.md"
+    ]
+  },
+  {
+    "id": "orientation-008",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "project-purpose",
+      "actors-roles"
+    ],
+    "prompt": "A proposal lets any signed-in user change aircraft status because the button is hidden from visitors. What is the primary flaw?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The page needs a different icon"
+      },
+      {
+        "id": "b",
+        "text": "Hidden interface controls do not enforce owner authorization"
+      },
+      {
+        "id": "c",
+        "text": "Aircraft status belongs in localStorage"
+      },
+      {
+        "id": "d",
+        "text": "Visitors should receive database credentials"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Authorization must be enforced by requireOwner and handler logic; UI visibility is only convenience.",
+    "remediation": [
+      "docs/project-overview.md#purpose",
+      "docs/project-overview.md#actors-and-roles"
+    ],
+    "sourceRefs": [
+      "README.md",
+      "docs/project-overview.md:Purpose",
+      "api/src/auth.js:requireUser",
+      "api/src/auth.js:requireOwner"
+    ]
+  },
+  {
+    "id": "orientation-009",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "actors-roles",
+      "core-workflow"
+    ],
+    "prompt": "A pilot can sign in and apply but cannot book after approval. Which evidence should be checked first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Whether an ACTIVE pilots row exists for that Discord ID"
+      },
+      {
+        "id": "b",
+        "text": "The color of the Flight Board button"
+      },
+      {
+        "id": "c",
+        "text": "The Caddy TLS certificate expiration only"
+      },
+      {
+        "id": "d",
+        "text": "The PowerPoint template"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Booking requires an ACTIVE pilot record; application status alone is not the route authorization check.",
+    "remediation": [
+      "docs/project-overview.md#actors-and-roles",
+      "docs/project-overview.md#the-core-workflow"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:requireUser",
+      "api/src/auth.js:requireOwner",
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "orientation-010",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "core-workflow",
+      "scope-status"
+    ],
+    "prompt": "A feature assumes pilots can book directly from the Schedule page. What should the learner conclude at commit 5f2e27c?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The assumption is correct because the API accepts scheduleId"
+      },
+      {
+        "id": "b",
+        "text": "The page is read-only even though the API accepts schedule fields"
+      },
+      {
+        "id": "c",
+        "text": "Schedule rows are stored in browser cookies"
+      },
+      {
+        "id": "d",
+        "text": "Schedule booking requires PowerPoint"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The committed Schedule component displays data but provides no booking control; accepted API fields do not prove a UI path exists.",
+    "remediation": [
+      "docs/project-overview.md#the-core-workflow",
+      "docs/project-overview.md#scope",
+      "docs/project-overview.md#project-status"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "web/src/App.tsx",
+      "api/src/auth.js:OWNER_ID"
+    ]
+  },
+  {
+    "id": "orientation-011",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "scope-status",
+      "canonical-docs"
+    ],
+    "prompt": "A guide says there are 49 routes and 13 tables. Source inspection shows 57 routes and 15 tables. What is the correct action?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Preserve the older numbers because documentation is authoritative"
+      },
+      {
+        "id": "b",
+        "text": "Update canonical references and coverage from implementation evidence"
+      },
+      {
+        "id": "c",
+        "text": "Delete two tables to match the guide"
+      },
+      {
+        "id": "d",
+        "text": "Ignore the discrepancy because counts never matter"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Implementation, migration, tests, and runtime evidence are primary; canonical docs and academy coverage must follow them.",
+    "remediation": [
+      "docs/project-overview.md#scope",
+      "docs/project-overview.md#project-status",
+      "docs/README.md#how-the-pages-relate"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:OWNER_ID",
+      "api/src/server.js",
+      "docs/README.md",
+      "academy/MASTERY_MODEL.md"
+    ]
+  },
+  {
+    "id": "orientation-012",
+    "moduleId": "orientation",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "canonical-docs",
+      "project-purpose"
+    ],
+    "prompt": "Which statement is safe to publish about an academy graduate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Guaranteed professional in every environment"
+      },
+      {
+        "id": "b",
+        "text": "Accredited senior engineer"
+      },
+      {
+        "id": "c",
+        "text": "Recorded evidence shows named skills under documented academy conditions"
+      },
+      {
+        "id": "d",
+        "text": "Cannot make mistakes after 30 days"
+      }
+    ],
+    "answer": [
+      "c"
+    ],
+    "explanation": "Evidence must be reported with its scope and limits; absolute professional or error-free claims are unsupported.",
+    "remediation": [
+      "docs/README.md#how-the-pages-relate",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove",
+      "docs/project-overview.md#purpose"
+    ],
+    "sourceRefs": [
+      "docs/README.md",
+      "academy/MASTERY_MODEL.md",
+      "README.md",
+      "docs/project-overview.md:Purpose"
+    ]
+  }
+]

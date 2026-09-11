@@ -1,0 +1,507 @@
+[
+  {
+    "id": "security-001",
+    "moduleId": "security",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "security-assets"
+    ],
+    "prompt": "A trust boundary is a point where incoming data should be assumed trustworthy.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "Trust changes at a boundary; receiving code validates rather than assumes.",
+    "remediation": [
+      "docs/security.md#assets",
+      "docs/security.md#trust-boundaries"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "security-002",
+    "moduleId": "security",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "auth-csrf"
+    ],
+    "prompt": "Which middleware protects owner-only routes?",
+    "answer": [],
+    "accepted": [
+      "requireowner",
+      "require owner"
+    ],
+    "explanation": "requireOwner authenticates the cookie and compares the user ID with OWNER_ID.",
+    "remediation": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model",
+      "docs/security.md#cross-site-request-forgery"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "security-003",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "secrets-encryption"
+    ],
+    "prompt": "Which value is a secret?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "OWNER_DISCORD_ID"
+      },
+      {
+        "id": "b",
+        "text": "VAPID_PRIVATE_KEY"
+      },
+      {
+        "id": "c",
+        "text": "The public VAPID key"
+      },
+      {
+        "id": "d",
+        "text": "A public pilot number"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The VAPID private key signs push messages; IDs and public keys are not credentials.",
+    "remediation": [
+      "docs/security.md#secret-management",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceRefs": [
+      "api/.env.example",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "security-004",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "input-output-supply"
+    ],
+    "prompt": "What prevents request text from becoming SQL syntax?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Parameterized placeholders with separate values"
+      },
+      {
+        "id": "b",
+        "text": "React icons"
+      },
+      {
+        "id": "c",
+        "text": "A public route"
+      },
+      {
+        "id": "d",
+        "text": "A bundle hash"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Parameters preserve the distinction between query grammar and untrusted values.",
+    "remediation": [
+      "docs/security.md#input-validation",
+      "docs/security.md#output-encoding-and-browser-protections",
+      "docs/security.md#dependency-security"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "security-005",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "audit-incident"
+    ],
+    "prompt": "Where should a suspected vulnerability be reported?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Privately to the owner, not in a public issue"
+      },
+      {
+        "id": "b",
+        "text": "In a public press release"
+      },
+      {
+        "id": "c",
+        "text": "By committing an exploit"
+      },
+      {
+        "id": "d",
+        "text": "In a CSS comment"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Private reporting reduces exposure while the owner investigates and contains the issue.",
+    "remediation": [
+      "docs/security.md#audit-logging",
+      "docs/security.md#sensitive-data-handling",
+      "docs/security.md#common-unsafe-modifications"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:audit",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "security-006",
+    "moduleId": "security",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "security-assets",
+      "auth-csrf",
+      "secrets-encryption"
+    ],
+    "prompt": "Select every protected asset named by the project.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Database credentials"
+      },
+      {
+        "id": "b",
+        "text": "VAPID private key"
+      },
+      {
+        "id": "c",
+        "text": "Session cookies"
+      },
+      {
+        "id": "d",
+        "text": "Owner authority and operational integrity"
+      },
+      {
+        "id": "e",
+        "text": "A publicly documented route number as a secret"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Credentials, identity, authority, records, data, downloads, and availability are protected; public route numbers are not secrets.",
+    "remediation": [
+      "docs/security.md#assets",
+      "docs/security.md#trust-boundaries",
+      "docs/security.md#authentication-flow"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js",
+      "api/.env.example",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "security-007",
+    "moduleId": "security",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "input-output-supply",
+      "audit-incident"
+    ],
+    "prompt": "Order the layered handling of untrusted text that reaches a page.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "React escapes text while rendering"
+      },
+      {
+        "id": "b",
+        "text": "Handler cleans and validates the field"
+      },
+      {
+        "id": "c",
+        "text": "Parameterized SQL stores it"
+      },
+      {
+        "id": "d",
+        "text": "Database constraints enforce structural rules"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Validation, query parameters, database invariants, and output encoding protect distinct boundaries.",
+    "remediation": [
+      "docs/security.md#input-validation",
+      "docs/security.md#output-encoding-and-browser-protections",
+      "docs/security.md#dependency-security"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "web/src/App.tsx",
+      "api/src/database.js:audit"
+    ]
+  },
+  {
+    "id": "security-008",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "security-assets",
+      "auth-csrf"
+    ],
+    "prompt": "A new route returns another pilot assignment by numeric ID with requireUser but no discord_id predicate. What is missing?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Record ownership authorization in the query or handler"
+      },
+      {
+        "id": "b",
+        "text": "A new font"
+      },
+      {
+        "id": "c",
+        "text": "A Vite alias"
+      },
+      {
+        "id": "d",
+        "text": "A migration timer"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Authentication identifies the caller; record ownership still must constrain access to the requested entity.",
+    "remediation": [
+      "docs/security.md#assets",
+      "docs/security.md#trust-boundaries",
+      "docs/security.md#authentication-flow"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "security-009",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "auth-csrf",
+      "secrets-encryption"
+    ],
+    "prompt": "A production database URL appears in a frontend bundle. What boundary failed?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A server secret was placed in browser-delivered source or build configuration"
+      },
+      {
+        "id": "b",
+        "text": "The browser failed to cache CSS"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL lacks a route"
+      },
+      {
+        "id": "d",
+        "text": "The Git branch is detached"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Anything in a frontend bundle is public; credentials must remain in server environment configuration.",
+    "remediation": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model",
+      "docs/security.md#cross-site-request-forgery"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/.env.example",
+      ".gitignore"
+    ]
+  },
+  {
+    "id": "security-010",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "secrets-encryption",
+      "input-output-supply"
+    ],
+    "prompt": "A profile biography contains <script> text. Why does normal React interpolation not execute it?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "React escapes interpolated text and the project does not use dangerouslySetInnerHTML"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL deletes angle brackets"
+      },
+      {
+        "id": "c",
+        "text": "Caddy compiles TypeScript"
+      },
+      {
+        "id": "d",
+        "text": "VAPID encrypts HTML"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Output encoding at rendering prevents stored text from becoming markup or script.",
+    "remediation": [
+      "docs/security.md#secret-management",
+      "docs/security.md#encryption-in-transit-and-at-rest",
+      "docs/security.md#input-validation"
+    ],
+    "sourceRefs": [
+      "api/.env.example",
+      ".gitignore",
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ]
+  },
+  {
+    "id": "security-011",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "input-output-supply",
+      "audit-incident"
+    ],
+    "prompt": "A dependency update introduces a similarly named package with an open version range. Which controls failed?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Name verification, exact pinning, lock review, and supply-chain scrutiny"
+      },
+      {
+        "id": "b",
+        "text": "Owner authorization only"
+      },
+      {
+        "id": "c",
+        "text": "Database backup only"
+      },
+      {
+        "id": "d",
+        "text": "Map telemetry"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Dependency trust begins before install and uses exact, reviewable intent plus integrity-locked resolution.",
+    "remediation": [
+      "docs/security.md#input-validation",
+      "docs/security.md#output-encoding-and-browser-protections",
+      "docs/security.md#dependency-security"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "web/src/App.tsx",
+      "api/src/database.js:audit"
+    ]
+  },
+  {
+    "id": "security-012",
+    "moduleId": "security",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "audit-incident",
+      "security-assets"
+    ],
+    "prompt": "The owner account may be compromised. Which initial response is appropriate?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Privately notify the owner, contain credentials and access, review audit evidence, rotate affected secrets, and verify recovery"
+      },
+      {
+        "id": "b",
+        "text": "Post every credential publicly"
+      },
+      {
+        "id": "c",
+        "text": "Delete audit history"
+      },
+      {
+        "id": "d",
+        "text": "Assume the academy score prevents compromise"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Incident response protects evidence, limits exposure, rotates compromised material, and verifies service state without public disclosure.",
+    "remediation": [
+      "docs/security.md#audit-logging",
+      "docs/security.md#sensitive-data-handling",
+      "docs/security.md#common-unsafe-modifications"
+    ],
+    "sourceRefs": [
+      "api/src/database.js:audit",
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  }
+]

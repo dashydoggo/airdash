@@ -1,0 +1,744 @@
+[
+  {
+    "id": "lab-orientation-navigation",
+    "moduleId": "orientation",
+    "title": "Navigate canonical evidence",
+    "class": "automated",
+    "tier": "guided",
+    "critical": true,
+    "concepts": [
+      "project-purpose",
+      "actors-roles",
+      "core-workflow",
+      "scope-status",
+      "canonical-docs"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; no elevated permissions.",
+      "Before running the checker, identify the canonical pages for routes, schema, configuration, and architecture.",
+      "Run the checker and inspect the file and link counts.",
+      "Open one concept reference and explain why a passing link check does not prove the prose is correct.",
+      "Cleanup: none; the checker is read-only."
+    ],
+    "checkerId": "documentation-links",
+    "summary": "Use the documentation map and prove that internal references resolve.",
+    "evidence": "Structured count of Markdown files and internal links, with zero missing targets.",
+    "safety": "Reads tracked Markdown only; no network or file writes.",
+    "references": [
+      "docs/project-overview.md"
+    ]
+  },
+  {
+    "id": "lab-workspace-structure",
+    "moduleId": "shell-files",
+    "title": "Locate the repository safely",
+    "class": "automated",
+    "tier": "guided",
+    "critical": true,
+    "concepts": [
+      "filesystem-paths",
+      "permissions-processes",
+      "streams-exit-codes",
+      "ports-environment",
+      "shell-safety"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; ordinary user permissions.",
+      "Predict the absolute path reported by the checker and list five required paths.",
+      "Run the checker; compare repositoryRoot with pwd or Get-Location.",
+      "Explain which listed files are source, configuration, or documentation.",
+      "Cleanup: none."
+    ],
+    "checkerId": "workspace-structure",
+    "summary": "Establish the working directory and distinguish required paths from generated state.",
+    "evidence": "Repository root and required-path inventory.",
+    "safety": "Path and existence inspection only.",
+    "references": [
+      "docs/foundations.md#computer-and-operating-system-foundations"
+    ]
+  },
+  {
+    "id": "lab-toolchain",
+    "moduleId": "tooling-installation",
+    "title": "Verify the local toolchain",
+    "class": "automated",
+    "tier": "guided",
+    "critical": false,
+    "concepts": [
+      "toolchain-versions",
+      "dependency-install",
+      "local-postgres",
+      "environment-file",
+      "local-processes"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; no administrator access required.",
+      "Predict the Node.js and Git output before running.",
+      "Run the checker and compare the Node major with the minimum.",
+      "If blocked, install through the platform procedure, reopen the terminal, and rerun.",
+      "Cleanup: none."
+    ],
+    "checkerId": "toolchain",
+    "summary": "Prove that Node.js and Git satisfy the minimum environment.",
+    "evidence": "Redacted version output and prerequisite decision.",
+    "safety": "Runs only node --version and git --version with a reduced environment.",
+    "references": [
+      "docs/installation.md"
+    ]
+  },
+  {
+    "id": "lab-git-repository",
+    "moduleId": "git-github",
+    "title": "Inspect Git without changing it",
+    "class": "automated",
+    "tier": "guided",
+    "critical": true,
+    "concepts": [
+      "git-state",
+      "branches-remotes",
+      "diff-history",
+      "review-conflicts",
+      "git-recovery"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Run git status, branch --show-current, and remote get-url origin yourself; predict the checker result.",
+      "Run the checker.",
+      "Explain why a nonzero change count is not automatically a failure but must be understood before staging.",
+      "Cleanup: none."
+    ],
+    "checkerId": "git-repository",
+    "summary": "Verify repository identity, branch, origin, and ambient working-tree change count.",
+    "evidence": "Branch, origin, work-tree identity, and change count.",
+    "safety": "Read-only Git commands; credentials in HTTPS remotes are redacted.",
+    "references": [
+      "docs/foundations.md#source-control-foundations"
+    ]
+  },
+  {
+    "id": "lab-api-syntax",
+    "moduleId": "javascript-node",
+    "title": "Parse every API module",
+    "class": "automated",
+    "tier": "guided",
+    "critical": false,
+    "concepts": [
+      "js-values-functions",
+      "objects-control",
+      "modules-runtime",
+      "async-promises",
+      "errors-language"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; Node.js installed.",
+      "State what node --check can and cannot prove.",
+      "Run the checker and inspect exit code and stderr separately.",
+      "If it fails, identify the first project file and syntax error before editing.",
+      "Cleanup: none."
+    ],
+    "checkerId": "api-syntax",
+    "summary": "Use the package script to prove every documented API JavaScript file parses.",
+    "evidence": "Exit code and parse output for npm --prefix api run check.",
+    "safety": "Reads source and invokes the fixed package script; it does not start the API or database.",
+    "references": [
+      "docs/foundations.md#language-and-runtime-foundations"
+    ]
+  },
+  {
+    "id": "lab-web-typecheck",
+    "moduleId": "typescript-react",
+    "title": "Run strict frontend type checking",
+    "class": "automated",
+    "tier": "guided",
+    "critical": true,
+    "concepts": [
+      "types-interfaces",
+      "generics-api-client",
+      "jsx-components",
+      "state-effects-routing",
+      "frontend-accessibility"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Prerequisite: npm --prefix web ci completed. Working directory: repository root.",
+      "Predict one failure class the check catches and one runtime issue it cannot catch.",
+      "Run the checker.",
+      "If blocked, install dependencies; if failed, read the first error file, line, and code.",
+      "Cleanup: TypeScript may update ignored build-information state only."
+    ],
+    "checkerId": "web-typecheck",
+    "summary": "Prove frontend names, props, imports, and interfaces satisfy the TypeScript project.",
+    "evidence": "TypeScript exit code and diagnostics.",
+    "safety": "Runs the fixed typecheck script; no build publication or network request.",
+    "references": [
+      "docs/local-development.md#frontend-validation-sequence"
+    ]
+  },
+  {
+    "id": "lab-package-locks",
+    "moduleId": "dependencies-build",
+    "title": "Audit manifest and lock contracts",
+    "class": "automated",
+    "tier": "guided",
+    "critical": true,
+    "concepts": [
+      "dependency-classes",
+      "manifest-lock-semver",
+      "reproducible-install-supply",
+      "compile-bundle-hash",
+      "source-artifact-boundary"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Inspect both package.json files and predict direct dependency counts.",
+      "Run the checker and inspect nonExactVersions.",
+      "Explain why this does not replace npm audit or package provenance review.",
+      "Cleanup: none."
+    ],
+    "checkerId": "package-locks",
+    "summary": "Verify exact direct versions and lockfile version 3 for both packages.",
+    "evidence": "Manifest areas, direct counts, lock versions, and any open ranges.",
+    "safety": "JSON inspection only.",
+    "references": [
+      "docs/foundations.md#dependency-foundations"
+    ]
+  },
+  {
+    "id": "lab-route-inventory",
+    "moduleId": "web-http",
+    "title": "Reconcile public and Express routes",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "network-foundations",
+      "tls-http",
+      "methods-status-json",
+      "cookies-origin",
+      "api-semantics-routing"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Before running, explain why /api/health is not an Express path.",
+      "Run the checker and inspect route and uniqueness counts.",
+      "Find GET /health and one owner route in api/src/server.js.",
+      "Cleanup: none."
+    ],
+    "checkerId": "route-inventory",
+    "summary": "Derive the Express route count from source and connect it to Caddy prefix behavior.",
+    "evidence": "57 unique Express method/path pairs at the documented source commit.",
+    "safety": "Source inspection only; no HTTP or network activity.",
+    "references": [
+      "docs/foundations.md#web-and-api-foundations"
+    ]
+  },
+  {
+    "id": "lab-security-boundaries",
+    "moduleId": "api-express-auth",
+    "title": "Verify API security boundaries",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "express-lifecycle",
+      "auth-authorization",
+      "validation-errors",
+      "sql-transactions",
+      "api-client-contract"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "List the global and route-specific controls from memory before running.",
+      "Run the checker and trace every boolean result to source.",
+      "Explain why static presence is not a complete vulnerability audit.",
+      "Cleanup: none."
+    ],
+    "checkerId": "security-boundaries",
+    "summary": "Reconcile global origin handling, owner middleware, JSON limits, parameterized SQL evidence, browser credentials, output encoding, and response headers.",
+    "evidence": "Structured presence of the documented API and browser security controls.",
+    "safety": "Reads source and the non-secret example; explicitly never reads api/.env.",
+    "references": [
+      "docs/architecture.md#backend-architecture"
+    ]
+  },
+  {
+    "id": "lab-schema-inventory",
+    "moduleId": "postgres-data",
+    "title": "Derive the persistent entity inventory",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "relational-model",
+      "keys-relationships",
+      "constraints-indexes",
+      "transactions-pool",
+      "migrations-lifecycles"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; no database required.",
+      "Write the 15 table names from the data-model page.",
+      "Run the checker and compare the sorted inventory.",
+      "Explain why source inventory does not prove a live database has migrated successfully.",
+      "Cleanup: none."
+    ],
+    "checkerId": "schema-inventory",
+    "summary": "Read migration source and reconcile the declared PostgreSQL table count.",
+    "evidence": "15 unique CREATE TABLE declarations and names.",
+    "safety": "Static migration inspection only; no database connection or migration.",
+    "references": [
+      "docs/foundations.md#database-foundations"
+    ]
+  },
+  {
+    "id": "lab-architecture-inventory",
+    "moduleId": "architecture-runtime",
+    "title": "Verify security and runtime boundaries in source",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "topology-components",
+      "request-lifecycle",
+      "startup-shutdown",
+      "jobs-failures",
+      "trust-scaling"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Predict every control the checker will seek.",
+      "Run the checker and trace each boolean to its source file.",
+      "Explain two runtime behaviors this static check cannot prove.",
+      "Cleanup: none."
+    ],
+    "checkerId": "security-boundaries",
+    "summary": "Inspect the static controls that bind the documented request lifecycle and trust model.",
+    "evidence": "Structured presence of JSON limit, origin middleware, owner middleware, parameterized SQL evidence, credentials include, escaping boundary, and headers.",
+    "safety": "Read-only static inspection; absence or presence is evidence, not a full vulnerability audit.",
+    "references": [
+      "docs/architecture.md"
+    ]
+  },
+  {
+    "id": "lab-source-generated",
+    "moduleId": "repository-navigation",
+    "title": "Classify source and generated paths",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "root-api-layout",
+      "web-layout",
+      "docs-scripts-layout",
+      "source-generated-layout",
+      "trace-search"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Classify web/src, site/app-assets, site/downloads, node_modules, and api/.env.",
+      "Run the checker.",
+      "Explain why emptyOutDir false is required and why it also creates housekeeping work.",
+      "Cleanup: none."
+    ],
+    "checkerId": "source-generated-boundary",
+    "summary": "Verify ignore rules, Vite publication settings, and Nginx SPA fallback.",
+    "evidence": "Source/generated boundary booleans from .gitignore, Vite, and Nginx.",
+    "safety": "Read-only configuration inspection.",
+    "references": [
+      "docs/repository-guide.md"
+    ]
+  },
+  {
+    "id": "lab-domain-route-trace",
+    "moduleId": "product-domain",
+    "title": "Trace one domain mutation end to end",
+    "class": "inspected",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "onboarding-assignment",
+      "dispatch-gates",
+      "reports-outcomes",
+      "credit-aircraft",
+      "schedule-admin-news"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root on a non-release branch; no production mutation.",
+      "Choose booking, cancellation, report submission, or report review.",
+      "Record the frontend component and API call, middleware, route handler, SQL tables, constraints, audit action, response, and later visible effects.",
+      "Compare your trace with repository-guide.md and identify one invariant enforced by PostgreSQL.",
+      "Evidence: save the trace in learner notes or a temporary file outside tracked source. Cleanup: remove temporary notes if they contain identifiers."
+    ],
+    "checkerId": null,
+    "summary": "Trace a real workflow from UI intent through authorization, transaction, side effect, audit, and response.",
+    "evidence": "A path/symbol trace with at least one authorization boundary, transaction boundary, database invariant, audit action, and response contract.",
+    "safety": "Code and documentation inspection only; do not call a production mutation.",
+    "references": [
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight"
+    ]
+  },
+  {
+    "id": "lab-integration-static",
+    "moduleId": "integrations-notifications",
+    "title": "Inspect external-integration controls",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "simbrief-integration",
+      "volanta-vatsim",
+      "notifications-push",
+      "map-external",
+      "windows-packages"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "List every external service and whether browser or API contacts it.",
+      "Run the static boundary checker.",
+      "Inspect integrations.js timeouts and size limits manually and record values.",
+      "Cleanup: none."
+    ],
+    "checkerId": "security-boundaries",
+    "summary": "Connect provider and browser integration behavior to the static trust controls.",
+    "evidence": "Static boundary result plus learner-recorded provider timeout and response-size table.",
+    "safety": "No provider request is made and no credentials are read.",
+    "references": [
+      "docs/architecture.md#external-integrations"
+    ]
+  },
+  {
+    "id": "lab-api-validation",
+    "moduleId": "testing-quality",
+    "title": "Run both API unit-test scripts",
+    "class": "automated",
+    "tier": "independent",
+    "critical": false,
+    "concepts": [
+      "test-strategy",
+      "assertions-determinism",
+      "api-validation",
+      "frontend-validation",
+      "smoke-ci-limits"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; API dependencies installed.",
+      "Predict the final verification line from each script.",
+      "Run the checker and inspect exit code, stdout, and stderr.",
+      "Map one assertion group to its production caller and record what remains untested.",
+      "Cleanup: none."
+    ],
+    "checkerId": "api-unit-tests",
+    "summary": "Execute deterministic streak and flight-outcome tests and interpret their verification lines.",
+    "evidence": "Both fixed unit scripts exit zero and print their verification lines.",
+    "safety": "Pure local tests; no database or network.",
+    "references": [
+      "docs/testing.md"
+    ]
+  },
+  {
+    "id": "lab-documentation-links",
+    "moduleId": "debugging-diagnosis",
+    "title": "Diagnose documentation-link integrity",
+    "class": "automated",
+    "tier": "independent",
+    "critical": false,
+    "concepts": [
+      "symptom-diagnosis",
+      "logs-health",
+      "database-api-failure",
+      "auth-build-conflicts",
+      "safe-escalation"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Run the checker and inspect files and links checked.",
+      "If a failure exists, distinguish missing file from missing heading anchor before editing.",
+      "Do not weaken the checker to make a broken link pass.",
+      "Cleanup: none."
+    ],
+    "checkerId": "documentation-links",
+    "summary": "Use a deterministic checker output as a symptom and explain the correction boundary.",
+    "evidence": "Zero missing local file and heading-anchor references.",
+    "safety": "Reads Markdown only; external URLs are not fetched.",
+    "references": [
+      "docs/debugging.md"
+    ]
+  },
+  {
+    "id": "lab-secret-scan",
+    "moduleId": "security",
+    "title": "Scan tracked content for high-risk secrets",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "security-assets",
+      "auth-csrf",
+      "secrets-encryption",
+      "input-output-supply",
+      "audit-incident"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Explain why the checker reports file paths rather than matched secret text.",
+      "Run the checker.",
+      "If it fails, stop; remove the material from staging/history with owner guidance and rotate any real credential.",
+      "Cleanup: none."
+    ],
+    "checkerId": "secret-scan",
+    "summary": "Verify that Git does not track environment credentials, private keys, tokens, or credential-bearing URLs.",
+    "evidence": "Tracked-file count and zero high-risk secret findings.",
+    "safety": "Reads Git-tracked text only, never api/.env; redacts and never returns matched secret values.",
+    "references": [
+      "docs/security.md"
+    ]
+  },
+  {
+    "id": "lab-deployment-readiness",
+    "moduleId": "deployment-release",
+    "title": "Run complete safe pre-deployment validation",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "environment-classification",
+      "predeploy-backup",
+      "frontend-api-order",
+      "migration-rollback",
+      "config-postverify"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Prerequisite: API and web dependencies installed. Working directory: repository root.",
+      "Confirm that the checker does not deploy, migrate, restart, or contact production.",
+      "Run the checker; inspect each nested result and any blocked prerequisite.",
+      "A pass is pre-deployment evidence only; release and database backups and live verification remain separate.",
+      "Cleanup: the isolated build removes its temporary directory automatically."
+    ],
+    "checkerId": "full-validation",
+    "summary": "Execute every non-mutating inspect, validation, typecheck, build, academy, link, and secret check.",
+    "evidence": "Structured results for every fixed safe checker.",
+    "safety": "No shell, database, network endpoint, Git mutation, process restart, or publication; isolated output is temporary.",
+    "references": [
+      "docs/deployment.md"
+    ]
+  },
+  {
+    "id": "lab-operations-inspection",
+    "moduleId": "operations-observability",
+    "title": "Build a read-only operational evidence sheet",
+    "class": "inspected",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "health-state",
+      "logs-jobs",
+      "audit-maintenance",
+      "capacity-monitoring",
+      "incident-sequence"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Use a learner-owned environment, or obtain owner authorization before inspecting production.",
+      "Record each command from operations.md, its required host and permission, and expected healthy result.",
+      "For a provided or observed symptom, map failure to the owning component and name the next read-only diagnostic.",
+      "State which actions would affect shared services and require confirmation.",
+      "Cleanup: remove any notes containing private host details before sharing."
+    ],
+    "checkerId": null,
+    "summary": "Prepare and interpret a complete health, process, container, Git, artifact, log, and job-effect inventory.",
+    "evidence": "A redacted evidence table with component, command, expected result, observed result, interpretation, and escalation boundary.",
+    "safety": "Read-only commands only; do not restart PM2, Docker, PostgreSQL, Caddy, or auth.",
+    "references": [
+      "docs/operations.md"
+    ]
+  },
+  {
+    "id": "lab-backup-plan",
+    "moduleId": "backup-recovery",
+    "title": "Prove a recovery plan without touching production",
+    "class": "inspected",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "backup-inventory",
+      "backup-verification",
+      "destructive-restore",
+      "component-recovery",
+      "disaster-recovery"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root; use documentation and a scratch database only.",
+      "Inventory every state class and its recovery source.",
+      "Write the release-backup and pg_dump verification steps with placeholders, not real credentials.",
+      "Describe the destructive restore preconditions and a safe isolated restore rehearsal.",
+      "Order complete-host recovery and state unrecoverable gaps. Cleanup: destroy only learner-created scratch resources."
+    ],
+    "checkerId": null,
+    "summary": "Construct a recovery plan that accounts for Git, secrets, database, generated artifacts, downloads, profiles, and shared infrastructure.",
+    "evidence": "A redacted backup matrix, verification checklist, destructive-restore decision record, and ordered disaster-recovery procedure.",
+    "safety": "Never restore into production, read api/.env, or restart shared infrastructure for this lab.",
+    "references": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "lab-contribution-branch",
+    "moduleId": "contribution-capstone",
+    "title": "Verify branch and staging safety",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "scope-branch",
+      "code-validation",
+      "documentation-maintenance",
+      "commit-pr-review",
+      "integrated-evidence"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root on a feature, fix, or docs branch.",
+      "Run git status and inspect intended and ambient work.",
+      "Stage only the controlled exercise files, then run the checker.",
+      "Unstage the exercise files after recording evidence unless preparing a real contribution.",
+      "Cleanup: preserve unrelated work and do not use reset --hard or clean."
+    ],
+    "checkerId": "contribution-branch",
+    "summary": "Prove the contribution is isolated from release and the staging area excludes secrets and generated output.",
+    "evidence": "Current branch and staged-path safety decision.",
+    "safety": "Read-only Git inspection; the checker never stages, commits, resets, cleans, or pushes.",
+    "references": [
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "lab-isolated-build",
+    "moduleId": "dependencies-build",
+    "title": "Build the frontend in an isolated directory",
+    "class": "automated",
+    "tier": "independent",
+    "critical": false,
+    "concepts": [
+      "dependency-classes",
+      "manifest-lock-semver",
+      "reproducible-install-supply",
+      "compile-bundle-hash",
+      "source-artifact-boundary"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Prerequisite: npm --prefix web ci. Working directory: repository root.",
+      "Run the checker and inspect emitted app-assets names.",
+      "Explain why the output path is safe and what the chunk warning means.",
+      "Cleanup is automatic; confirm temporaryOutputRemoved is true."
+    ],
+    "checkerId": "isolated-web-build",
+    "summary": "Compile production-equivalent frontend output without touching site/.",
+    "evidence": "Vite exit code and temporary asset list.",
+    "safety": "Writes only to an operating-system temporary directory and removes it.",
+    "references": [
+      "docs/local-development.md#frontend-validation-sequence"
+    ]
+  },
+  {
+    "id": "lab-academy-validation",
+    "moduleId": "contribution-capstone",
+    "title": "Validate curriculum coverage",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "scope-branch",
+      "code-validation",
+      "documentation-maintenance",
+      "commit-pr-review",
+      "integrated-evidence"
+    ],
+    "estimatedMinutes": 35,
+    "prerequisites": [],
+    "instructions": [
+      "Working directory: repository root.",
+      "Run the checker after any academy data change.",
+      "Trace one coverage result from concept to questions and lab.",
+      "Do not weaken a threshold to conceal missing educational content.",
+      "Cleanup: none."
+    ],
+    "checkerId": "academy-validation",
+    "summary": "Prove IDs, references, concept assessment coverage, critical evidence, exams, labs, and question quality.",
+    "evidence": "Academy validation summary with module, concept, question, lab, exam, and capstone counts.",
+    "safety": "Reads academy data and repository text only.",
+    "references": [
+      "docs/contributing.md"
+    ]
+  },
+  {
+    "id": "lab-configuration-contract",
+    "moduleId": "tooling-installation",
+    "title": "Reconcile the environment-variable inventory",
+    "class": "automated",
+    "tier": "independent",
+    "critical": true,
+    "concepts": [
+      "environment-file",
+      "local-processes"
+    ],
+    "estimatedMinutes": 20,
+    "prerequisites": [
+      "lab-toolchain"
+    ],
+    "instructions": [
+      "Working directory: repository root.",
+      "List every process.env name before running.",
+      "Run the checker and compare source variables with api/.env.example.",
+      "Explain why PROFILE_IMAGE_DIR is default-only and why api/.env is never read.",
+      "Cleanup: none."
+    ],
+    "checkerId": "configuration-contract",
+    "summary": "Prove that source, example configuration, and canonical documentation agree on the nine environment variables.",
+    "evidence": "Source variable names, example keys, and the documented default-only exception.",
+    "safety": "Reads API source and api/.env.example only; never reads api/.env or prints values.",
+    "references": [
+      "docs/configuration.md#environment-variables"
+    ]
+  }
+]

@@ -145,6 +145,7 @@ airdash/
 │       ├── styles.css            (complete stylesheet)
 │       └── vite-env.d.ts
 ├── docs/
+├── academy/                      (local interactive curriculum, engine, server, data, tests)
 ├── gsx/                          (GSX ground handling package sources)
 ├── livery-templates/             (structural files for MSFS 2020 livery builds)
 ├── scripts/                      (PowerShell automation, livery builder, demo data)
@@ -161,6 +162,25 @@ airdash/
 ```
 
 The [repository guide](repository-guide.md) describes each entry, states whether it is handwritten or generated, and traces an execution path.
+
+## Academy architecture
+
+The academy is a separate local-only application under `academy/`; it is not bundled into `site/`, routed through Caddy, or connected to the production API or database. `npm --prefix academy start` creates one Node.js HTTP server bound to `127.0.0.1:4174`. The browser loads the static application and curriculum from that server and stores progress in `localStorage`.
+
+```mermaid
+flowchart LR
+  Learner["Learner browser"] -->|"GET /academy files"| AcademyServer["Loopback academy server"]
+  Learner -->|"POST fixed checker ID"| AcademyServer
+  AcademyServer -->|"Allow-listed reads"| Repository["Repository files"]
+  AcademyServer -->|"Fixed no-shell commands"| Validation["Existing validation scripts"]
+  Learner -->|"Versioned progress"| LocalStorage[("Browser localStorage")]
+  AcademyServer -. "never reads" .-> Secrets["api/.env, cookies, environment secrets"]
+  AcademyServer -. "never contacts" .-> Production["Production API and database"]
+```
+
+Solid arrows are allowed interactions. Dotted arrows labeled "never" are enforced boundaries: the static path allow-list rejects `.git`, `node_modules`, `site`, and `api/.env`; the checker process receives a reduced environment; checker IDs map to functions in `checks.mjs`; no browser or JSON string becomes a command; and no checker starts, stops, deploys, migrates, restores, or contacts an application endpoint. The browser can export and import progress, but import validates schema version, curriculum version, IDs, timestamps, confidence, scores, inspected-review claims, and accessibility settings before replacing current state.
+
+`engine.mjs` is pure logic shared by the browser and Node tests. `validate.mjs` loads all curriculum files and proves structural coverage: every concept has at least two recall or explanation and two higher-order questions, every critical concept has critical practical evidence, every examination can satisfy its declared distribution, every source and documentation reference resolves, and every fixed checker is represented by an automated lab. These checks prove consistency, not semantic truth or learner identity.
 
 ## Frontend architecture
 

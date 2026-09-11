@@ -4,13 +4,21 @@ Short answers to recurring questions, each linking to the page that explains the
 
 ## Getting oriented
 
-**Where do I start?** The [start-here guide](start-here.md) gives a reading order for your situation. Complete beginners follow the [learning path](learning-path.md).
+**Where do I start?** Complete beginners start with the [interactive airDash Academy](../academy/README.md) and use the [learning path](learning-path.md) for longer exercises. Other audiences use the [start-here guide](start-here.md).
 
 **What does airDash actually do?** It is the website, rules engine, and data store for one virtual airline. Pilots book routes, fly them in Microsoft Flight Simulator with Volanta tracking, and file verified reports; the owner reviews and manages. See [project overview](project-overview.md).
 
 **Which pages are authoritative?** [Architecture](architecture.md), [API reference](api-reference.md), [data model](data-model.md), and [configuration](configuration.md). Other pages link to them rather than restating them.
 
 **Is this documentation accredited?** No. It follows the structure of a software engineering curriculum, but no accrediting body has reviewed it.
+
+**Is there an interactive curriculum with quizzes and practical work?** Yes. [airDash Academy](../academy/README.md) provides 21 prerequisite modules, 105 concepts, 252 authored questions, 24 labs, 6 cumulative examinations, adaptive review, confidence calibration, persistent progress, and a 100-point capstone. Run `npm --prefix academy start` and open `http://127.0.0.1:4174/academy/`.
+
+**What does an academy mastery label prove?** Only the evidence defined in the [mastery model](../academy/MASTERY_MODEL.md): recorded retrieval, application, practical, examination, delayed-review, and human-reviewed capstone results under academy conditions. It does not prove authorship, accreditation, employment readiness, or error-free performance in every real environment.
+
+**Why can I not finish retained mastery today?** Durable evidence requires successful delayed reviews at 1, 3, 7, 14, and 30 days. Compressing those intervals would measure short-term repetition rather than retention.
+
+**Where is my progress stored?** In this browser's `localStorage` under `airdash-academy-progress-v1`. It is never sent to the server. Use Settings to export a JSON backup before clearing browser data or moving computers; imports reject unknown IDs, malformed scores, and future timestamps.
 
 ## Installing and running
 

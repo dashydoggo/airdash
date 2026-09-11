@@ -2,7 +2,7 @@
 
 This page describes every top-level directory and every architecturally important file in the airDash repository, states whether each is handwritten or generated, who is responsible for it, how changes to it are tested, and whether contributors are expected to modify it. It ends with a traced execution path from a browser click to a database write and back, so that you can see how the pieces connect in practice.
 
-The repository has 124 tracked files at commit `5f2e27c`. Two directories that exist on disk, `site/` and `node_modules/`, are deliberately untracked.
+The merged technical-reference release contains 143 tracked files at commit `291860f`. The interactive academy adds 43 files, producing 186 tracked files when this follow-up change is committed. Two large runtime directories that may exist on disk, `site/` and `node_modules/`, remain deliberately untracked.
 
 ## Root files
 
@@ -88,6 +88,31 @@ Every change is validated by `npm --prefix web run typecheck`, the isolated buil
 ## docs/
 
 Durable documentation, all handwritten Markdown, following [documentation-style.md](documentation-style.md). The [index](README.md) lists every page and its class. Contributors are expected to update documentation in the same pull request as the change it describes; the [maintenance triggers](README.md#maintenance-triggers) say which page.
+
+## academy/
+
+The local interactive learning application. It is a separate dependency-free Node.js package and is not part of the production website build.
+
+| Path | Handwritten | Purpose | Modify directly |
+|---|---|---|---|
+| `academy/README.md` | Yes | Learner and maintainer entry point, commands, privacy, check boundaries, and accessibility. | Yes. |
+| `academy/MASTERY_MODEL.md` | Yes | Canonical evidence levels, gates, scoring, review intervals, practical classes, capstone, and proof limits. | Yes, only with tests and review of every claim. |
+| `academy/SCHEMA.md` | Yes | Human-readable contract for modules, concepts, questions, labs, exams, capstone, and progress. | Yes, with validator and migration implications. |
+| `academy/index.html`, `styles.css`, `app.mjs` | Yes | Accessible browser shell, visual system, dashboard, study, quiz, review, lab, exam, capstone, and settings interface. | Yes; validate keyboard and browser behavior. |
+| `academy/engine.mjs` | Yes | Pure grading, deterministic sampling, weighted results, spaced scheduling, misconception remediation, evidence derivation, gates, and progress validation. | Yes, with engine and progress tests. |
+| `academy/server.mjs` | Yes | Loopback-only static server and fixed checker API with CSP, safe path allow-list, Origin, body, and concurrency controls. | Yes, with server boundary tests. |
+| `academy/checks.mjs` | Yes | Eighteen fixed no-shell, redacted repository checkers. Browser and JSON input can select an ID but cannot provide a command. | Yes; new checker requires a documented automated lab and safety review. |
+| `academy/validate.mjs` | Yes | Curriculum schema, link/anchor/source, concept coverage, critical evidence, exam feasibility, question quality, checker mapping, and capstone validation. | Yes; do not weaken thresholds to conceal missing content. |
+| `academy/data/modules.json` | Yes | 21 ordered modules, prerequisites, skills, gates, references, and question files. | Yes. IDs remain stable after release. |
+| `academy/data/concepts.json` | Yes | 105 atomic concepts with definitions, outcomes, canonical references, source evidence, and critical classification. | Yes whenever documented behavior changes. |
+| `academy/data/questions/*.json` | Yes | One maintainable bank per module, 252 authored questions total. | Yes; follow question-quality and coverage rules. |
+| `academy/data/labs.json` | Yes | 24 guided and independent labs, including 21 fixed automated checks and 3 human-inspected exercises. | Yes. JSON never defines a command. |
+| `academy/data/exams.json` | Yes | Six cumulative phase and final examination specifications. | Yes, with feasibility validation. |
+| `academy/data/capstones.json` | Yes | One 100-point human-reviewed integrated rubric mapping all concepts. | Yes. |
+| `academy/test/*.test.mjs` | Yes | Engine, progress, checker, validator, and server tests. | Yes with behavior changes. |
+| `academy/package.json`, `package-lock.json` | Yes / npm-generated | Dependency-free npm scripts and lock contract. | Manifest yes; lock through npm. |
+
+The academy stores no repository progress file. Browser evidence remains in `localStorage`; export and import are explicit. The server may create and remove isolated build output only under the operating-system temporary directory.
 
 ## gsx/
 

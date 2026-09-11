@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Local interactive mastery curriculum for the airDash platform.">
+  <meta name="color-scheme" content="dark">
+  <title>airDash Academy</title>
+  <link rel="stylesheet" href="/academy/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#academy-main">Skip to academy content</a>
+  <div class="academy-shell">
+    <header class="academy-header">
+      <a class="academy-brand" href="/academy/" aria-label="airDash Academy dashboard">
+        <span class="brand-mark" aria-hidden="true">AD</span>
+        <span><strong>airDash</strong><small>Academy</small></span>
+      </a>
+      <div class="header-status" id="header-status" aria-live="polite">Loading curriculum</div>
+    </header>
+    <nav class="academy-nav" aria-label="Academy sections">
+      <button type="button" data-view="dashboard">Dashboard</button>
+      <button type="button" data-view="learn">Learn</button>
+      <button type="button" data-view="practice">Practice</button>
+      <button type="button" data-view="review">Review</button>
+      <button type="button" data-view="labs">Labs</button>
+      <button type="button" data-view="exams">Exams</button>
+      <button type="button" data-view="capstones">Capstone</button>
+      <button type="button" data-view="settings">Settings</button>
+    </nav>
+    <main id="academy-main" tabindex="-1">
+      <div class="loading-panel" role="status">
+        <span class="spinner" aria-hidden="true"></span>
+        <p>Loading the academy curriculum.</p>
+      </div>
+    </main>
+    <footer class="academy-footer">
+      <p>Evidence-based local training. Progress remains in this browser unless you export it.</p>
+      <p><a href="/academy/MASTERY_MODEL.md" target="_blank" rel="noopener">Mastery model</a> · <a href="/academy/README.md" target="_blank" rel="noopener">Academy guide</a> · <a href="/docs/README.md" target="_blank" rel="noopener">Technical documentation</a></p>
+    </footer>
+  </div>
+  <div id="announcer" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+  <script type="module" src="/academy/app.mjs"></script>
+</body>
+</html>

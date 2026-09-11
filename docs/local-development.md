@@ -294,6 +294,9 @@ Press Ctrl+C in each terminal. The API logs nothing on shutdown; it closes the l
 | Command | Directory | Purpose | Reads | Writes |
 |---|---|---|---|---|
 | `npm --prefix api ci` | root | Install API dependencies | `api/package-lock.json` | `api/node_modules/` |
+| `npm --prefix academy run validate` | root | Validate curriculum, references, coverage, critical evidence, exam feasibility, and question quality | `academy/data/`, source and Markdown references | nothing |
+| `npm --prefix academy test` | root | Run academy engine, progress, checker, validator, and server tests | `academy/`, selected repository files and fixed scripts | temporary test resources only |
+| `npm --prefix academy start` | root | Serve the local academy on `127.0.0.1:4174` | allow-listed academy, docs, source, and configuration files | browser localStorage; temporary output only when a build checker is explicitly run |
 | `npm --prefix web ci` | root | Install frontend dependencies | `web/package-lock.json` | `web/node_modules/` |
 | `npm --prefix api run check` | root | Syntax-check the eleven API files | `api/src/*.js` | nothing |
 | `npm --prefix api run test:streaks` | root | Unit-test streak calculations | `api/src/streaks.js` | nothing |

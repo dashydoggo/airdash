@@ -1,0 +1,545 @@
+[
+  {
+    "id": "architecture-runtime-001",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "topology-components"
+    ],
+    "prompt": "Which component serves the static site?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "dashy-airdash Nginx container"
+      },
+      {
+        "id": "b",
+        "text": "PM2 itself"
+      },
+      {
+        "id": "c",
+        "text": "SimBrief"
+      },
+      {
+        "id": "d",
+        "text": "The service worker database"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Nginx serves the bind-mounted site directory; Caddy routes static traffic to it.",
+    "remediation": [
+      "docs/architecture.md#system-context",
+      "docs/architecture.md#production-runtime-topology"
+    ],
+    "sourceRefs": [
+      "nginx.conf",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-002",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "request-lifecycle"
+    ],
+    "prompt": "Which component removes the public /api prefix in production?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Caddy"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL"
+      },
+      {
+        "id": "c",
+        "text": "React StrictMode"
+      },
+      {
+        "id": "d",
+        "text": "Git"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The Caddy site block strips the prefix before reverse proxying to port 3006.",
+    "remediation": [
+      "docs/architecture.md#request-lifecycle"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.get(\"/me\")",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "architecture-runtime-003",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "startup-shutdown"
+    ],
+    "prompt": "What must complete before app.listen starts accepting requests?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "migrate and startup gate repairs"
+      },
+      {
+        "id": "b",
+        "text": "A pilot report"
+      },
+      {
+        "id": "c",
+        "text": "A frontend build every time"
+      },
+      {
+        "id": "d",
+        "text": "A database restore"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Top-level startup awaits migration and repair functions before listening.",
+    "remediation": [
+      "docs/architecture.md#startup-sequence",
+      "docs/architecture.md#shutdown-sequence"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-004",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "jobs-failures"
+    ],
+    "prompt": "How often does assignment expiry run on its timer?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Every 5 minutes"
+      },
+      {
+        "id": "b",
+        "text": "Every second"
+      },
+      {
+        "id": "c",
+        "text": "Once per release only"
+      },
+      {
+        "id": "d",
+        "text": "Every 30 days"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The in-process expiry interval is five minutes, with additional calls in selected routes.",
+    "remediation": [
+      "docs/architecture.md#background-work",
+      "docs/architecture.md#failure-propagation-and-retries"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js:startPushWorker"
+    ]
+  },
+  {
+    "id": "architecture-runtime-005",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "trust-scaling"
+    ],
+    "prompt": "Why can the API not be horizontally scaled without design work?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "In-process jobs would run in each instance and profile images use local filesystem state"
+      },
+      {
+        "id": "b",
+        "text": "HTTP supports only one client"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL cannot accept two connections"
+      },
+      {
+        "id": "d",
+        "text": "React requires PM2"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Multiple instances would duplicate jobs and need shared handling for local files and coordination.",
+    "remediation": [
+      "docs/architecture.md#trust-boundaries",
+      "docs/architecture.md#scaling-model",
+      "docs/architecture.md#architectural-constraints-and-tradeoffs"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-006",
+    "moduleId": "architecture-runtime",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "topology-components",
+      "request-lifecycle",
+      "startup-shutdown"
+    ],
+    "prompt": "Select every correct production relationship.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Caddy reaches Nginx by container name on docker_web"
+      },
+      {
+        "id": "b",
+        "text": "Caddy reaches the host API through the Docker bridge gateway"
+      },
+      {
+        "id": "c",
+        "text": "Nginx reads site through a read-only bind mount"
+      },
+      {
+        "id": "d",
+        "text": "The browser connects directly to PostgreSQL"
+      },
+      {
+        "id": "e",
+        "text": "PM2 supervises the host API process"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The browser reaches the edge only; internal routing and process supervision match the documented topology.",
+    "remediation": [
+      "docs/architecture.md#system-context",
+      "docs/architecture.md#production-runtime-topology",
+      "docs/architecture.md#request-lifecycle"
+    ],
+    "sourceRefs": [
+      "nginx.conf",
+      "api/ecosystem.config.js",
+      "api/src/server.js:app.get(\"/me\")",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "architecture-runtime-007",
+    "moduleId": "architecture-runtime",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "jobs-failures",
+      "trust-scaling"
+    ],
+    "prompt": "Order the graceful API shutdown path.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Exit with code zero"
+      },
+      {
+        "id": "b",
+        "text": "Stop push-worker timers"
+      },
+      {
+        "id": "c",
+        "text": "Close the HTTP server"
+      },
+      {
+        "id": "d",
+        "text": "End the PostgreSQL pool"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a"
+    ],
+    "explanation": "Timers stop, new HTTP work stops, pooled connections end, then the process exits.",
+    "remediation": [
+      "docs/architecture.md#background-work",
+      "docs/architecture.md#failure-propagation-and-retries",
+      "docs/architecture.md#trust-boundaries"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js:startPushWorker",
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-008",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "topology-components",
+      "request-lifecycle"
+    ],
+    "prompt": "A page and API are both unreachable, but Caddy container logs show no request. Which boundary should be checked first?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Public edge routing, DNS, and listener state"
+      },
+      {
+        "id": "b",
+        "text": "A single pilot row"
+      },
+      {
+        "id": "c",
+        "text": "The streak function"
+      },
+      {
+        "id": "d",
+        "text": "The livery catalog only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Failure before Caddy logging scopes the problem to DNS, network, TLS, or Caddy listener availability.",
+    "remediation": [
+      "docs/architecture.md#system-context",
+      "docs/architecture.md#production-runtime-topology",
+      "docs/architecture.md#request-lifecycle"
+    ],
+    "sourceRefs": [
+      "nginx.conf",
+      "api/ecosystem.config.js",
+      "api/src/server.js:app.get(\"/me\")",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "architecture-runtime-009",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "request-lifecycle",
+      "startup-shutdown"
+    ],
+    "prompt": "PM2 repeatedly restarts before the listening log appears. Which startup step is most likely failing?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Migration, database connection, gate repair, or configuration before app.listen"
+      },
+      {
+        "id": "b",
+        "text": "A React hover animation"
+      },
+      {
+        "id": "c",
+        "text": "A later browser fetch"
+      },
+      {
+        "id": "d",
+        "text": "A VATSIM link"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "All listed startup work occurs before the readiness log and listener callback.",
+    "remediation": [
+      "docs/architecture.md#request-lifecycle",
+      "docs/architecture.md#startup-sequence",
+      "docs/architecture.md#shutdown-sequence"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:app.get(\"/me\")",
+      "web/src/api.ts",
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-010",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "startup-shutdown",
+      "jobs-failures"
+    ],
+    "prompt": "A schedule job error is silently caught. How should an operator verify the job?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Query future schedule rows and stale departed-row counts"
+      },
+      {
+        "id": "b",
+        "text": "Assume no log means success"
+      },
+      {
+        "id": "c",
+        "text": "Restart PostgreSQL hourly"
+      },
+      {
+        "id": "d",
+        "text": "Inspect CSS"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Effect-based checks are required because the timer deliberately discards errors.",
+    "remediation": [
+      "docs/architecture.md#startup-sequence",
+      "docs/architecture.md#shutdown-sequence",
+      "docs/architecture.md#background-work"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js",
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js:startPushWorker"
+    ]
+  },
+  {
+    "id": "architecture-runtime-011",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "jobs-failures",
+      "trust-scaling"
+    ],
+    "prompt": "PostgreSQL restarts while the API has an idle pooled connection. What verified behavior occurs?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The pool emits an unhandled error and the API process exits"
+      },
+      {
+        "id": "b",
+        "text": "The browser repairs the database"
+      },
+      {
+        "id": "c",
+        "text": "The API always remains online without log output"
+      },
+      {
+        "id": "d",
+        "text": "Nginx rewrites the connection"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The missing pool error listener makes the idle connection error fatal; PM2 may restart until its limit.",
+    "remediation": [
+      "docs/architecture.md#background-work",
+      "docs/architecture.md#failure-propagation-and-retries",
+      "docs/architecture.md#trust-boundaries"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js:startPushWorker",
+      "api/src/auth.js",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "architecture-runtime-012",
+    "moduleId": "architecture-runtime",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "trust-scaling",
+      "topology-components"
+    ],
+    "prompt": "A proposal runs two API instances behind Caddy without changing jobs or storage. What is the correct review conclusion?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Reject or redesign coordination and shared storage before scaling"
+      },
+      {
+        "id": "b",
+        "text": "Approve because HTTP balances everything automatically"
+      },
+      {
+        "id": "c",
+        "text": "Move OWNER_DISCORD_ID to CSS"
+      },
+      {
+        "id": "d",
+        "text": "Disable database constraints"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Horizontal scaling must address duplicate in-process jobs, local upload storage, and coordination assumptions.",
+    "remediation": [
+      "docs/architecture.md#trust-boundaries",
+      "docs/architecture.md#scaling-model",
+      "docs/architecture.md#architectural-constraints-and-tradeoffs"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "api/src/server.js",
+      "nginx.conf",
+      "api/ecosystem.config.js"
+    ]
+  }
+]

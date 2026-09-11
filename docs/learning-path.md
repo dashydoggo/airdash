@@ -1,8 +1,8 @@
 # Learning path
 
-This page is the airDash curriculum. It orders the documentation into lessons, states what each lesson expects you to already know, tells you what to read and do, and gives exercises with expected outcomes so that you can check your own understanding. The structure follows the pattern of a structured software engineering course: concept, project example, guided practice, verification, common misconceptions, and recap. It is not accredited by any organization; it is the project's own teaching material.
+This page is the human-readable syllabus and exercise companion for the [interactive airDash Academy](../academy/README.md). It orders the documentation into lessons, states prerequisites, and provides longer guided exercises, hints, and expected outcomes. The academy adds active recall, confidence calibration, practical checkers, module and cumulative gates, delayed review, persistent progress, and a human-reviewed capstone. Neither artifact is accredited, and neither can guarantee professional performance.
 
-Work through the lessons in order. Each lesson ends with a checkpoint. Do not proceed until you can complete the checkpoint without looking at the answer.
+Use the academy as the progression controller. A checkpoint on this page is practice, not proof of mastery. Do not advance a module because an answer looked familiar; satisfy the evidence conditions in the [mastery model](../academy/MASTERY_MODEL.md).
 
 ## How to use this page
 
@@ -10,6 +10,44 @@ Work through the lessons in order. Each lesson ends with a checkpoint. Do not pr
 - Keep a notes file. Several exercises ask you to write an explanation in your own words; comparing your explanation to the documentation is the most reliable way to find gaps.
 - Use a scratch branch for any exercise that edits files, and discard it afterward with `git checkout release/airdash-platform-20260910` followed by `git branch -D <scratch-branch>` once you have confirmed there is nothing on it you want to keep.
 - When an exercise says "expected outcome", the outcome is what a correct solution produces. Hints are given before solutions; try the hint first.
+
+## Interactive academy protocol
+
+1. From the repository root, run `npm --prefix academy run validate`, `npm --prefix academy test`, and `npm --prefix academy start`.
+2. Open `http://127.0.0.1:4174/academy/` and optionally set a display name and accessibility preferences.
+3. Take a module diagnostic before study. Diagnostics focus effort but do not create or remove mastery evidence.
+4. Open every concept reference, then complete Practice without looking at the answer first. Record confidence before feedback.
+5. Complete the required lab. Automated labs run only fixed local checkers; inspected labs require an identified human reviewer.
+6. Pass the module examination at 90 percent overall and 80 percent in every required skill, with zero unresolved high-confidence misconception.
+7. Pass each cumulative phase examination. Any critical miss blocks the attempt.
+8. Return for reviews at 1, 3, 7, 14, and 30 days. Export progress before clearing browser data or changing computers.
+9. Complete the final examination and 100-point capstone. A human reviewer must assess the artifacts and own-words explanation.
+
+The academy maps the syllabus as follows:
+
+| Academy module | Primary syllabus and references |
+|---|---|
+| 1. Project orientation and learning method | Lesson 1; [project overview](project-overview.md) |
+| 2. Files, shells, processes, and safe commands | Lesson 2; computer and operating-system foundations |
+| 3. Tools and reproducible installation | Lesson 4; [installation](installation.md) and [local development](local-development.md) |
+| 4. Git, GitHub, and recoverable change | Lesson 3; source-control foundations |
+| 5. JavaScript and the Node.js runtime | Lesson 5; language and runtime foundations |
+| 6. TypeScript, React, and browser state | Lesson 5; TypeScript, JSX, frontend architecture |
+| 7. Dependencies, compilation, and artifacts | Lessons 6 and 17; dependency and build foundations |
+| 8. Networking, HTTP, origins, and APIs | Lesson 7; web and API foundations |
+| 9. Express, authentication, authorization, and transactions | Lessons 7, 10, and 16; API and security references |
+| 10. PostgreSQL, integrity, migrations, and lifecycles | Lesson 8; [data model](data-model.md) |
+| 11. Architecture, startup, jobs, failures, and scaling | Lesson 10; [architecture](architecture.md) |
+| 12. Repository ownership and execution tracing | Lesson 11; [repository guide](repository-guide.md) |
+| 13. Pilot and airline domain workflows | Lesson 12; [features](features.md) |
+| 14. Integrations, notifications, and simulator automation | Lesson 12; external integrations and PowerPoint automation |
+| 15. Testing strategy and executable evidence | Lesson 13; [testing](testing.md) |
+| 16. Symptom-first debugging and safe remediation | Lesson 15; [debugging](debugging.md) |
+| 17. Security assets, boundaries, secrets, and incidents | Lesson 16; [security](security.md) |
+| 18. Deployment, rollback, and release identity | Lesson 17; [deployment](deployment.md) and [releases](releases.md) |
+| 19. Health, logs, jobs, capacity, and incidents | Lesson 18; [operations](operations.md) |
+| 20. Backup, destructive restore, and disaster recovery | Lesson 18; [backup and recovery](backup-and-recovery.md) |
+| 21. Contribution, review, capstone, and evidence limits | Lessons 14 and 19; [contributing](contributing.md) |
 
 ## Lesson 1: What airDash is
 
@@ -337,4 +375,4 @@ psql "$DATABASE_URL" -Atc "SELECT COUNT(*) FROM airdash.routes;"
 
 ## Recap of the whole path
 
-By the end you can explain the platform's purpose and rules, operate a shell and Git, read the project's JavaScript and TypeScript, install and run it locally with a database and mock login, trace requests and background jobs, find any file, run and extend tests, diagnose common failures, describe the security model, follow deployment and recovery procedures, and submit a reviewed change. The [FAQ](faq.md) and [glossary](glossary.md) remain useful as quick references afterward.
+Completing the reading and exercises gives you a structured path through the platform. The academy adds measured retrieval, application, practical, cumulative, and delayed evidence. When all module gates, cumulative examinations, day-30 reviews, and the human-reviewed capstone are complete, the record supports a claim of retained and integrated airDash knowledge under the academy conditions. It does not guarantee professional performance, authorship, or error-free production work; those require repeated independent work in real conditions. The [FAQ](faq.md), [glossary](glossary.md), and academy review queue remain active references afterward.

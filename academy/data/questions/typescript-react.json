@@ -1,0 +1,529 @@
+[
+  {
+    "id": "typescript-react-001",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "types-interfaces"
+    ],
+    "prompt": "What does the question mark mean in profile_image_url?: string | null?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The field is optional"
+      },
+      {
+        "id": "b",
+        "text": "The field is encrypted"
+      },
+      {
+        "id": "c",
+        "text": "The field is a function"
+      },
+      {
+        "id": "d",
+        "text": "The field cannot be null"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The property may be absent; if present its value may be string or null.",
+    "remediation": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics"
+    ],
+    "sourceRefs": [
+      "web/src/types.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-002",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "generics-api-client"
+    ],
+    "prompt": "What does api<MeResponse>(\"/me\") tell TypeScript?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The runtime server validates every field automatically"
+      },
+      {
+        "id": "b",
+        "text": "The promise is expected to resolve to MeResponse"
+      },
+      {
+        "id": "c",
+        "text": "The route becomes public"
+      },
+      {
+        "id": "d",
+        "text": "Cookies are disabled"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The generic gives the caller a compile-time expected response type; it is not runtime validation.",
+    "remediation": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-003",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "jsx-components"
+    ],
+    "prompt": "What do braces inside JSX switch to?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "CSS mode"
+      },
+      {
+        "id": "b",
+        "text": "A JavaScript expression"
+      },
+      {
+        "id": "c",
+        "text": "SQL mode"
+      },
+      {
+        "id": "d",
+        "text": "A new HTML document"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "JSX braces evaluate JavaScript and insert the result into rendering.",
+    "remediation": [
+      "docs/foundations.md#jsx",
+      "docs/change-recipes.md#change-the-portal-pilot-and-base-line"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:Page"
+    ]
+  },
+  {
+    "id": "typescript-react-004",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "state-effects-routing"
+    ],
+    "prompt": "What does BrowserRouter provide?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Database transactions"
+      },
+      {
+        "id": "b",
+        "text": "Client-side route selection using the browser location"
+      },
+      {
+        "id": "c",
+        "text": "Package installation"
+      },
+      {
+        "id": "d",
+        "text": "TLS termination"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "BrowserRouter connects URL paths to React route elements.",
+    "remediation": [
+      "docs/architecture.md#application-shell",
+      "docs/architecture.md#routing"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:App",
+      "web/src/main.tsx"
+    ]
+  },
+  {
+    "id": "typescript-react-005",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "frontend-accessibility"
+    ],
+    "prompt": "Where is authoritative notification read state stored?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Only in localStorage"
+      },
+      {
+        "id": "b",
+        "text": "airdash.notification_history.read_at"
+      },
+      {
+        "id": "c",
+        "text": "A CSS class"
+      },
+      {
+        "id": "d",
+        "text": "The service worker cache"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The server-side history follows the account across devices; local storage holds only specified UI state.",
+    "remediation": [
+      "docs/architecture.md#styling",
+      "docs/features.md#browser-state",
+      "docs/features.md#accessibility"
+    ],
+    "sourceRefs": [
+      "web/src/styles.css",
+      "web/src/notificationState.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-006",
+    "moduleId": "typescript-react",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "types-interfaces",
+      "generics-api-client",
+      "jsx-components"
+    ],
+    "prompt": "Select every true statement about the typed API client.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It prefixes paths with /api"
+      },
+      {
+        "id": "b",
+        "text": "It sends cookies with credentials include"
+      },
+      {
+        "id": "c",
+        "text": "It adds JSON content type when a body exists"
+      },
+      {
+        "id": "d",
+        "text": "It proves the server response matches T at runtime"
+      },
+      {
+        "id": "e",
+        "text": "It throws ApiError for non-success status"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The wrapper standardizes transport and compile-time expectations, but its cast does not validate runtime JSON shape.",
+    "remediation": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics",
+      "docs/foundations.md#jsx",
+      "docs/change-recipes.md#change-the-portal-pilot-and-base-line"
+    ],
+    "sourceRefs": [
+      "web/src/types.ts",
+      "web/src/api.ts",
+      "web/src/App.tsx:Page"
+    ]
+  },
+  {
+    "id": "typescript-react-007",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "state-effects-routing",
+      "frontend-accessibility"
+    ],
+    "prompt": "Which state belongs in AppContext rather than browser-local coachmark storage?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The current authenticated account and assignment"
+      },
+      {
+        "id": "b",
+        "text": "Whether one browser saw a tooltip"
+      },
+      {
+        "id": "c",
+        "text": "A dismissed visual tour card only"
+      },
+      {
+        "id": "d",
+        "text": "A text-size preference only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Account and assignment state come from the API and are shared application state; coachmarks and preferences may be browser-local.",
+    "remediation": [
+      "docs/architecture.md#application-shell",
+      "docs/architecture.md#routing",
+      "docs/architecture.md#styling"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:App",
+      "web/src/main.tsx",
+      "web/src/styles.css",
+      "web/src/notificationState.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-008",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "types-interfaces",
+      "generics-api-client"
+    ],
+    "prompt": "The API adds departure_gate but TypeScript says the property does not exist. What is the correct frontend change?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Add the field to the matching interface with correct nullability"
+      },
+      {
+        "id": "b",
+        "text": "Disable strict mode"
+      },
+      {
+        "id": "c",
+        "text": "Cast every value to any"
+      },
+      {
+        "id": "d",
+        "text": "Edit the generated bundle"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The response contract belongs in types.ts and must reflect whether the field may be omitted or null.",
+    "remediation": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics"
+    ],
+    "sourceRefs": [
+      "web/src/types.ts",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-009",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "generics-api-client",
+      "jsx-components"
+    ],
+    "prompt": "TypeScript reports Type Element is not assignable to string for a Page intro prop. What is the project pattern?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Change the prop from string to ReactNode when rendered content is intended"
+      },
+      {
+        "id": "b",
+        "text": "Convert the icon to SQL"
+      },
+      {
+        "id": "c",
+        "text": "Ignore the error"
+      },
+      {
+        "id": "d",
+        "text": "Edit node_modules"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "ReactNode accepts text and JSX; the component already renders the prop as content.",
+    "remediation": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics",
+      "docs/foundations.md#jsx",
+      "docs/change-recipes.md#change-the-portal-pilot-and-base-line"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts",
+      "web/src/App.tsx:Page"
+    ]
+  },
+  {
+    "id": "typescript-react-010",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "jsx-components",
+      "state-effects-routing"
+    ],
+    "prompt": "A new page should work when its URL is opened directly in production. Which two pieces are required?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A React Route and the Nginx index.html fallback"
+      },
+      {
+        "id": "b",
+        "text": "A new PostgreSQL database and VAPID key"
+      },
+      {
+        "id": "c",
+        "text": "Only a CSS selector"
+      },
+      {
+        "id": "d",
+        "text": "A PowerPoint slide"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "React selects the page after Nginx serves the SPA entry for a non-file path.",
+    "remediation": [
+      "docs/foundations.md#jsx",
+      "docs/change-recipes.md#change-the-portal-pilot-and-base-line",
+      "docs/architecture.md#application-shell"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:Page",
+      "web/src/App.tsx:App",
+      "web/src/main.tsx"
+    ]
+  },
+  {
+    "id": "typescript-react-011",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "state-effects-routing",
+      "frontend-accessibility"
+    ],
+    "prompt": "A developer stores owner authorization in localStorage to avoid /me calls. Why is this unsafe?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "localStorage is untrusted client-controlled state and cannot grant server authority"
+      },
+      {
+        "id": "b",
+        "text": "localStorage is too fast"
+      },
+      {
+        "id": "c",
+        "text": "React cannot read strings"
+      },
+      {
+        "id": "d",
+        "text": "Owner routes are public"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The server authenticates and authorizes every owner request; client state cannot become an access control.",
+    "remediation": [
+      "docs/architecture.md#application-shell",
+      "docs/architecture.md#routing",
+      "docs/architecture.md#styling"
+    ],
+    "sourceRefs": [
+      "web/src/App.tsx:App",
+      "web/src/main.tsx",
+      "web/src/styles.css",
+      "web/src/notificationState.ts"
+    ]
+  },
+  {
+    "id": "typescript-react-012",
+    "moduleId": "typescript-react",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "frontend-accessibility",
+      "types-interfaces"
+    ],
+    "prompt": "A new animated control has no keyboard label and ignores reduced motion. Which response is correct?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Ship it because color communicates the action"
+      },
+      {
+        "id": "b",
+        "text": "Use a semantic button, accessible name, visible focus, and reduced-motion-compatible behavior"
+      },
+      {
+        "id": "c",
+        "text": "Replace it with an image of text"
+      },
+      {
+        "id": "d",
+        "text": "Move it to site/app-assets"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Project interface changes preserve semantic operation and user motion preferences.",
+    "remediation": [
+      "docs/architecture.md#styling",
+      "docs/features.md#browser-state",
+      "docs/features.md#accessibility"
+    ],
+    "sourceRefs": [
+      "web/src/styles.css",
+      "web/src/notificationState.ts",
+      "web/src/types.ts"
+    ]
+  }
+]

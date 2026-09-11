@@ -1,0 +1,498 @@
+[
+  {
+    "id": "backup-recovery-001",
+    "moduleId": "backup-recovery",
+    "type": "boolean",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "backup-inventory"
+    ],
+    "prompt": "A fresh clone and database dump reproduce api/.env and all published downloads.",
+    "answer": [
+      "false"
+    ],
+    "explanation": "Secrets and operational downloads are outside Git and the database dump and need separate protection.",
+    "remediation": [
+      "docs/backup-and-recovery.md#what-needs-protecting-and-where-it-lives"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-002",
+    "moduleId": "backup-recovery",
+    "type": "short",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "backup-verification"
+    ],
+    "prompt": "Which PostgreSQL command creates the custom-format schema backup?",
+    "answer": [],
+    "accepted": [
+      "pg_dump",
+      "pg dump"
+    ],
+    "explanation": "pg_dump with -n airdash -Fc writes the custom-format backup stream.",
+    "remediation": [
+      "docs/backup-and-recovery.md#release-backup",
+      "docs/backup-and-recovery.md#database-backup"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-003",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "destructive-restore"
+    ],
+    "prompt": "What does --clean in pg_restore do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Drops objects before recreating them"
+      },
+      {
+        "id": "b",
+        "text": "Verifies without change"
+      },
+      {
+        "id": "c",
+        "text": "Builds the frontend"
+      },
+      {
+        "id": "d",
+        "text": "Creates a Git branch"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "A clean restore is destructive to the current schema objects and data.",
+    "remediation": [
+      "docs/backup-and-recovery.md#restore-the-database-schema-from-a-dump"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-004",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "component-recovery"
+    ],
+    "prompt": "Why is docker_web required when recreating dashy-airdash?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Caddy reaches the container by name on that network"
+      },
+      {
+        "id": "b",
+        "text": "PostgreSQL tables require CSS"
+      },
+      {
+        "id": "c",
+        "text": "PM2 runs inside the container"
+      },
+      {
+        "id": "d",
+        "text": "The livery ZIP is a network"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The static container publishes no host port; Caddy needs the shared Docker network.",
+    "remediation": [
+      "docs/backup-and-recovery.md#recover-the-pm2-process",
+      "docs/backup-and-recovery.md#recover-the-static-site-container",
+      "docs/backup-and-recovery.md#recover-the-database-container"
+    ],
+    "sourceRefs": [
+      "api/ecosystem.config.js",
+      "nginx.conf"
+    ]
+  },
+  {
+    "id": "backup-recovery-005",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "disaster-recovery"
+    ],
+    "prompt": "What comes before API startup in complete host recovery?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Tools, repository, secrets, and database state"
+      },
+      {
+        "id": "b",
+        "text": "A pilot report"
+      },
+      {
+        "id": "c",
+        "text": "A News Hub post"
+      },
+      {
+        "id": "d",
+        "text": "Browser localStorage import only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The API depends on runtime, source, configuration, and database readiness.",
+    "remediation": [
+      "docs/backup-and-recovery.md#disaster-recovery-complete-host-loss"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-006",
+    "moduleId": "backup-recovery",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "backup-inventory",
+      "backup-verification",
+      "destructive-restore"
+    ],
+    "prompt": "Select every fact that a valid database backup verification should establish.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The dump file is nonzero"
+      },
+      {
+        "id": "b",
+        "text": "pg_restore --list can read it"
+      },
+      {
+        "id": "c",
+        "text": "Expected airdash table data entries exist"
+      },
+      {
+        "id": "d",
+        "text": "The file is private"
+      },
+      {
+        "id": "e",
+        "text": "A successful frontend type check replaces dump verification"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "explanation": "Integrity, content, and confidentiality are database-backup concerns; frontend checks are unrelated.",
+    "remediation": [
+      "docs/backup-and-recovery.md#what-needs-protecting-and-where-it-lives",
+      "docs/backup-and-recovery.md#release-backup",
+      "docs/backup-and-recovery.md#database-backup"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-007",
+    "moduleId": "backup-recovery",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "component-recovery",
+      "disaster-recovery"
+    ],
+    "prompt": "Order complete-host disaster recovery.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Build frontend and recreate static routing"
+      },
+      {
+        "id": "b",
+        "text": "Install required tools and clone the release"
+      },
+      {
+        "id": "c",
+        "text": "Restore secrets and database"
+      },
+      {
+        "id": "d",
+        "text": "Start and save the API process"
+      },
+      {
+        "id": "e",
+        "text": "Restore downloads and run health checks"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "d",
+      "a",
+      "e"
+    ],
+    "explanation": "Dependencies, source, configuration, and data precede services and publication, followed by operational artifacts and verification.",
+    "remediation": [
+      "docs/backup-and-recovery.md#recover-the-pm2-process",
+      "docs/backup-and-recovery.md#recover-the-static-site-container",
+      "docs/backup-and-recovery.md#recover-the-database-container"
+    ],
+    "sourceRefs": [
+      "api/ecosystem.config.js",
+      "nginx.conf",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-008",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "backup-inventory",
+      "backup-verification"
+    ],
+    "prompt": "Which state is captured by the release backup but not the database dump?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Active site index/bundles and API source"
+      },
+      {
+        "id": "b",
+        "text": "Pilot reports only"
+      },
+      {
+        "id": "c",
+        "text": "PostgreSQL constraints only"
+      },
+      {
+        "id": "d",
+        "text": "Discord OAuth sessions"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The release backup is a fast deployed-code rollback; pg_dump captures schema and data.",
+    "remediation": [
+      "docs/backup-and-recovery.md#what-needs-protecting-and-where-it-lives",
+      "docs/backup-and-recovery.md#release-backup",
+      "docs/backup-and-recovery.md#database-backup"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-009",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "backup-verification",
+      "destructive-restore"
+    ],
+    "prompt": "A custom dump lists only 14 TABLE DATA entries when the documented schema has 15. What should happen?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Treat verification as failed and investigate before relying on the dump"
+      },
+      {
+        "id": "b",
+        "text": "Restore it to production immediately"
+      },
+      {
+        "id": "c",
+        "text": "Change documentation to 14 without source inspection"
+      },
+      {
+        "id": "d",
+        "text": "Delete the current database"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Backup verification must match the expected schema inventory before destructive use.",
+    "remediation": [
+      "docs/backup-and-recovery.md#release-backup",
+      "docs/backup-and-recovery.md#database-backup",
+      "docs/backup-and-recovery.md#restore-the-database-schema-from-a-dump"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-010",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "destructive-restore",
+      "component-recovery"
+    ],
+    "prompt": "dashy-airdash is missing but site files are intact. What recovery class applies?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Recreate the stateless Nginx container with exact mounts, network, and restart policy"
+      },
+      {
+        "id": "b",
+        "text": "Restore PostgreSQL"
+      },
+      {
+        "id": "c",
+        "text": "Rotate VAPID keys"
+      },
+      {
+        "id": "d",
+        "text": "Rebuild Git history"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The static container has no durable state; host files and exact runtime settings recreate it.",
+    "remediation": [
+      "docs/backup-and-recovery.md#restore-the-database-schema-from-a-dump",
+      "docs/backup-and-recovery.md#recover-the-pm2-process",
+      "docs/backup-and-recovery.md#recover-the-static-site-container"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md",
+      "api/ecosystem.config.js",
+      "nginx.conf"
+    ]
+  },
+  {
+    "id": "backup-recovery-011",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "component-recovery",
+      "disaster-recovery"
+    ],
+    "prompt": "The database container was restarted and now passes pg_isready, but the API is errored. What next?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Read API logs, restart airdash-api, and verify public health"
+      },
+      {
+        "id": "b",
+        "text": "Delete docker_pgdata"
+      },
+      {
+        "id": "c",
+        "text": "Restore a week-old dump first"
+      },
+      {
+        "id": "d",
+        "text": "Reload Nginx only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The known pool crash and PM2 limit require explicit API recovery after database readiness.",
+    "remediation": [
+      "docs/backup-and-recovery.md#recover-the-pm2-process",
+      "docs/backup-and-recovery.md#recover-the-static-site-container",
+      "docs/backup-and-recovery.md#recover-the-database-container"
+    ],
+    "sourceRefs": [
+      "api/ecosystem.config.js",
+      "nginx.conf",
+      "docs/backup-and-recovery.md"
+    ]
+  },
+  {
+    "id": "backup-recovery-012",
+    "moduleId": "backup-recovery",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": false,
+    "concepts": [
+      "disaster-recovery",
+      "backup-inventory"
+    ],
+    "prompt": "A maintainer wants to test an old dump by restoring it into production at noon. What is the correct response?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Refuse; inspect the dump or restore into an isolated database, and obtain owner approval for any destructive production restore"
+      },
+      {
+        "id": "b",
+        "text": "Proceed because --if-exists is safe"
+      },
+      {
+        "id": "c",
+        "text": "Stop only Nginx"
+      },
+      {
+        "id": "d",
+        "text": "Use git restore instead"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Production restore replaces current data and is never an exploratory action.",
+    "remediation": [
+      "docs/backup-and-recovery.md#disaster-recovery-complete-host-loss",
+      "docs/backup-and-recovery.md#what-needs-protecting-and-where-it-lives"
+    ],
+    "sourceRefs": [
+      "docs/backup-and-recovery.md",
+      ".gitignore"
+    ]
+  }
+]

@@ -162,6 +162,32 @@ The PowerShell exporter requires an interactive Windows desktop session with Pow
 
 `site/downloads/` and `api/.env` are not captured by the release backup or the database dump. See [backup and recovery](backup-and-recovery.md#what-needs-protecting-and-where-it-lives).
 
+## Interactive academy
+
+### Academy evidence is not professional certification
+
+The academy can record answers, confidence, delayed-review dates, fixed checker results, learner-entered evidence, examination scores, and a stated human review. It cannot independently prove who performed the work, prevent outside help, observe months of real team and production behavior, or guarantee performance under every condition. The interface therefore uses evidence levels rather than professional titles and explicitly prohibits accreditation or certainty claims. The strongest result is retained and integrated airDash-specific evidence under the [mastery model](../academy/MASTERY_MODEL.md), supplemented by repeated independently reviewed real work.
+
+### Local progress is user-controlled
+
+Progress lives in browser `localStorage` and exports as editable JSON. Import validation rejects malformed structure, unknown IDs, impossible scores, and future timestamps, but a user controls the browser and system clock and can alter storage. Progress is a learning record, not tamper-proof certification. There is no login, signature, central transcript, or multi-device synchronization; transfer requires explicit export and import.
+
+### Human-reviewed evidence is asserted, not authenticated
+
+Inspected labs and capstone criteria require an identified reviewer name and confirmation, but the local application cannot authenticate that reviewer or judge artifact quality. A real maintainer must inspect the referenced diff, commands, explanations, and pull request outside the application before relying on integrated evidence.
+
+### The question bank is finite
+
+The bank contains 252 authored questions with deterministic variation and balanced sampling. Repeated exposure can produce answer memorization. Higher-order scenarios, confidence calibration, practical checks, cumulative mixing, delayed intervals, and capstone explanation reduce but do not eliminate that effect. Maintainers should add or rotate questions when behavior changes and periodically review distractor quality and item statistics; the application does not yet calculate psychometric discrimination.
+
+### Practical checks are environment-dependent
+
+The checker registry never accepts arbitrary commands and avoids databases, application endpoints, process restarts, Git mutation, and secrets. Checks that use API or frontend package scripts are blocked until dependencies are installed. Windows PowerPoint, simulator package installation, real browser assistive technology, production deployment, and destructive recovery require inspected or self-attested evidence because they cannot be safely automated by the local server.
+
+### Curriculum coverage must follow implementation changes
+
+The validator proves structural coverage and source-reference existence, not semantic truth. A changed route, table, setting, workflow, security boundary, deployment, or recovery procedure can make a formerly correct question stale. The [maintenance triggers](README.md#maintenance-triggers) require academy updates in the same pull request, but this is a human process rather than automatic semantic extraction.
+
 ## Documentation
 
 ### Concurrent edits on the production working tree

@@ -1,0 +1,538 @@
+[
+  {
+    "id": "javascript-node-001",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "js-values-functions"
+    ],
+    "prompt": "What does a JavaScript function return when execution reaches an explicit return value?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The function name"
+      },
+      {
+        "id": "b",
+        "text": "That value"
+      },
+      {
+        "id": "c",
+        "text": "Every local variable"
+      },
+      {
+        "id": "d",
+        "text": "A PostgreSQL row automatically"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "return ends the function and supplies its result.",
+    "remediation": [
+      "docs/foundations.md#values-types-variables-and-constants",
+      "docs/foundations.md#functions-parameters-and-return-values"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:clean"
+    ]
+  },
+  {
+    "id": "javascript-node-002",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "objects-control"
+    ],
+    "prompt": "Which literal creates an ordered collection?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "{}"
+      },
+      {
+        "id": "b",
+        "text": "[]"
+      },
+      {
+        "id": "c",
+        "text": "``"
+      },
+      {
+        "id": "d",
+        "text": "=>"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Square brackets create an array; braces create an object.",
+    "remediation": [
+      "docs/foundations.md#objects-arrays-and-destructuring",
+      "docs/foundations.md#control-flow"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:loadAccount"
+    ]
+  },
+  {
+    "id": "javascript-node-003",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "modules-runtime"
+    ],
+    "prompt": "What does a relative import beginning ./ resolve?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "An installed npm package only"
+      },
+      {
+        "id": "b",
+        "text": "A project module relative to the importing file"
+      },
+      {
+        "id": "c",
+        "text": "The browser home page"
+      },
+      {
+        "id": "d",
+        "text": "The database schema"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Relative specifiers locate project modules; bare names resolve packages.",
+    "remediation": [
+      "docs/foundations.md#modules-imports-and-exports",
+      "docs/foundations.md#compilation-interpretation-and-runtime-execution"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "javascript-node-004",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "async-promises"
+    ],
+    "prompt": "What does await pause?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Every request in Node.js"
+      },
+      {
+        "id": "b",
+        "text": "Only the containing async function until the promise settles"
+      },
+      {
+        "id": "c",
+        "text": "The operating system"
+      },
+      {
+        "id": "d",
+        "text": "PostgreSQL permanently"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The event loop can continue other work while the async function waits.",
+    "remediation": [
+      "docs/foundations.md#asynchronous-behavior-promises-and-asyncawait"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:authenticatedUser",
+      "api/src/server.js:loadAccount"
+    ]
+  },
+  {
+    "id": "javascript-node-005",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "errors-language"
+    ],
+    "prompt": "What does value ?? default choose?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "default whenever value is false"
+      },
+      {
+        "id": "b",
+        "text": "default only when value is null or undefined"
+      },
+      {
+        "id": "c",
+        "text": "value only when it is a number"
+      },
+      {
+        "id": "d",
+        "text": "Both values as an array"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Nullish coalescing preserves valid false, zero, and empty-string values.",
+    "remediation": [
+      "docs/foundations.md#error-handling",
+      "docs/foundations.md#template-strings-and-string-formatting"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "javascript-node-006",
+    "moduleId": "javascript-node",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "js-values-functions",
+      "objects-control",
+      "modules-runtime"
+    ],
+    "prompt": "Select every statement that describes clean(value, maximum).",
+    "choices": [
+      {
+        "id": "a",
+        "text": "It checks that value is a string"
+      },
+      {
+        "id": "b",
+        "text": "It trims surrounding whitespace"
+      },
+      {
+        "id": "c",
+        "text": "It limits length with slice"
+      },
+      {
+        "id": "d",
+        "text": "It executes the value as code"
+      },
+      {
+        "id": "e",
+        "text": "It returns an empty string for non-strings"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The helper normalizes bounded text and never evaluates it.",
+    "remediation": [
+      "docs/foundations.md#values-types-variables-and-constants",
+      "docs/foundations.md#functions-parameters-and-return-values",
+      "docs/foundations.md#objects-arrays-and-destructuring"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:clean",
+      "api/src/server.js:loadAccount",
+      "api/package.json",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "javascript-node-007",
+    "moduleId": "javascript-node",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "async-promises",
+      "errors-language"
+    ],
+    "prompt": "Order the authenticatedUser success path.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Parse the JSON response"
+      },
+      {
+        "id": "b",
+        "text": "Return null immediately when no cookie exists"
+      },
+      {
+        "id": "c",
+        "text": "Fetch AUTH_URL with the cookie and timeout"
+      },
+      {
+        "id": "d",
+        "text": "Return body.user when it has an id"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "a",
+      "d"
+    ],
+    "explanation": "The guard runs first, then bounded fetch, parse, and identity validation.",
+    "remediation": [
+      "docs/foundations.md#asynchronous-behavior-promises-and-asyncawait",
+      "docs/foundations.md#error-handling",
+      "docs/foundations.md#template-strings-and-string-formatting"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:authenticatedUser",
+      "api/src/server.js:loadAccount",
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "javascript-node-008",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "js-values-functions",
+      "objects-control"
+    ],
+    "prompt": "A helper should return the first pilot row or null. Which expression matches project style?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "result.rows[0] ?? null"
+      },
+      {
+        "id": "b",
+        "text": "result.rows + null"
+      },
+      {
+        "id": "c",
+        "text": "eval(result)"
+      },
+      {
+        "id": "d",
+        "text": "throw result.rows"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The first array element may be undefined; nullish coalescing provides the explicit absence value.",
+    "remediation": [
+      "docs/foundations.md#values-types-variables-and-constants",
+      "docs/foundations.md#functions-parameters-and-return-values",
+      "docs/foundations.md#objects-arrays-and-destructuring"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:clean",
+      "api/src/server.js:loadAccount"
+    ]
+  },
+  {
+    "id": "javascript-node-009",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "objects-control",
+      "modules-runtime"
+    ],
+    "prompt": "Node reports ERR_MODULE_NOT_FOUND for ./database. The file exists as database.js and the API uses ESM. What is the likely fix?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Add the explicit .js extension to the relative import"
+      },
+      {
+        "id": "b",
+        "text": "Rename package.json"
+      },
+      {
+        "id": "c",
+        "text": "Convert the SQL to CSS"
+      },
+      {
+        "id": "d",
+        "text": "Use a global variable"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Node ESM relative imports in the API include the file extension.",
+    "remediation": [
+      "docs/foundations.md#objects-arrays-and-destructuring",
+      "docs/foundations.md#control-flow",
+      "docs/foundations.md#modules-imports-and-exports"
+    ],
+    "sourceRefs": [
+      "api/src/server.js:loadAccount",
+      "api/package.json",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "javascript-node-010",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "modules-runtime",
+      "async-promises"
+    ],
+    "prompt": "Three database reads do not depend on one another. Which mechanism best matches loadAccount?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Await each sequentially without reason"
+      },
+      {
+        "id": "b",
+        "text": "Promise.all over the three query promises"
+      },
+      {
+        "id": "c",
+        "text": "A busy loop"
+      },
+      {
+        "id": "d",
+        "text": "process.exit"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Promise.all allows independent I/O to proceed concurrently and returns results in input order.",
+    "remediation": [
+      "docs/foundations.md#modules-imports-and-exports",
+      "docs/foundations.md#compilation-interpretation-and-runtime-execution",
+      "docs/foundations.md#asynchronous-behavior-promises-and-asyncawait"
+    ],
+    "sourceRefs": [
+      "api/package.json",
+      "api/src/server.js",
+      "api/src/auth.js:authenticatedUser",
+      "api/src/server.js:loadAccount"
+    ]
+  },
+  {
+    "id": "javascript-node-011",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "async-promises",
+      "errors-language"
+    ],
+    "prompt": "An error is unexpected and has no status property. What should the API return?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The full stack and database URL"
+      },
+      {
+        "id": "b",
+        "text": "A generic 500 message while logging safe context"
+      },
+      {
+        "id": "c",
+        "text": "200 with null"
+      },
+      {
+        "id": "d",
+        "text": "The cookie"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Unexpected internals are not exposed to the client; deliberate status errors may use their readable messages.",
+    "remediation": [
+      "docs/foundations.md#asynchronous-behavior-promises-and-asyncawait",
+      "docs/foundations.md#error-handling",
+      "docs/foundations.md#template-strings-and-string-formatting"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js:authenticatedUser",
+      "api/src/server.js:loadAccount",
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "javascript-node-012",
+    "moduleId": "javascript-node",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "errors-language",
+      "js-values-functions"
+    ],
+    "prompt": "A default port must allow 0 only if explicitly supplied but use 3006 when undefined. Which operator avoids treating 0 as missing?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "||"
+      },
+      {
+        "id": "b",
+        "text": "??"
+      },
+      {
+        "id": "c",
+        "text": "&&"
+      },
+      {
+        "id": "d",
+        "text": "!"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Nullish coalescing falls back only for null or undefined, unlike || which also treats 0 as false.",
+    "remediation": [
+      "docs/foundations.md#error-handling",
+      "docs/foundations.md#template-strings-and-string-formatting",
+      "docs/foundations.md#values-types-variables-and-constants"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "api/src/auth.js",
+      "api/src/server.js:clean"
+    ]
+  }
+]

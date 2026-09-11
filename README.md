@@ -15,14 +15,15 @@ A virtual airline is a hobby organization whose members fly simulated airline ro
 - In-app and Web Push notifications backed by a server-side notification history.
 - Owner administration for applications, reports, pilots, bases, aircraft, settings, and an append-only audit log.
 - MSFS 2020 and MSFS 2024 livery packages and a GSX ground handling package.
+- A local interactive academy with 21 prerequisite modules, 105 concepts, 252 authored questions, practical checks, cumulative examinations, delayed review, and a human-reviewed capstone.
 
 ## Audience
 
-The documentation is written for four readers at once: a complete beginner who has not yet used a shell, Git, or a database; a new contributor who needs a reliable path from clone to pull request; an experienced developer who needs searchable reference material; and the operator who runs production. Start with the [documentation index](docs/README.md) and then the [start-here guide](docs/start-here.md), which gives a reading order for each reader.
+The documentation is written for four readers at once: a complete beginner who has not yet used a shell, Git, or a database; a new contributor who needs a reliable path from clone to pull request; an experienced developer who needs searchable reference material; and the operator who runs production. Complete beginners should start the [interactive airDash Academy](academy/README.md), which uses the documentation as its canonical study material and records recall, application, practical, and delayed-retention evidence. Other readers can start with the [documentation index](docs/README.md) and [start-here guide](docs/start-here.md).
 
 ## Project status
 
-The platform is in production for a single airline with one operator. It has no staging environment, no continuous integration service, and no automated end-to-end tests. The API is a single Node.js process, and the frontend is a single-page application built with Vite. The [known limitations](docs/known-limitations.md) page lists every constraint that changes how you should work.
+The platform is in production for a single airline with one operator. It has no staging environment, no continuous integration service, and no automated end-to-end tests. The API is a single Node.js process, and the frontend is a single-page application built with Vite. The academy is a separate local-only application: it is not deployed to `air.dashydoggo.com`, does not require production access, and does not confer accreditation or guarantee professional competence. The [known limitations](docs/known-limitations.md) page lists every constraint that changes how you should work.
 
 ## Prerequisites
 
@@ -48,16 +49,21 @@ npm --prefix api run check
 npm --prefix api run test:streaks
 npm --prefix api run test:flight-outcomes
 npm --prefix web run typecheck
+npm --prefix academy run validate
+npm --prefix academy test
+npm --prefix academy start
 ```
 
-Expected results: `npm ci` prints an `added N packages` summary for each directory, `check` prints nothing after the script banner, the two tests print `streak calculations verified` and `flight outcomes, SimBrief metadata, landing rates, recovery ferries, and gate assignment verified`, and `typecheck` prints nothing after the script banner. Any line containing `error` is a failure.
+Expected results: `npm ci` prints an `added N packages` summary for each directory, `check` prints nothing after the script banner, the two API tests print `streak calculations verified` and `flight outcomes, SimBrief metadata, landing rates, recovery ferries, and gate assignment verified`, `typecheck` prints nothing after its script banner, the academy validator prints `airDash Academy curriculum verified`, and all academy tests pass. The last command prints `airDash Academy listening on http://127.0.0.1:4174/academy/`; open that address and press Ctrl+C in the terminal when finished. Any validation command with a nonzero exit code is a failure.
 
-To run the application locally, continue with [installation](docs/installation.md) and then [local development](docs/local-development.md), which explain PostgreSQL setup, the `api/.env` file, the mock authentication service, and the Vite development server.
+The academy itself has no third-party dependencies. Some practical checks require the API and frontend dependencies installed by the two `npm ci` commands. To run the airDash application locally as well, continue with [installation](docs/installation.md) and [local development](docs/local-development.md), which explain PostgreSQL, `api/.env`, mock authentication, and Vite.
 
 ## Documentation
 
 | Subject | Page |
 |---|---|
+| Interactive zero-to-contributor academy | [academy/README.md](academy/README.md) |
+| Evidence levels, gates, retention schedule, and proof limits | [academy/MASTERY_MODEL.md](academy/MASTERY_MODEL.md) |
 | Index and maintenance triggers | [docs/README.md](docs/README.md) |
 | Reading paths by audience | [docs/start-here.md](docs/start-here.md) |
 | Beginner curriculum | [docs/learning-path.md](docs/learning-path.md) and [docs/foundations.md](docs/foundations.md) |

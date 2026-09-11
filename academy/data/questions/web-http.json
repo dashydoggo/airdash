@@ -1,0 +1,538 @@
+[
+  {
+    "id": "web-http-001",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "network-foundations"
+    ],
+    "prompt": "What does DNS provide to a client?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "A mapping from a domain name to an address"
+      },
+      {
+        "id": "b",
+        "text": "A database transaction"
+      },
+      {
+        "id": "c",
+        "text": "A React component"
+      },
+      {
+        "id": "d",
+        "text": "A Git commit"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "DNS resolves a human-readable domain name to an address used for the network connection.",
+    "remediation": [
+      "docs/foundations.md#clients-servers-addresses-and-names"
+    ],
+    "sourceRefs": [
+      "docs/architecture.md#production-runtime-topology"
+    ]
+  },
+  {
+    "id": "web-http-002",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "tls-http"
+    ],
+    "prompt": "Where does production TLS terminate for air.dashydoggo.com?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The browser localStorage"
+      },
+      {
+        "id": "b",
+        "text": "The Caddy container"
+      },
+      {
+        "id": "c",
+        "text": "The PostgreSQL table"
+      },
+      {
+        "id": "d",
+        "text": "The React component"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Caddy holds the certificate, decrypts HTTPS, and forwards same-host HTTP.",
+    "remediation": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "nginx.conf"
+    ]
+  },
+  {
+    "id": "web-http-003",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "methods-status-json"
+    ],
+    "prompt": "Which status code means a request conflicts with current state?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "200"
+      },
+      {
+        "id": "b",
+        "text": "302"
+      },
+      {
+        "id": "c",
+        "text": "409"
+      },
+      {
+        "id": "d",
+        "text": "503"
+      }
+    ],
+    "answer": [
+      "c"
+    ],
+    "explanation": "The API uses 409 for booking and other state conflicts.",
+    "remediation": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/foundations.md#json"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "web-http-004",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "cookies-origin"
+    ],
+    "prompt": "Which header lets requireAirDashOrigin identify the page that initiated a mutation?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Origin"
+      },
+      {
+        "id": "b",
+        "text": "Accept-Language"
+      },
+      {
+        "id": "c",
+        "text": "ETag"
+      },
+      {
+        "id": "d",
+        "text": "Content-Length only"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The browser-supplied Origin is compared with the approved production and local origins.",
+    "remediation": [
+      "docs/foundations.md#cookies-and-sessions",
+      "docs/foundations.md#cross-origin-behavior"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "web-http-005",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "api-semantics-routing"
+    ],
+    "prompt": "What Express path receives a browser request to /api/health in production?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "/api/health"
+      },
+      {
+        "id": "b",
+        "text": "/health"
+      },
+      {
+        "id": "c",
+        "text": "/"
+      },
+      {
+        "id": "d",
+        "text": "/api"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Caddy strips the /api prefix before forwarding to Express.",
+    "remediation": [
+      "docs/foundations.md#the-airdash-request-lifecycle",
+      "docs/foundations.md#pagination-idempotency-and-rate-limiting"
+    ],
+    "sourceRefs": [
+      "web/vite.config.ts",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "web-http-006",
+    "moduleId": "web-http",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "network-foundations",
+      "tls-http",
+      "methods-status-json"
+    ],
+    "prompt": "Select every component of an HTTP exchange.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Request method and path"
+      },
+      {
+        "id": "b",
+        "text": "Request headers and optional body"
+      },
+      {
+        "id": "c",
+        "text": "Response status, headers, and optional body"
+      },
+      {
+        "id": "d",
+        "text": "A required Git commit"
+      },
+      {
+        "id": "e",
+        "text": "A required Docker volume"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c"
+    ],
+    "explanation": "HTTP defines request and response metadata and content; Git and Docker are unrelated to the wire exchange.",
+    "remediation": [
+      "docs/foundations.md#clients-servers-addresses-and-names",
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceRefs": [
+      "docs/architecture.md#production-runtime-topology",
+      "api/src/server.js",
+      "nginx.conf",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "web-http-007",
+    "moduleId": "web-http",
+    "type": "order",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "cookies-origin",
+      "api-semantics-routing"
+    ],
+    "prompt": "Order the production /api/me path.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Express matches GET /me"
+      },
+      {
+        "id": "b",
+        "text": "Browser requests HTTPS /api/me"
+      },
+      {
+        "id": "c",
+        "text": "Caddy terminates TLS and strips /api"
+      },
+      {
+        "id": "d",
+        "text": "The API client parses the JSON response"
+      }
+    ],
+    "answer": [
+      "b",
+      "c",
+      "a",
+      "d"
+    ],
+    "explanation": "The edge transforms the public path before Express, then the response returns to the client wrapper.",
+    "remediation": [
+      "docs/foundations.md#cookies-and-sessions",
+      "docs/foundations.md#cross-origin-behavior",
+      "docs/foundations.md#the-airdash-request-lifecycle"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/src/api.ts",
+      "web/vite.config.ts",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "web-http-008",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "network-foundations",
+      "tls-http"
+    ],
+    "prompt": "curl reports connection refused before any HTTP status. Which class of failure is most likely?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "No process is listening on the target address and port"
+      },
+      {
+        "id": "b",
+        "text": "The API returned a 400 JSON body"
+      },
+      {
+        "id": "c",
+        "text": "React escaped a string"
+      },
+      {
+        "id": "d",
+        "text": "A SQL CHECK rejected one row"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Connection refusal occurs below HTTP, before a server can send a status.",
+    "remediation": [
+      "docs/foundations.md#clients-servers-addresses-and-names",
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceRefs": [
+      "docs/architecture.md#production-runtime-topology",
+      "api/src/server.js",
+      "nginx.conf"
+    ]
+  },
+  {
+    "id": "web-http-009",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "tls-http",
+      "methods-status-json"
+    ],
+    "prompt": "The API returns 503 with database false from /health. What does that prove?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The frontend bundle is correct"
+      },
+      {
+        "id": "b",
+        "text": "The API answered but SELECT 1 failed"
+      },
+      {
+        "id": "c",
+        "text": "The owner cookie expired"
+      },
+      {
+        "id": "d",
+        "text": "Caddy did not route the request"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A JSON health response proves the request reached the handler; database false scopes failure to its query.",
+    "remediation": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/security.md#encryption-in-transit-and-at-rest",
+      "docs/foundations.md#json"
+    ],
+    "sourceRefs": [
+      "api/src/server.js",
+      "nginx.conf",
+      "web/src/api.ts"
+    ]
+  },
+  {
+    "id": "web-http-010",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "methods-status-json",
+      "cookies-origin"
+    ],
+    "prompt": "A script calls POST /notifications/read locally with a valid mock cookie but no Origin header. What response is expected?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "200 because cookies override Origin"
+      },
+      {
+        "id": "b",
+        "text": "403 Invalid request origin"
+      },
+      {
+        "id": "c",
+        "text": "404 Press release not found"
+      },
+      {
+        "id": "d",
+        "text": "302 to a livery"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Global origin validation runs before route authentication for non-read methods.",
+    "remediation": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/foundations.md#json",
+      "docs/foundations.md#cookies-and-sessions"
+    ],
+    "sourceRefs": [
+      "web/src/api.ts",
+      "api/src/server.js",
+      "api/src/auth.js"
+    ]
+  },
+  {
+    "id": "web-http-011",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "cookies-origin",
+      "api-semantics-routing"
+    ],
+    "prompt": "Production /api/health works but Vite says Cannot GET /api/health. Which correction matches the verified defect?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Add a proxy rewrite that removes /^\\/api/"
+      },
+      {
+        "id": "b",
+        "text": "Add an airDash database table named api"
+      },
+      {
+        "id": "c",
+        "text": "Disable TLS production-wide"
+      },
+      {
+        "id": "d",
+        "text": "Change the route to a CSS selector"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Production Caddy strips the prefix; the committed Vite shorthand forwards it unchanged.",
+    "remediation": [
+      "docs/foundations.md#cookies-and-sessions",
+      "docs/foundations.md#cross-origin-behavior",
+      "docs/foundations.md#the-airdash-request-lifecycle"
+    ],
+    "sourceRefs": [
+      "api/src/auth.js",
+      "web/src/api.ts",
+      "web/vite.config.ts",
+      "api/src/server.js"
+    ]
+  },
+  {
+    "id": "web-http-012",
+    "moduleId": "web-http",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 5,
+    "critical": false,
+    "concepts": [
+      "api-semantics-routing",
+      "network-foundations"
+    ],
+    "prompt": "A third-party script wants to repeat POST /assignments after a timeout. What must it determine before retrying?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Whether the operation is idempotent or can return an existing booking"
+      },
+      {
+        "id": "b",
+        "text": "Whether the CSS loaded"
+      },
+      {
+        "id": "c",
+        "text": "Whether DNS uses IPv6 only"
+      },
+      {
+        "id": "d",
+        "text": "Whether Git has a tag"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Retries of mutations require idempotency reasoning; this route deliberately returns an existing active booking for the same key.",
+    "remediation": [
+      "docs/foundations.md#the-airdash-request-lifecycle",
+      "docs/foundations.md#pagination-idempotency-and-rate-limiting",
+      "docs/foundations.md#clients-servers-addresses-and-names"
+    ],
+    "sourceRefs": [
+      "web/vite.config.ts",
+      "api/src/server.js",
+      "docs/architecture.md#production-runtime-topology"
+    ]
+  }
+]

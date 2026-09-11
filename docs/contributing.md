@@ -78,7 +78,9 @@ Run everything that applies, and paste the output summary into the pull request.
 [ ] npm --prefix web run typecheck            (any frontend change)
 [ ] Isolated build and marker check           (any frontend change)
 [ ] Visual check in a browser                 (any user-visible change)
-[ ] Documentation updated per the maintenance triggers
+[ ] npm --prefix academy run validate         (any behavior, documentation, or academy change)
+[ ] npm --prefix academy test                 (any academy engine, checker, schema, or data change)
+[ ] Documentation and academy coverage updated per the maintenance triggers
 [ ] git status shows only intended files; no .env, site/, or node_modules/
 ```
 
@@ -87,6 +89,8 @@ The procedures are in [testing](testing.md) and [local development](local-develo
 ## Documentation requirements
 
 The [maintenance triggers](README.md#maintenance-triggers) table lists which page must change for which kind of code change. A pull request that adds a route without updating the [API reference](api-reference.md), or a column without updating the [data model](data-model.md), is incomplete. Documentation follows the [style standard](documentation-style.md).
+
+The interactive academy is another maintained contract, not generated filler. A changed concept requires the matching object in `academy/data/concepts.json`, at least two recall or explanation and two higher-order mappings in `academy/data/questions/<module>.json`, practical evidence when the change affects execution, updated cumulative critical coverage when applicable, and current source references. A new automated lab may name only a checker implemented in `academy/checks.mjs`; browser or JSON input must never become a command. Run the academy validator and tests before review. The validator must be fixed by restoring coverage or correctness, not by weakening the mastery thresholds.
 
 ## Pull requests
 
@@ -160,7 +164,7 @@ app.get("/live", async (_req, res) => {
 })
 ```
 
-Only the three lines that build `flights` and the `res.json` argument change; the SQL is untouched. `publicStreaks` and `calculatePilotStreaks` are already imported at the top of `server.js`. This example is newly proposed for the exercise and is not in the repository. It was validated while writing this page in an isolated checkout of commit `5f2e27c`: the syntax check, both test scripts, and the type check passed with the change applied, and the smoke test in step 5 returned `0 []` against a database with no active flights.
+Only the three lines that build `flights` and the `res.json` argument change; the SQL is untouched. `publicStreaks` and `calculatePilotStreaks` are already imported at the top of `server.js`. This example is newly proposed for the exercise and is not in the repository. The implementation fragment was validated in an isolated checkout of source commit `5f2e27c`: syntax, both API tests, type check, and a smoke request passed. The expanded seven-file exercise, including concept evidence, a new authored question, both count assertions, academy validation, and all 47 academy tests, was validated again during academy delivery.
 
 Expected output: each object in `flights` gains an integer `continuity_streak`. Side effects: one additional query per active flight, at most 50. Error behavior: a database error rejects the promise and Express returns `500`, the same as today. Security: no new input is read from the request.
 
@@ -196,13 +200,22 @@ npm --prefix api run check
 npm --prefix api run test:streaks
 npm --prefix api run test:flight-outcomes
 npm --prefix web run typecheck
+npm --prefix academy run validate
+npm --prefix academy test
 ```
 
-All four must succeed. Then the smoke test from step 5.
+All six must succeed. Then run the smoke test from step 5.
 
-### Step 7: Update documentation
+### Step 7: Update documentation and academy coverage
 
 Per the [maintenance triggers](README.md#maintenance-triggers), a changed route updates the [API reference](api-reference.md): add `continuity_streak` to the `GET /live` success row. Because the field is user-visible if the map later shows it, add one sentence to [features](features.md#network-map-map) only when the frontend uses it; for now the API reference is sufficient. Follow the [style standard](documentation-style.md).
+
+Update learning coverage as part of the same contract change:
+
+1. Add `api/src/server.js:app.get(\"/live\")` to `sourceEvidence` for `map-external` in `academy/data/concepts.json`.
+2. Add a unique higher-order question to `academy/data/questions/integrations-notifications.json` that asks the learner to classify `continuity_streak` as public derived data, identify the extra per-flight query cost, and distinguish backward-compatible addition from exposing a private identifier. Include remediation and source references according to [academy schema](../academy/SCHEMA.md#question-object).
+3. Update the expected question count in both `academy/test/validator.test.mjs` and `academy/test/server.test.mjs` from 252 to 253. These explicit assertions make an intentional bank-size change reviewable.
+4. Run the academy validator and tests. Do not reduce a coverage threshold to make an incomplete question pass.
 
 ### Step 8: Review the diff
 
@@ -211,12 +224,14 @@ git status
 git diff
 ```
 
-Confirm exactly three files changed: `api/src/server.js`, `web/src/types.ts`, `docs/api-reference.md`. Confirm no `.env`, no `site/`, no stray debugging output, and no unrelated formatting changes. Read the diff as a reviewer would: is every line necessary?
+Confirm exactly seven files changed: `api/src/server.js`, `web/src/types.ts`, `docs/api-reference.md`, `academy/data/concepts.json`, `academy/data/questions/integrations-notifications.json`, `academy/test/validator.test.mjs`, and `academy/test/server.test.mjs`. Confirm no `.env`, no `site/`, no stray debugging output, and no unrelated formatting changes. Read the diff as a reviewer would: is every line necessary?
 
 ### Step 9: Commit and prepare the pull request
 
 ```bash
-git add api/src/server.js web/src/types.ts docs/api-reference.md
+git add api/src/server.js web/src/types.ts docs/api-reference.md \
+  academy/data/concepts.json academy/data/questions/integrations-notifications.json \
+  academy/test/validator.test.mjs academy/test/server.test.mjs
 git commit -m "Add continuity streak to the public live flights payload"
 ```
 
@@ -224,8 +239,8 @@ Draft the pull request description using the template in [pull requests](#pull-r
 
 - Summary: adds `continuity_streak` to each `/live` row so maps and the exporter can show streaks; one extra query per active flight.
 - Classification: API; restart required; no build (type-only frontend change); no migration.
-- Validation: the four commands with their output lines and the smoke test output.
-- Documentation: `docs/api-reference.md`.
+- Validation: the six commands with their output lines and the smoke test output.
+- Documentation and learning coverage: `docs/api-reference.md`, `academy/data/concepts.json`, and the integrations question bank.
 - Risks and rollback: up to 50 additional queries per `/live` call; rollback is an API source revert and restart.
 - Not done: the map does not yet display the value.
 

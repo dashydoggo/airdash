@@ -1,0 +1,275 @@
+[
+  {
+    "id": "capstone-airdash-contributor-operator",
+    "title": "airDash contributor and operator capstone",
+    "summary": "Deliver a small reviewed change and diagnose an operational incident while preserving security, data, and recovery boundaries.",
+    "prerequisiteExamId": "exam-final-integrated",
+    "requiredModules": [
+      "orientation",
+      "shell-files",
+      "tooling-installation",
+      "git-github",
+      "javascript-node",
+      "typescript-react",
+      "dependencies-build",
+      "web-http",
+      "api-express-auth",
+      "postgres-data",
+      "architecture-runtime",
+      "repository-navigation",
+      "product-domain",
+      "integrations-notifications",
+      "testing-quality",
+      "debugging-diagnosis",
+      "security",
+      "deployment-release",
+      "operations-observability",
+      "backup-recovery",
+      "contribution-capstone"
+    ],
+    "artifacts": [
+      {
+        "id": "problem",
+        "title": "Problem statement and non-goals",
+        "evidence": "A concise Markdown path or note."
+      },
+      {
+        "id": "trace",
+        "title": "Source-to-side-effect trace",
+        "evidence": "Paths, symbols, route, tables, and audit action."
+      },
+      {
+        "id": "implementation",
+        "title": "Controlled implementation",
+        "evidence": "Branch and diff or commit hash."
+      },
+      {
+        "id": "tests",
+        "title": "Test and validation evidence",
+        "evidence": "Commands, exit codes, and observations."
+      },
+      {
+        "id": "documentation",
+        "title": "Canonical documentation update",
+        "evidence": "Changed documentation paths and maintenance triggers."
+      },
+      {
+        "id": "risk",
+        "title": "Security, data, deployment, and rollback analysis",
+        "evidence": "Threat boundary, data invariant, change class, and rollback."
+      },
+      {
+        "id": "incident",
+        "title": "Incident diagnosis exercise",
+        "evidence": "Symptom, hypotheses, read-only evidence, correction, and verification."
+      },
+      {
+        "id": "review",
+        "title": "Human review record",
+        "evidence": "Pull request or reviewer notes."
+      }
+    ],
+    "rubric": [
+      {
+        "id": "scope",
+        "description": "Defines the user problem, requirements, non-goals, and evidence standard.",
+        "points": 8,
+        "critical": false,
+        "concepts": [
+          "project-purpose",
+          "actors-roles",
+          "core-workflow",
+          "scope-status",
+          "canonical-docs"
+        ],
+        "evidence": "Problem statement and acceptance criteria."
+      },
+      {
+        "id": "environment-git",
+        "description": "Uses the shell, reproducible tools, and Git workflow safely.",
+        "points": 10,
+        "critical": true,
+        "concepts": [
+          "filesystem-paths",
+          "permissions-processes",
+          "streams-exit-codes",
+          "ports-environment",
+          "shell-safety",
+          "toolchain-versions",
+          "dependency-install",
+          "local-postgres",
+          "environment-file",
+          "local-processes",
+          "git-state",
+          "branches-remotes",
+          "diff-history",
+          "review-conflicts",
+          "git-recovery"
+        ],
+        "evidence": "Tool versions, branch, status, and specific staging evidence."
+      },
+      {
+        "id": "language-web",
+        "description": "Explains the relevant JavaScript, TypeScript, dependency, build, and HTTP mechanics.",
+        "points": 10,
+        "critical": false,
+        "concepts": [
+          "js-values-functions",
+          "objects-control",
+          "modules-runtime",
+          "async-promises",
+          "errors-language",
+          "types-interfaces",
+          "generics-api-client",
+          "jsx-components",
+          "state-effects-routing",
+          "frontend-accessibility",
+          "dependency-classes",
+          "manifest-lock-semver",
+          "reproducible-install-supply",
+          "compile-bundle-hash",
+          "source-artifact-boundary",
+          "network-foundations",
+          "tls-http",
+          "methods-status-json",
+          "cookies-origin",
+          "api-semantics-routing"
+        ],
+        "evidence": "Own-words source explanation and request trace."
+      },
+      {
+        "id": "api-data",
+        "description": "Preserves API authorization, validation, parameterized data access, transactions, and database invariants.",
+        "points": 15,
+        "critical": true,
+        "concepts": [
+          "express-lifecycle",
+          "auth-authorization",
+          "validation-errors",
+          "sql-transactions",
+          "api-client-contract",
+          "relational-model",
+          "keys-relationships",
+          "constraints-indexes",
+          "transactions-pool",
+          "migrations-lifecycles"
+        ],
+        "evidence": "Handler and data-model review with invariant proof."
+      },
+      {
+        "id": "architecture-domain",
+        "description": "Places the change in the correct component and preserves architecture, repository, and domain lifecycles.",
+        "points": 10,
+        "critical": false,
+        "concepts": [
+          "topology-components",
+          "request-lifecycle",
+          "startup-shutdown",
+          "jobs-failures",
+          "trust-scaling",
+          "root-api-layout",
+          "web-layout",
+          "docs-scripts-layout",
+          "source-generated-layout",
+          "trace-search",
+          "onboarding-assignment",
+          "dispatch-gates",
+          "reports-outcomes",
+          "credit-aircraft",
+          "schedule-admin-news"
+        ],
+        "evidence": "Component diagram or trace and lifecycle analysis."
+      },
+      {
+        "id": "integrations",
+        "description": "Preserves provider, notification, browser, automation, and simulator-package boundaries where applicable.",
+        "points": 8,
+        "critical": false,
+        "concepts": [
+          "simbrief-integration",
+          "volanta-vatsim",
+          "notifications-push",
+          "map-external",
+          "windows-packages"
+        ],
+        "evidence": "Integration impact analysis or explicit not-applicable proof."
+      },
+      {
+        "id": "quality-diagnosis",
+        "description": "Adds deterministic tests or smoke evidence and diagnoses failures from observations.",
+        "points": 10,
+        "critical": true,
+        "concepts": [
+          "test-strategy",
+          "assertions-determinism",
+          "api-validation",
+          "frontend-validation",
+          "smoke-ci-limits",
+          "symptom-diagnosis",
+          "logs-health",
+          "database-api-failure",
+          "auth-build-conflicts",
+          "safe-escalation"
+        ],
+        "evidence": "Test diff, validation output, and one interpreted failure."
+      },
+      {
+        "id": "security",
+        "description": "Identifies assets and trust boundaries, prevents secret exposure, and states incident escalation.",
+        "points": 12,
+        "critical": true,
+        "concepts": [
+          "security-assets",
+          "auth-csrf",
+          "secrets-encryption",
+          "input-output-supply",
+          "audit-incident"
+        ],
+        "evidence": "Security review and clean secret scan."
+      },
+      {
+        "id": "production-recovery",
+        "description": "Classifies deployment, verifies operations, and provides backup, rollback, and recovery procedures.",
+        "points": 12,
+        "critical": true,
+        "concepts": [
+          "environment-classification",
+          "predeploy-backup",
+          "frontend-api-order",
+          "migration-rollback",
+          "config-postverify",
+          "health-state",
+          "logs-jobs",
+          "audit-maintenance",
+          "capacity-monitoring",
+          "incident-sequence",
+          "backup-inventory",
+          "backup-verification",
+          "destructive-restore",
+          "component-recovery",
+          "disaster-recovery"
+        ],
+        "evidence": "Change classification, checklists, and recovery decision."
+      },
+      {
+        "id": "delivery-limits",
+        "description": "Creates a reviewable contribution and explains the exact scope and limits of mastery evidence.",
+        "points": 5,
+        "critical": true,
+        "concepts": [
+          "scope-branch",
+          "code-validation",
+          "documentation-maintenance",
+          "commit-pr-review",
+          "integrated-evidence"
+        ],
+        "evidence": "Pull request draft, review record, and evidence-limit statement."
+      }
+    ],
+    "passPoints": 90,
+    "references": [
+      "docs/contributing.md#guided-contribution-exercise",
+      "academy/MASTERY_MODEL.md#capstone-evidence"
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 # Documentation coverage map
 
-This map connects every project concept to its implementation evidence and its documentation, so that a maintainer can see what a change affects and where the documentation must follow. Each row names the concept, its responsibility, the source files or symbols that implement it, the configuration that controls it, the tests that cover it, the page that documents it, how the documentation was validated, and the coverage status. The map was built while writing the documentation for commit `5f2e27c` and must be updated when any row's source or page changes; the [maintenance triggers](README.md#maintenance-triggers) say when.
+This map connects every project concept to its implementation evidence and its documentation, so that a maintainer can see what a change affects and where the documentation and academy assessments must follow. Each row names the concept, its responsibility, source, configuration, tests, documentation, validation, and coverage status. The technical-reference baseline describes source commit `5f2e27c`; the interactive academy was added from merged documentation commit `291860f`. The [maintenance triggers](README.md#maintenance-triggers) apply to both.
 
 Status values: **Documented** means the page describes the concept at the depth the [index](README.md) promises and the validation method was performed; **Documented, not executed** means the procedure is written from source and configuration but was not run, with the reason in the validation record.
 
@@ -20,6 +20,9 @@ Status values: **Documented** means the page describes the concept at the depth 
 | Edge routing and TLS | Path routing, prefix strip | Caddyfile (outside repo) | `/opt/dashy-database/configs/Caddyfile` | none | [configuration](configuration.md#caddyfile), [architecture](architecture.md#production-runtime-topology) | Caddyfile read; production headers show `via: 1.1 Caddy` | Documented |
 | Process supervision | Restart and boot | PM2, `pm2-dashy.service` | `ecosystem.config.js` | none | [operations](operations.md#runtime-components), [backup-and-recovery](backup-and-recovery.md#recover-the-pm2-process) | `pm2 jlist`, `systemctl is-active` | Documented; recovery not executed |
 | React application shell | Context, layout, routing | `web/src/App.tsx` `App`, `Layout`, `AppContext` | none | typecheck, isolated build | [architecture](architecture.md#frontend-architecture) | Typecheck and isolated build run; hashes matched production at the time of the check | Documented |
+| Academy browser and evidence engine | Dashboard, study, five answer types, scoring, confidence, review scheduling, gates, progress, exams, capstone | `academy/app.mjs`, `academy/engine.mjs` | browser `localStorage` only | engine and progress tests | [academy guide](../academy/README.md), [mastery model](../academy/MASTERY_MODEL.md) | Syntax checked; engine and complete curriculum exercised by Node tests | Documented |
+| Academy local server and checker boundary | Serve safe repository paths on loopback and execute named no-shell checks | `academy/server.mjs`, `academy/checks.mjs` | fixed host `127.0.0.1`, optional port | server and checker tests | [academy practical checks](../academy/README.md#practical-checks) | Static/API smoke, blocked paths, CSP, Origin, body, unknown checker, and fixed checker execution tested | Documented |
+| Academy curriculum data | 21 modules, 105 concepts, 252 questions, 24 labs, 6 exams, 100-point capstone | `academy/data/` | curriculum version `2026.09.1` | validator tests | [academy schema](../academy/SCHEMA.md) | Complete schema, link, source, quality, coverage, critical-evidence, and exam feasibility validation | Documented |
 | API client | Fetch wrapper | `web/src/api.ts` | none | typecheck | [foundations](foundations.md#typescript-types-interfaces-and-generics) | Line-by-line walkthrough against source | Documented |
 | Service worker and push client | Subscribe, display, click | `web/public/airdash-sw.js`, `web/src/webPush.ts` | `VAPID_*` | none | [architecture](architecture.md#service-worker-and-push), [features](features.md#notifications) | Code reading | Documented |
 | Windows automation | Video export and launcher | `scripts/*.ps1`, `.vbs` | script parameters | parse check, dry run | [powerpoint-automation](powerpoint-automation.md) | Not executable from the host | Documented, not executed |
@@ -30,6 +33,9 @@ Status values: **Documented** means the page describes the concept at the depth 
 | Command | Purpose | Defined in | Documentation | Validation | Status |
 |---|---|---|---|---|---|
 | `npm --prefix api ci`, `npm --prefix web ci` | Install | lock files | [installation](installation.md#install-dependencies) | Present `node_modules` verified; package counts read from lock files | Documented |
+| `npm --prefix academy run validate` | Validate curriculum schema, references, source evidence, coverage, critical evidence, exams, labs, capstone, and question quality | `academy/validate.mjs` | [academy schema](../academy/SCHEMA.md#coverage-invariants) | Run against complete data and negative regression fixtures | Documented |
+| `npm --prefix academy test` | Run engine, progress, checker, validator, and server tests | `academy/test/` | [academy guide](../academy/README.md#maintainer-commands) | 47 tests pass | Documented |
+| `npm --prefix academy start` | Start local academy on `127.0.0.1:4174` | `academy/server.mjs` | [academy guide](../academy/README.md#start-the-academy) | Started on an ephemeral loopback port in server tests; fixed-port smoke performed during final validation | Documented |
 | `npm --prefix api run check` | Syntax check | `api/package.json` | [testing](testing.md) | Run, passed | Documented |
 | `npm --prefix api run test:streaks` | Unit tests | `api/package.json` | [testing](testing.md#what-the-streak-test-asserts) | Run, passed; failure output captured | Documented |
 | `npm --prefix api run test:flight-outcomes` | Unit tests | `api/package.json` | [testing](testing.md#what-the-flight-outcome-test-asserts) | Run, passed | Documented |
@@ -79,6 +85,7 @@ Status values: **Documented** means the page describes the concept at the depth 
 | Notifications and push | `/notifications*`, `/push/*` | `notifications.js`, `push.js` | none | same, [features](features.md#notifications) | `/notifications/read` and `/push/public-key` exercised | Documented |
 | Owner administration | 13 `/admin/*` | `server.js` | none | [api-reference](api-reference.md#owner-routes) | Handlers read; not exercised against data | Documented |
 | Frontend routes | 16 paths | `App.tsx` | typecheck | [architecture](architecture.md#routing), [features](features.md) | Route table read from source | Documented |
+| Local academy interface | `/academy/*`, `GET /api/academy/status`, `GET /api/academy/checkers`, `POST /api/academy/checks/:id` | `academy/server.mjs`, fixed registry in `academy/checks.mjs` | server tests | [academy guide](../academy/README.md) | Static data, safe source, blocked secret/generated paths, API methods, Origin, body limit, and checker execution tested | Documented |
 
 ## Persistent entities
 
@@ -119,7 +126,10 @@ Status values: **Documented** means the page describes the concept at the depth 
 | Unit tests | [testing](testing.md#running-the-unit-tests) | Run; failure format captured | Documented |
 | Type check and isolated build | [local-development](local-development.md#frontend-validation-sequence) | Run | Documented |
 | Smoke test | [testing](testing.md#smoke-test) | Run | Documented |
-| Guided exercise | [contributing](contributing.md#guided-contribution-exercise) | Applied in an isolated worktree; check, tests, typecheck, smoke passed | Documented |
+| Guided exercise | [contributing](contributing.md#guided-contribution-exercise) | Implementation fragment applied in an isolated worktree; expanded academy-maintenance variant validated during academy delivery | Documented |
+| Academy engine and progress | [mastery model](../academy/MASTERY_MODEL.md), `academy/test/engine.test.mjs`, `progress.test.mjs` | Five question types, seeded sampling, weighted scores, review stages, misconceptions, import validation, and module gates tested | Documented |
+| Academy curriculum and question quality | [academy schema](../academy/SCHEMA.md), `validator.test.mjs` | Complete data passes; broken IDs, coverage, wording, answer, checker, and exam fixtures fail | Documented |
+| Academy server and checker security | [academy practical checks](../academy/README.md#practical-checks), `server.test.mjs`, `checks.test.mjs` | Loopback server, CSP, static allow-list, secret/path blocking, Origin, body limits, no-shell registry, and fixed commands tested | Documented |
 | Windows parse check and dry run | [powerpoint-automation](powerpoint-automation.md#updating-a-script) | Not run | Documented, not executed |
 
 ## Foundational concepts
@@ -137,16 +147,20 @@ Status values: **Documented** means the page describes the concept at the depth 
 
 ## Validation record
 
-Performed on September 10 and 11, 2026 on the production host with a scratch PostgreSQL 16 container and temporary API processes on ports 39150 and 39151:
+Performed on September 10 and 11, 2026 on the production host, isolated worktrees, a scratch PostgreSQL 16 container, temporary API processes, and the local academy server:
 
-- Repository inspection of all 124 tracked files; route and table counts computed from source and confirmed against production.
+- Repository inspection of the 143 files tracked at merged documentation commit `291860f`; the academy adds 43 first-class files. Route and table counts were computed from source and confirmed against production.
+- Academy curriculum validation: 21 modules, 105 concepts, 28 critical concepts, 252 questions, 53 critical questions, 24 labs, 6 cumulative examinations, one capstone, and all 18 checker allow-list entries covered.
+- Academy tests: 47 engine, progress, checker, validator, and server tests pass; negative fixtures prove malformed progress and curriculum, unknown checker IDs, prohibited paths, invalid Origin, oversized bodies, weak question wording, and missing evidence are rejected.
+- Academy browser and server smoke: application shell, all core and question-bank JSON, status API, fixed checker execution, progress schema, security headers, and blocked `.env`, `.git`, `node_modules`, and `site` paths verified.
 - Host state: `docker ps`, `docker inspect dashy-airdash`, `pm2 jlist`, `systemctl`, `ss -ltnp`, Caddyfile, production health and headers.
 - `npm run check`, both test scripts, `npm run typecheck`, isolated Vite build (hashes matched production at the time), `npm audit` for both directories, `npm ci` from a clean directory for both manifests.
 - Fresh database migration (twice), API startup with mock authentication, public and authenticated route calls, origin rejection, push-disabled behavior, invalid `PORT` and placeholder VAPID errors, database stop crash behavior, `pg_dump`, `pg_restore --list`, `pg_restore` into the scratch database.
 - Vite development server startup, IPv6 binding, proxy 404 defect, and the `rewrite` fix (then reverted).
 - Guided exercise applied in an isolated worktree of `HEAD` and validated.
 - A deliberate assertion failure captured for the testing page.
-- Every internal Markdown link and heading anchor checked by script; every file path in the documentation checked for existence; markdownlint run.
+- All 631 internal Markdown links and heading anchors resolve; repository paths and academy source symbols exist. Thirty non-placeholder external documentation, integration, GitHub, installation, and production URLs were requested without transmitting project content; they responded below 500, including the expected unauthenticated 401 for `/api/me` and method-specific 404s for GET requests to logout or historical paths.
+- Pinned markdownlint 0.45.0 reports no issue in changed or academy Markdown; all 9 Mermaid diagrams parse with Mermaid 11.12.0.
 
 Not performed, with reasons:
 

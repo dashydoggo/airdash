@@ -6,7 +6,8 @@ This guide tells you which pages to read, in which order, based on what you need
 
 | You are | Path |
 |---|---|
-| New to software development and want to understand and eventually change airDash | [Complete beginner](#complete-beginner) |
+| New to software development and want to understand and eventually change airDash | [Complete beginner](#complete-beginner) through the interactive academy |
+| Already familiar with development but want measured airDash-specific mastery | [Interactive airDash Academy](../academy/README.md), beginning with diagnostics |
 | A developer who wants to make a change and submit it | [Contributor](#contributor) |
 | A developer who needs facts quickly | [Experienced developer](#experienced-developer) |
 | Writing a program or script that calls the airDash API | [API consumer](#api-consumer) |
@@ -15,7 +16,19 @@ This guide tells you which pages to read, in which order, based on what you need
 
 ## Complete beginner
 
-This path assumes no prior experience with terminals, source code, Git, servers, or databases. It is long by design. The [learning path](learning-path.md) expands this same order into lessons with exercises.
+This path assumes no prior experience with terminals, source code, Git, servers, or databases. Use the [interactive airDash Academy](../academy/README.md) as the progression controller and the table below as its human-readable syllabus.
+
+From the repository root:
+
+```bash
+npm --prefix academy run validate
+npm --prefix academy test
+npm --prefix academy start
+```
+
+Open `http://127.0.0.1:4174/academy/`. Begin with Module 1 and use the dashboard's **Start the next required activity** button. Do not treat opening a page as completion: a demonstrated module requires the examination, skill minima, concept evidence, practical lab, and misconception conditions in the [mastery model](../academy/MASTERY_MODEL.md). Retained evidence requires the 30-day review stage; integrated evidence requires the final examination and human-reviewed capstone.
+
+The following stages explain the content order. The academy expands them into 21 modules and records evidence; [learning path](learning-path.md) provides additional exercises and expected outcomes.
 
 | Stage | Read | Outcome |
 |---|---|---|
@@ -37,11 +50,11 @@ This path assumes no prior experience with terminals, source code, Git, servers,
 | 16 | [Security](security.md) | You can explain the trust boundaries and the rules that protect them. |
 | 17 | [Foundations: build and deployment](foundations.md#build-and-deployment-foundations), [Deployment](deployment.md) | You can explain the difference between source and build output and follow a deployment procedure. |
 | 18 | [Operations](operations.md) and [Backup and recovery](backup-and-recovery.md) | You can check health, read logs, create a backup, and restore a component. |
-| 19 | [Contributing](contributing.md) | You have completed the guided contribution exercise and opened a pull request. |
+| 19 | [Contributing](contributing.md), academy final examination, and capstone | You have prepared a reviewed contribution, completed the incident exercise, passed cumulative gates, and recorded evidence with its limits; retained status still depends on delayed reviews through day 30. |
 
 ## Contributor
 
-This path assumes you can use a terminal, Git, and a code editor, and that you have written JavaScript before.
+This path assumes you can use a terminal, Git, and a code editor, and that you have written JavaScript before. Start the academy and take module diagnostics rather than assuming familiarity; diagnostics do not lower mastery. Use the static sequence below for reference, then complete module examinations, applicable labs, production-engineering cumulative examination, and capstone criteria for any area in which you will independently change or operate the system.
 
 | Stage | Read | Outcome |
 |---|---|---|

@@ -1,0 +1,2062 @@
+[
+  {
+    "id": "project-purpose",
+    "moduleId": "orientation",
+    "title": "airDash purpose",
+    "definition": "airDash is the virtual-airline website, rules engine, and durable operational record.",
+    "why": "A contributor must preserve the reason the platform exists rather than optimize isolated code.",
+    "outcomes": [
+      "Explain the coordination problem airDash solves.",
+      "Distinguish product behavior from documentation or automation."
+    ],
+    "references": [
+      "docs/project-overview.md#purpose"
+    ],
+    "sourceEvidence": [
+      "README.md",
+      "docs/project-overview.md:Purpose"
+    ],
+    "critical": false
+  },
+  {
+    "id": "actors-roles",
+    "moduleId": "orientation",
+    "title": "Actors and roles",
+    "definition": "Visitors, signed-in users, active pilots, the owner, automation, and background jobs have distinct capabilities.",
+    "why": "Correct reasoning begins with who acts and which boundary grants permission.",
+    "outcomes": [
+      "Map an action to the actor that performs it.",
+      "Identify the role required for a workflow."
+    ],
+    "references": [
+      "docs/project-overview.md#actors-and-roles"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js:requireUser",
+      "api/src/auth.js:requireOwner"
+    ],
+    "critical": false
+  },
+  {
+    "id": "core-workflow",
+    "moduleId": "orientation",
+    "title": "Core flight workflow",
+    "definition": "The core workflow runs from sign-in and application through booking, dispatch, report, review, and updated state.",
+    "why": "The workflow connects otherwise isolated pages, routes, tables, and side effects.",
+    "outcomes": [
+      "Trace all seven workflow stages.",
+      "Name the route and durable side effect at each stage."
+    ],
+    "references": [
+      "docs/project-overview.md#the-core-workflow"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ],
+    "critical": false
+  },
+  {
+    "id": "scope-status",
+    "moduleId": "orientation",
+    "title": "Scope and project status",
+    "definition": "The platform supports one airline, one owner, Discord authentication, BCS3 aircraft, and one production environment.",
+    "why": "Unsupported assumptions produce incorrect features and unsafe operating plans.",
+    "outcomes": [
+      "State supported and unsupported use.",
+      "Explain how the single-environment status affects validation."
+    ],
+    "references": [
+      "docs/project-overview.md#scope",
+      "docs/project-overview.md#project-status"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js:OWNER_ID",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "canonical-docs",
+    "moduleId": "orientation",
+    "title": "Canonical documentation and evidence",
+    "definition": "Architecture, API, data model, and configuration are canonical references; academy levels report evidence with explicit limits.",
+    "why": "A learner must know where facts live and avoid mistaking completion labels for professional certification.",
+    "outcomes": [
+      "Choose the canonical page for a changed contract.",
+      "Explain what academy evidence can and cannot prove."
+    ],
+    "references": [
+      "docs/README.md#how-the-pages-relate",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove"
+    ],
+    "sourceEvidence": [
+      "docs/README.md",
+      "academy/MASTERY_MODEL.md"
+    ],
+    "critical": true
+  },
+  {
+    "id": "filesystem-paths",
+    "moduleId": "shell-files",
+    "title": "Files, directories, and paths",
+    "definition": "Files hold bytes; directories organize them; absolute and relative paths resolve from different starting points.",
+    "why": "Every command and source reference depends on the correct working directory.",
+    "outcomes": [
+      "Distinguish absolute, relative, home, and parent paths.",
+      "Resolve a project path from a stated working directory."
+    ],
+    "references": [
+      "docs/foundations.md#files-directories-and-paths"
+    ],
+    "sourceEvidence": [
+      "web/vite.config.ts:outDir",
+      "api/ecosystem.config.js:cwd"
+    ],
+    "critical": false
+  },
+  {
+    "id": "permissions-processes",
+    "moduleId": "shell-files",
+    "title": "Permissions, executables, processes, services, and signals",
+    "definition": "Permissions control file access; processes run programs; services supervise long-running processes; signals request lifecycle changes.",
+    "why": "Build output must be readable by Nginx and the API must shut down cleanly under PM2.",
+    "outcomes": [
+      "Interpret common permission modes.",
+      "Trace SIGTERM through the API shutdown sequence."
+    ],
+    "references": [
+      "docs/foundations.md#file-permissions-and-executable-files",
+      "docs/foundations.md#processes-services-and-signals"
+    ],
+    "sourceEvidence": [
+      "web/package.json:postbuild",
+      "api/src/server.js:shutdown"
+    ],
+    "critical": false
+  },
+  {
+    "id": "streams-exit-codes",
+    "moduleId": "shell-files",
+    "title": "Standard streams and exit codes",
+    "definition": "stdin supplies input, stdout carries normal results, stderr carries diagnostics, and exit code zero indicates success.",
+    "why": "Validation and automation use stream separation and exit codes to decide whether work passed.",
+    "outcomes": [
+      "Predict where redirected output goes.",
+      "Use an exit code rather than visual output as the primary result."
+    ],
+    "references": [
+      "docs/foundations.md#standard-input-output-and-error-and-exit-codes"
+    ],
+    "sourceEvidence": [
+      "api/package.json:scripts.check"
+    ],
+    "critical": false
+  },
+  {
+    "id": "ports-environment",
+    "moduleId": "shell-files",
+    "title": "Ports, localhost, and environment variables",
+    "definition": "Ports identify listeners; localhost stays on the machine; environment variables configure a process at startup.",
+    "why": "The API, auth service, Vite, and PostgreSQL depend on distinct ports and startup configuration.",
+    "outcomes": [
+      "Map each project service to its port.",
+      "Explain process environment, .env, and code-default precedence."
+    ],
+    "references": [
+      "docs/foundations.md#network-ports-and-localhost",
+      "docs/foundations.md#environment-variables"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:PORT",
+      "api/src/auth.js:AUTH_URL"
+    ],
+    "critical": false
+  },
+  {
+    "id": "shell-safety",
+    "moduleId": "shell-files",
+    "title": "Shell syntax and command safety",
+    "definition": "Quoting, expansion, pipes, redirection, backgrounding, and subshells change command behavior and blast radius.",
+    "why": "A malformed or destructive command can alter production, expose output, or leave orphan processes.",
+    "outcomes": [
+      "Explain a documented command token by token.",
+      "Choose a non-destructive inspection before a mutation."
+    ],
+    "references": [
+      "docs/foundations.md#shells-commands-quoting-pipes-and-redirection",
+      "docs/debugging.md#port-already-in-use"
+    ],
+    "sourceEvidence": [
+      "docs/local-development.md",
+      "docs/deployment.md"
+    ],
+    "critical": true
+  },
+  {
+    "id": "toolchain-versions",
+    "moduleId": "tooling-installation",
+    "title": "Required tools and versions",
+    "definition": "Node.js, npm, Git, PostgreSQL, Docker, Python, and PowerShell have documented roles and version constraints.",
+    "why": "A reproducible environment starts by proving the exact executable and version in use.",
+    "outcomes": [
+      "Identify which tools are required or optional.",
+      "Interpret an engine-version failure."
+    ],
+    "references": [
+      "docs/installation.md#required-software"
+    ],
+    "sourceEvidence": [
+      "api/package.json",
+      "web/package.json"
+    ],
+    "critical": false
+  },
+  {
+    "id": "dependency-install",
+    "moduleId": "tooling-installation",
+    "title": "Dependency installation",
+    "definition": "npm ci restores the exact lock-file tree and refuses manifest-lock disagreement.",
+    "why": "Using the reproducible installer prevents silent dependency drift.",
+    "outcomes": [
+      "Distinguish npm ci from npm install.",
+      "Predict files read and written by dependency installation."
+    ],
+    "references": [
+      "docs/installation.md#install-dependencies"
+    ],
+    "sourceEvidence": [
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ],
+    "critical": false
+  },
+  {
+    "id": "local-postgres",
+    "moduleId": "tooling-installation",
+    "title": "Local PostgreSQL setup",
+    "definition": "A local PostgreSQL 16 database can run natively or in a loopback-only Docker container.",
+    "why": "API development requires an isolated database rather than production data.",
+    "outcomes": [
+      "Explain the Docker port and volume flags.",
+      "Verify readiness and schema count safely."
+    ],
+    "references": [
+      "docs/installation.md#install-postgresql",
+      "docs/installation.md#create-the-schema"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:migrate"
+    ],
+    "critical": false
+  },
+  {
+    "id": "environment-file",
+    "moduleId": "tooling-installation",
+    "title": "Local environment file",
+    "definition": "api/.env supplies local database, authentication, owner, port, SimBrief, and optional VAPID configuration and must remain untracked.",
+    "why": "Correct local configuration enables the API without spreading production secrets.",
+    "outcomes": [
+      "Construct a safe local environment template.",
+      "Explain why placeholders and production values differ."
+    ],
+    "references": [
+      "docs/installation.md#create-the-environment-file",
+      "docs/configuration.md#template-file"
+    ],
+    "sourceEvidence": [
+      "api/.env.example",
+      ".gitignore"
+    ],
+    "critical": true
+  },
+  {
+    "id": "local-processes",
+    "moduleId": "tooling-installation",
+    "title": "Local process topology",
+    "definition": "A complete local environment uses PostgreSQL, a loopback mock auth server, the API, and Vite.",
+    "why": "A learner must start, verify, and stop each process without confusing local and production state.",
+    "outcomes": [
+      "Name all local processes and verification calls.",
+      "Diagnose a port or working-directory startup failure."
+    ],
+    "references": [
+      "docs/local-development.md#the-three-local-processes",
+      "docs/local-development.md#normal-shutdown"
+    ],
+    "sourceEvidence": [
+      "docs/local-development.md",
+      "web/vite.config.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "git-state",
+    "moduleId": "git-github",
+    "title": "Repository, working tree, staging, and commits",
+    "definition": "Git separates tracked history, current files, staged changes, and immutable commits.",
+    "why": "Safe review depends on knowing which state a command changes.",
+    "outcomes": [
+      "Explain status before and after staging.",
+      "Select a command that preserves or discards the intended layer."
+    ],
+    "references": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceEvidence": [
+      ".gitignore",
+      ".gitattributes"
+    ],
+    "critical": false
+  },
+  {
+    "id": "branches-remotes",
+    "moduleId": "git-github",
+    "title": "Branches and remotes",
+    "definition": "A branch names a commit line; origin names the GitHub copy; fetch, pull, and push move information differently.",
+    "why": "Contributions must remain isolated from release branches and remote state must be explicit.",
+    "outcomes": [
+      "Distinguish fetch, pull, and push.",
+      "Create and publish a feature branch safely."
+    ],
+    "references": [
+      "docs/foundations.md#branches-remotes-fetch-pull-and-push"
+    ],
+    "sourceEvidence": [
+      "docs/contributing.md#branches"
+    ],
+    "critical": false
+  },
+  {
+    "id": "diff-history",
+    "moduleId": "git-github",
+    "title": "Status, diff, log, and blame evidence",
+    "definition": "Read-only Git commands reveal file state, changes, and history before any mutation.",
+    "why": "Inspection first prevents accidental staging and incorrect recovery.",
+    "outcomes": [
+      "Choose the command for unstaged, staged, or historical changes.",
+      "Use evidence to identify what changed without rewriting history."
+    ],
+    "references": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceEvidence": [
+      "docs/contributing.md#commits"
+    ],
+    "critical": false
+  },
+  {
+    "id": "review-conflicts",
+    "moduleId": "git-github",
+    "title": "Merge conflicts, pull requests, and review",
+    "definition": "Conflicts require an explicit correct final file; pull requests record a diff, evidence, and review before merge.",
+    "why": "Team safety comes from inspectable change and independent review, not only local success.",
+    "outcomes": [
+      "Resolve conflict markers correctly.",
+      "Prepare review evidence and respond with new commits."
+    ],
+    "references": [
+      "docs/foundations.md#merge-conflicts",
+      "docs/foundations.md#pull-requests-code-review-and-branch-protection"
+    ],
+    "sourceEvidence": [
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ],
+    "critical": false
+  },
+  {
+    "id": "git-recovery",
+    "moduleId": "git-github",
+    "title": "Safe and destructive Git recovery",
+    "definition": "restore and unstage can preserve work; reset --hard, clean, force push, and branch deletion can destroy it.",
+    "why": "Recovery commands can irreversibly remove uncommitted or remote work.",
+    "outcomes": [
+      "Choose the least destructive recovery operation.",
+      "State when explicit confirmation is required."
+    ],
+    "references": [
+      "docs/foundations.md#safe-recovery-from-common-mistakes"
+    ],
+    "sourceEvidence": [
+      "docs/contributing.md#safe-recovery-from-git-mistakes"
+    ],
+    "critical": true
+  },
+  {
+    "id": "js-values-functions",
+    "moduleId": "javascript-node",
+    "title": "Values, types, variables, expressions, and functions",
+    "definition": "JavaScript values have runtime types; functions receive parameters, apply expressions, and return values.",
+    "why": "These mechanics explain every helper and handler in the API.",
+    "outcomes": [
+      "Trace clean(value, maximum).",
+      "Predict a function result from project inputs."
+    ],
+    "references": [
+      "docs/foundations.md#values-types-variables-and-constants",
+      "docs/foundations.md#functions-parameters-and-return-values"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:clean"
+    ],
+    "critical": false
+  },
+  {
+    "id": "objects-control",
+    "moduleId": "javascript-node",
+    "title": "Objects, arrays, destructuring, and control flow",
+    "definition": "Objects name fields, arrays order values, destructuring extracts them, and control flow selects or repeats work.",
+    "why": "Routes assemble JSON, parallel results, and state transitions with these constructs.",
+    "outcomes": [
+      "Read an object and destructuring expression.",
+      "Predict an early return or loop side effect."
+    ],
+    "references": [
+      "docs/foundations.md#objects-arrays-and-destructuring",
+      "docs/foundations.md#control-flow"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:loadAccount"
+    ],
+    "critical": false
+  },
+  {
+    "id": "modules-runtime",
+    "moduleId": "javascript-node",
+    "title": "Modules, imports, exports, and Node.js ESM",
+    "definition": "ECMAScript modules expose selected names, resolve project paths, and execute top-level startup code in Node.js.",
+    "why": "Import direction defines architecture, testability, and startup order.",
+    "outcomes": [
+      "Distinguish bare and relative imports.",
+      "Explain why .js extensions appear in API imports."
+    ],
+    "references": [
+      "docs/foundations.md#modules-imports-and-exports",
+      "docs/foundations.md#compilation-interpretation-and-runtime-execution"
+    ],
+    "sourceEvidence": [
+      "api/package.json",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "async-promises",
+    "moduleId": "javascript-node",
+    "title": "Promises, async/await, concurrency, and cleanup",
+    "definition": "Promises represent future results; await suspends one async function; Promise.all runs independent work concurrently.",
+    "why": "Database, HTTP, and filesystem operations rely on correct ordering and cleanup.",
+    "outcomes": [
+      "Trace authenticatedUser across success and failure.",
+      "Choose sequential or parallel waiting based on dependency."
+    ],
+    "references": [
+      "docs/foundations.md#asynchronous-behavior-promises-and-asyncawait"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js:authenticatedUser",
+      "api/src/server.js:loadAccount"
+    ],
+    "critical": false
+  },
+  {
+    "id": "errors-language",
+    "moduleId": "javascript-node",
+    "title": "Errors, try/catch/finally, optional chaining, nullish coalescing, and template strings",
+    "definition": "JavaScript expresses failure, cleanup, absent data, defaults, and formatted output with explicit operators.",
+    "why": "Correct error propagation protects data and prevents internal detail leakage.",
+    "outcomes": [
+      "Explain a transaction catch/finally path.",
+      "Distinguish || from ?? in a project default."
+    ],
+    "references": [
+      "docs/foundations.md#error-handling",
+      "docs/foundations.md#template-strings-and-string-formatting"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js",
+      "api/src/auth.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "types-interfaces",
+    "moduleId": "typescript-react",
+    "title": "Type annotations, interfaces, unions, and nullability",
+    "definition": "TypeScript describes value shapes and forces explicit handling of optional and nullable data.",
+    "why": "Frontend changes should fail at type check rather than at runtime.",
+    "outcomes": [
+      "Read an interface and union.",
+      "Choose optional, nullable, or required fields for an API response."
+    ],
+    "references": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics"
+    ],
+    "sourceEvidence": [
+      "web/src/types.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "generics-api-client",
+    "moduleId": "typescript-react",
+    "title": "Generics and the typed API client",
+    "definition": "api<T> uses a generic response type while ApiError carries a status and readable message.",
+    "why": "The fetch boundary must preserve cookies, headers, JSON parsing, and typed expectations.",
+    "outcomes": [
+      "Trace api<MeResponse>.",
+      "Explain where runtime validation is still absent."
+    ],
+    "references": [
+      "docs/foundations.md#typescript-types-interfaces-and-generics"
+    ],
+    "sourceEvidence": [
+      "web/src/api.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "jsx-components",
+    "moduleId": "typescript-react",
+    "title": "JSX, components, props, and rendering",
+    "definition": "JSX combines markup and expressions; components receive typed props and return renderable nodes.",
+    "why": "Most airDash interface changes modify component composition rather than raw HTML.",
+    "outcomes": [
+      "Explain punctuation in a project JSX example.",
+      "Fix a ReactNode versus string prop mismatch."
+    ],
+    "references": [
+      "docs/foundations.md#jsx",
+      "docs/change-recipes.md#change-the-portal-pilot-and-base-line"
+    ],
+    "sourceEvidence": [
+      "web/src/App.tsx:Page"
+    ],
+    "critical": false
+  },
+  {
+    "id": "state-effects-routing",
+    "moduleId": "typescript-react",
+    "title": "State, effects, context, and client routing",
+    "definition": "React state triggers rendering, effects synchronize external work, context shares state, and BrowserRouter selects pages.",
+    "why": "Incorrect dependencies or route assumptions cause stale data and broken direct navigation.",
+    "outcomes": [
+      "Trace AppContext and refresh.",
+      "Diagnose an effect or routing failure."
+    ],
+    "references": [
+      "docs/architecture.md#application-shell",
+      "docs/architecture.md#routing"
+    ],
+    "sourceEvidence": [
+      "web/src/App.tsx:App",
+      "web/src/main.tsx"
+    ],
+    "critical": false
+  },
+  {
+    "id": "frontend-accessibility",
+    "moduleId": "typescript-react",
+    "title": "CSS, browser storage, and accessibility",
+    "definition": "The frontend uses one stylesheet, semantic controls, local storage for non-authoritative UI state, and reduced-motion support.",
+    "why": "Visual changes must remain keyboard, screen-reader, and motion accessible without moving authoritative state into the browser.",
+    "outcomes": [
+      "Distinguish server and browser state.",
+      "Evaluate an interactive control for accessibility."
+    ],
+    "references": [
+      "docs/architecture.md#styling",
+      "docs/features.md#browser-state",
+      "docs/features.md#accessibility"
+    ],
+    "sourceEvidence": [
+      "web/src/styles.css",
+      "web/src/notificationState.ts"
+    ],
+    "critical": true
+  },
+  {
+    "id": "dependency-classes",
+    "moduleId": "dependencies-build",
+    "title": "Direct, transitive, runtime, and development dependencies",
+    "definition": "Manifests name direct dependencies; lock files include transitive packages; runtime and development roles differ.",
+    "why": "Dependency scope determines installation, production exposure, and review.",
+    "outcomes": [
+      "Classify project packages.",
+      "Trace why a type package is development-only."
+    ],
+    "references": [
+      "docs/foundations.md#what-a-dependency-is"
+    ],
+    "sourceEvidence": [
+      "api/package.json",
+      "web/package.json"
+    ],
+    "critical": false
+  },
+  {
+    "id": "manifest-lock-semver",
+    "moduleId": "dependencies-build",
+    "title": "Manifests, lock files, semantic versions, and exact pins",
+    "definition": "package.json declares intent, package-lock.json fixes the full tree, and airDash pins exact versions.",
+    "why": "Exact, reviewed changes reduce drift and supply-chain surprise.",
+    "outcomes": [
+      "Interpret major, minor, and patch.",
+      "Explain why both manifest and lock file change together."
+    ],
+    "references": [
+      "docs/foundations.md#package-manifests-and-lock-files",
+      "docs/foundations.md#semantic-versioning"
+    ],
+    "sourceEvidence": [
+      "api/package-lock.json",
+      "web/package-lock.json"
+    ],
+    "critical": false
+  },
+  {
+    "id": "reproducible-install-supply",
+    "moduleId": "dependencies-build",
+    "title": "Reproducible installation and supply-chain risk",
+    "definition": "npm ci verifies and restores the locked tree; dependency names and updates require scrutiny.",
+    "why": "Installed code executes with developer privileges and can affect builds.",
+    "outcomes": [
+      "Choose a safe installation or update workflow.",
+      "Identify a typosquatting or integrity risk."
+    ],
+    "references": [
+      "docs/foundations.md#installing-dependencies",
+      "docs/foundations.md#supply-chain-risk"
+    ],
+    "sourceEvidence": [
+      "docs/installation.md#install-dependencies"
+    ],
+    "critical": false
+  },
+  {
+    "id": "compile-bundle-hash",
+    "moduleId": "dependencies-build",
+    "title": "Type checking, compilation, bundling, minification, and content hashes",
+    "definition": "TypeScript checks types and Vite emits browser JavaScript and CSS with content-derived names.",
+    "why": "A hash proves artifact content and supports cache-safe publication.",
+    "outcomes": [
+      "Trace the web build steps.",
+      "Explain why a source change may create a new bundle name."
+    ],
+    "references": [
+      "docs/foundations.md#compilation-and-bundling",
+      "docs/architecture.md#build-and-publication-architecture"
+    ],
+    "sourceEvidence": [
+      "web/package.json",
+      "web/vite.config.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "source-artifact-boundary",
+    "moduleId": "dependencies-build",
+    "title": "Editable source versus generated and operational artifacts",
+    "definition": "web/src is editable, site/app-assets is generated, and site/downloads contains operational files a build must preserve.",
+    "why": "Editing or deleting the wrong layer loses work or published downloads.",
+    "outcomes": [
+      "Choose the correct file to edit.",
+      "Explain emptyOutDir false and the danger of overriding it."
+    ],
+    "references": [
+      "docs/foundations.md#source-versus-build-artifacts",
+      "docs/repository-guide.md#site-untracked"
+    ],
+    "sourceEvidence": [
+      ".gitignore",
+      "web/vite.config.ts"
+    ],
+    "critical": true
+  },
+  {
+    "id": "network-foundations",
+    "moduleId": "web-http",
+    "title": "Clients, servers, DNS, IP addresses, ports, and TCP",
+    "definition": "Names resolve to addresses; TCP connects client and server ports; localhost remains on one machine.",
+    "why": "The production and local topologies depend on understanding each address and listener.",
+    "outcomes": [
+      "Trace a domain to a listener.",
+      "Diagnose connection refused versus an HTTP error."
+    ],
+    "references": [
+      "docs/foundations.md#clients-servers-addresses-and-names"
+    ],
+    "sourceEvidence": [
+      "docs/architecture.md#production-runtime-topology"
+    ],
+    "critical": false
+  },
+  {
+    "id": "tls-http",
+    "moduleId": "web-http",
+    "title": "TLS, HTTPS, HTTP requests, and responses",
+    "definition": "TLS protects transport to Caddy; HTTP exchanges method, path, headers, body, status, and response body.",
+    "why": "Every API and static request crosses this contract.",
+    "outcomes": [
+      "Identify each request and response part.",
+      "Explain where encryption begins and ends."
+    ],
+    "references": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js",
+      "nginx.conf"
+    ],
+    "critical": false
+  },
+  {
+    "id": "methods-status-json",
+    "moduleId": "web-http",
+    "title": "HTTP methods, status codes, headers, bodies, and JSON",
+    "definition": "Methods express intent, status codes classify results, headers carry metadata, and JSON carries structured bodies.",
+    "why": "Clients and operators must distinguish validation, authorization, conflict, dependency, and server failures.",
+    "outcomes": [
+      "Map project errors to status families.",
+      "Predict how the API client handles a non-JSON or non-2xx body."
+    ],
+    "references": [
+      "docs/foundations.md#http-requests-and-responses",
+      "docs/foundations.md#json"
+    ],
+    "sourceEvidence": [
+      "web/src/api.ts",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "cookies-origin",
+    "moduleId": "web-http",
+    "title": "Cookies, sessions, origins, CORS, and CSRF",
+    "definition": "The browser carries a parent-domain session cookie; Origin identifies the caller and mutation middleware rejects unapproved origins.",
+    "why": "Authentication alone does not prevent another site from causing an authenticated mutation.",
+    "outcomes": [
+      "Trace session-cookie validation.",
+      "Explain why the origin check runs globally before route authorization."
+    ],
+    "references": [
+      "docs/foundations.md#cookies-and-sessions",
+      "docs/foundations.md#cross-origin-behavior"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js",
+      "web/src/api.ts"
+    ],
+    "critical": true
+  },
+  {
+    "id": "api-semantics-routing",
+    "moduleId": "web-http",
+    "title": "API paths, Caddy prefix stripping, pagination, idempotency, and rate limits",
+    "definition": "Browsers call /api paths, Caddy strips the prefix, some lists paginate, repeated operations differ in safety, and no rate limiter exists.",
+    "why": "Correct clients and debugging depend on the boundary between public path and Express path.",
+    "outcomes": [
+      "Trace /api/me to /me.",
+      "Diagnose the Vite proxy mismatch and reason about retry safety."
+    ],
+    "references": [
+      "docs/foundations.md#the-airdash-request-lifecycle",
+      "docs/foundations.md#pagination-idempotency-and-rate-limiting"
+    ],
+    "sourceEvidence": [
+      "web/vite.config.ts",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "express-lifecycle",
+    "moduleId": "api-express-auth",
+    "title": "Express application, middleware order, and route handlers",
+    "definition": "Global middleware parses and protects a request before route-specific authorization and handler logic.",
+    "why": "Changing order can bypass controls or alter errors.",
+    "outcomes": [
+      "List middleware in order.",
+      "Trace one route from match through response."
+    ],
+    "references": [
+      "docs/architecture.md#middleware-order",
+      "docs/api-reference.md#handler-locations"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "auth-authorization",
+    "moduleId": "api-express-auth",
+    "title": "Authentication, authorization classes, and record ownership",
+    "definition": "The auth service establishes identity; middleware grants user or owner access; SQL predicates enforce record ownership.",
+    "why": "A hidden button is not an authorization control and an object ID must not grant access.",
+    "outcomes": [
+      "Distinguish requireUser, requireOwner, pilot checks, and ownership predicates.",
+      "Identify the correct boundary for a new route."
+    ],
+    "references": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "validation-errors",
+    "moduleId": "api-express-auth",
+    "title": "Input validation and the API error contract",
+    "definition": "Text cleaning, allow-lists, patterns, numeric bounds, and generic unexpected-error messages protect handlers.",
+    "why": "Unvalidated input corrupts state or leaks internals; readable deliberate errors support clients.",
+    "outcomes": [
+      "Choose validators for a body field.",
+      "Distinguish a deliberate 4xx from an unexpected 500."
+    ],
+    "references": [
+      "docs/security.md#input-validation",
+      "docs/api-reference.md#request-and-response-format"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:clean"
+    ],
+    "critical": false
+  },
+  {
+    "id": "sql-transactions",
+    "moduleId": "api-express-auth",
+    "title": "Parameterized SQL, transactions, row locks, and cleanup",
+    "definition": "User values use $n parameters; related writes share BEGIN/COMMIT/ROLLBACK; FOR UPDATE coordinates concurrency; finally releases clients.",
+    "why": "These mechanisms jointly prevent injection and partial or racing state.",
+    "outcomes": [
+      "Identify unsafe SQL construction.",
+      "Trace booking rollback and unique-index conflict behavior."
+    ],
+    "references": [
+      "docs/foundations.md#queries-and-parameters",
+      "docs/data-model.md#transaction-boundaries-and-consistency"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:app.post(\"/assignments\")"
+    ],
+    "critical": true
+  },
+  {
+    "id": "api-client-contract",
+    "moduleId": "api-express-auth",
+    "title": "Route classes, API client behavior, and side effects",
+    "definition": "Public, user, pilot, and owner routes have documented inputs, response contracts, and durable side effects.",
+    "why": "A correct change updates handler, consumer type, tests, API reference, and security classification together.",
+    "outcomes": [
+      "Find a route and its consumer.",
+      "Plan a backward-compatible response change."
+    ],
+    "references": [
+      "docs/api-reference.md",
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight"
+    ],
+    "sourceEvidence": [
+      "web/src/api.ts",
+      "web/src/types.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "relational-model",
+    "moduleId": "postgres-data",
+    "title": "Persistent relational data, schemas, tables, rows, columns, and types",
+    "definition": "PostgreSQL stores durable rows in 15 tables under the airdash schema in the shared dashyden database.",
+    "why": "Data modeling and inspection require exact entity and type knowledge.",
+    "outcomes": [
+      "Explain schema-qualified tables.",
+      "Choose an appropriate project data type and nullability."
+    ],
+    "references": [
+      "docs/foundations.md#persistent-data-and-databases",
+      "docs/data-model.md#overview"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "keys-relationships",
+    "moduleId": "postgres-data",
+    "title": "Primary keys, foreign keys, logical relationships, and deletion behavior",
+    "definition": "Keys identify and connect rows; some relationships are enforced by PostgreSQL and others by handlers.",
+    "why": "Deletion and joins behave differently when a relationship is only logical.",
+    "outcomes": [
+      "Read the entity relationship diagram.",
+      "Predict a blocked, cascading, or application-controlled deletion."
+    ],
+    "references": [
+      "docs/foundations.md#primary-keys-foreign-keys-and-relationships",
+      "docs/data-model.md#overview"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:migrate"
+    ],
+    "critical": false
+  },
+  {
+    "id": "constraints-indexes",
+    "moduleId": "postgres-data",
+    "title": "Constraints, partial unique indexes, and invariants",
+    "definition": "CHECK, NOT NULL, UNIQUE, foreign keys, and partial unique indexes enforce valid state and concurrency-safe business rules.",
+    "why": "Application checks improve errors; database constraints provide final correctness under races.",
+    "outcomes": [
+      "Explain one active assignment per pilot and aircraft.",
+      "Diagnose a 23505 conflict."
+    ],
+    "references": [
+      "docs/foundations.md#constraints-and-indexes",
+      "docs/data-model.md#assignments"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:assignments_active_pilot"
+    ],
+    "critical": true
+  },
+  {
+    "id": "transactions-pool",
+    "moduleId": "postgres-data",
+    "title": "Transactions, isolation, row locks, and the connection pool",
+    "definition": "The pool reuses connections; transactions require one dedicated client and read-committed isolation plus explicit locks.",
+    "why": "Incorrect pooling or cleanup can split atomic work or exhaust connections.",
+    "outcomes": [
+      "Choose pool.query or pool.connect.",
+      "Explain FOR UPDATE and finally release."
+    ],
+    "references": [
+      "docs/foundations.md#transactions-and-isolation",
+      "docs/foundations.md#connection-pools"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:pool",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "migrations-lifecycles",
+    "moduleId": "postgres-data",
+    "title": "Idempotent migrations, seed data, entity lifecycles, and backup limits",
+    "definition": "migrate creates and alters schema in file order, seeds reference data, and encodes status lifecycles without versioned rollback.",
+    "why": "Schema changes can partially apply and source rollback does not reverse them.",
+    "outcomes": [
+      "Design an additive idempotent change.",
+      "Trace assignment, report, and aircraft lifecycle effects."
+    ],
+    "references": [
+      "docs/foundations.md#migrations-and-seed-data",
+      "docs/data-model.md#migration-behavior"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:migrate"
+    ],
+    "critical": true
+  },
+  {
+    "id": "topology-components",
+    "moduleId": "architecture-runtime",
+    "title": "System context, components, containers, host processes, ports, mounts, and volumes",
+    "definition": "Caddy, Nginx, PM2 API, auth, PostgreSQL, browsers, and Windows automation have distinct responsibilities and dependencies.",
+    "why": "Operation and failure diagnosis begin with the exact runtime topology.",
+    "outcomes": [
+      "Draw every node and connection.",
+      "Identify the component that owns a symptom."
+    ],
+    "references": [
+      "docs/architecture.md#system-context",
+      "docs/architecture.md#production-runtime-topology"
+    ],
+    "sourceEvidence": [
+      "nginx.conf",
+      "api/ecosystem.config.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "request-lifecycle",
+    "moduleId": "architecture-runtime",
+    "title": "End-to-end request and data flow",
+    "definition": "A browser request crosses Caddy, global middleware, authentication, handlers, PostgreSQL, and the typed client.",
+    "why": "Tracing order reveals where a failure or security decision occurs.",
+    "outcomes": [
+      "Trace GET /api/me.",
+      "Locate the boundary responsible for a status code."
+    ],
+    "references": [
+      "docs/architecture.md#request-lifecycle"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:app.get(\"/me\")",
+      "web/src/api.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "startup-shutdown",
+    "moduleId": "architecture-runtime",
+    "title": "Startup, shutdown, and process supervision",
+    "definition": "Startup migrates and repairs before listening; SIGTERM stops push, closes HTTP, ends the pool, and exits; PM2 supervises the process.",
+    "why": "Deployment and recovery depend on readiness and graceful termination.",
+    "outcomes": [
+      "Order startup and shutdown steps.",
+      "Predict PM2 behavior after a startup failure."
+    ],
+    "references": [
+      "docs/architecture.md#startup-sequence",
+      "docs/architecture.md#shutdown-sequence"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "jobs-failures",
+    "moduleId": "architecture-runtime",
+    "title": "Background jobs, failure propagation, retries, and silent errors",
+    "definition": "Expiry, schedule, and push jobs run in process; dependency failures propagate differently and some timer errors are discarded.",
+    "why": "Silent or crashing failure modes require effect-based verification and explicit operator action.",
+    "outcomes": [
+      "Verify each job by its effects.",
+      "Predict behavior during database, auth, provider, or push failure."
+    ],
+    "references": [
+      "docs/architecture.md#background-work",
+      "docs/architecture.md#failure-propagation-and-retries"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js:startPushWorker"
+    ],
+    "critical": true
+  },
+  {
+    "id": "trust-scaling",
+    "moduleId": "architecture-runtime",
+    "title": "Trust boundaries, scaling constraints, and architectural tradeoffs",
+    "definition": "Validation occurs at changing trust levels; single-process jobs and local files constrain horizontal scaling; tradeoffs are explicit.",
+    "why": "Adding a component or instance without preserving assumptions can duplicate work or expose data.",
+    "outcomes": [
+      "Map every trust boundary.",
+      "Evaluate a proposed second API instance."
+    ],
+    "references": [
+      "docs/architecture.md#trust-boundaries",
+      "docs/architecture.md#scaling-model",
+      "docs/architecture.md#architectural-constraints-and-tradeoffs"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "root-api-layout",
+    "moduleId": "repository-navigation",
+    "title": "Root and API ownership",
+    "definition": "Root configuration and api files separate package contracts, scripts, entry point, database, authentication, integrations, and pure modules.",
+    "why": "A change must land in the owning handwritten file and invoke the right validation.",
+    "outcomes": [
+      "Explain every root and API directory.",
+      "Find the module responsible for a backend behavior."
+    ],
+    "references": [
+      "docs/repository-guide.md#root-files",
+      "docs/repository-guide.md#api"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js",
+      "api/src/database.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "web-layout",
+    "moduleId": "repository-navigation",
+    "title": "Frontend ownership and entry flow",
+    "definition": "web/index.html and main.tsx mount App; App and extracted modules own pages, types, integrations, and styles.",
+    "why": "Searching visible text, route tables, types, and CSS locates user-facing behavior.",
+    "outcomes": [
+      "Trace the frontend entry.",
+      "Find a page, API call, type, and style."
+    ],
+    "references": [
+      "docs/repository-guide.md#web"
+    ],
+    "sourceEvidence": [
+      "web/src/main.tsx",
+      "web/src/App.tsx"
+    ],
+    "critical": false
+  },
+  {
+    "id": "docs-scripts-layout",
+    "moduleId": "repository-navigation",
+    "title": "Documentation, scripts, simulator packages, and automation ownership",
+    "definition": "docs contains canonical prose; scripts, gsx, and livery-templates contain build and Windows automation sources.",
+    "why": "Specialized artifacts require platform-specific validation and documentation triggers.",
+    "outcomes": [
+      "Choose the owning directory for a simulator or documentation change.",
+      "Distinguish source copy from deployed Windows copy."
+    ],
+    "references": [
+      "docs/repository-guide.md#docs",
+      "docs/repository-guide.md#scripts"
+    ],
+    "sourceEvidence": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "gsx/airdash-gsx-handling/build.py"
+    ],
+    "critical": false
+  },
+  {
+    "id": "source-generated-layout",
+    "moduleId": "repository-navigation",
+    "title": "Handwritten, generated, ignored, and operational files",
+    "definition": "site and node_modules are untracked; app-assets are generated; downloads and profiles are operational; public assets have a source copy.",
+    "why": "Editing, emptying, or staging the wrong path loses work or data.",
+    "outcomes": [
+      "Classify representative paths.",
+      "Choose backup and edit procedures for each class."
+    ],
+    "references": [
+      "docs/repository-guide.md#site-untracked",
+      "docs/repository-guide.md#node_modules-untracked"
+    ],
+    "sourceEvidence": [
+      ".gitignore",
+      "web/vite.config.ts"
+    ],
+    "critical": true
+  },
+  {
+    "id": "trace-search",
+    "moduleId": "repository-navigation",
+    "title": "Search and execution-path tracing",
+    "definition": "Visible text, route strings, symbols, types, queries, and side effects form an inspectable path through the repository.",
+    "why": "A contributor should locate behavior from evidence rather than framework convention or guesswork.",
+    "outcomes": [
+      "Use grep to locate a feature.",
+      "Trace booking from click to audit event and response."
+    ],
+    "references": [
+      "docs/repository-guide.md#traced-execution-path-booking-a-flight",
+      "docs/local-development.md#finding-the-code-for-something-you-see"
+    ],
+    "sourceEvidence": [
+      "web/src/App.tsx:confirmBooking",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ],
+    "critical": false
+  },
+  {
+    "id": "onboarding-assignment",
+    "moduleId": "product-domain",
+    "title": "Application, pilot approval, and assignment lifecycle",
+    "definition": "A signed-in user applies, the owner approves a numbered pilot, and the pilot books one active assignment.",
+    "why": "Identity, role, route, aircraft, status, and deadlines establish all later flight state.",
+    "outcomes": [
+      "Trace onboarding writes.",
+      "Apply one-pilot and one-aircraft active invariants."
+    ],
+    "references": [
+      "docs/features.md#join-join",
+      "docs/data-model.md#assignments"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:app.post(\"/applications\")",
+      "api/src/server.js:app.post(\"/assignments\")"
+    ],
+    "critical": false
+  },
+  {
+    "id": "dispatch-gates",
+    "moduleId": "product-domain",
+    "title": "Flight Board, gate allocation, start, cancellation, and dispatch",
+    "definition": "Booking selects an available aircraft and gates; the Hangar starts or cancels and integrates SimBrief, Volanta, and VATSIM.",
+    "why": "Operational consistency requires owner, status, route, aircraft, gate, and deadline validation.",
+    "outcomes": [
+      "Trace booking and cancellation side effects.",
+      "Diagnose a gate or dispatch mismatch."
+    ],
+    "references": [
+      "docs/features.md#flight-board-flights",
+      "docs/features.md#hangar-portal"
+    ],
+    "sourceEvidence": [
+      "api/src/integrations.js:selectGate",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "reports-outcomes",
+    "moduleId": "product-domain",
+    "title": "Pilot reports, Volanta evidence, and outcome analysis",
+    "definition": "The server re-fetches Volanta and derives COMPLETED, DIVERTED, or INCOMPLETE plus reposition evidence.",
+    "why": "The browser preview is untrusted and non-complete outcomes affect aircraft position and credit.",
+    "outcomes": [
+      "Classify outcomes from evidence.",
+      "Choose reposition airport and required reason."
+    ],
+    "references": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#pireps"
+    ],
+    "sourceEvidence": [
+      "api/src/flightOutcome.js:analyzeFlightOutcome",
+      "api/src/server.js:app.post(\"/pireps\")"
+    ],
+    "critical": true
+  },
+  {
+    "id": "credit-aircraft",
+    "moduleId": "product-domain",
+    "title": "Review, credit, streaks, and aircraft lifecycle",
+    "definition": "Approval limits eligible time, applies multipliers and streaks, updates pilot totals, moves aircraft, and may trigger inspection.",
+    "why": "One decision changes several durable entities and must remain transactionally consistent.",
+    "outcomes": [
+      "Calculate credited block and experience behavior.",
+      "Predict aircraft state after approval, rejection, or hard landing."
+    ],
+    "references": [
+      "docs/features.md#pilot-report-report",
+      "docs/data-model.md#aircraft"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:applyPirepReview",
+      "api/src/streaks.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "schedule-admin-news",
+    "moduleId": "product-domain",
+    "title": "Schedule, hub health, administration, audit, and public news",
+    "definition": "The timetable is deterministic and read-only; hub health is derived; owner tabs manage records; audit and org updates preserve traceability and communication.",
+    "why": "Not every page is a CRUD screen and public/private communication shares one entity.",
+    "outcomes": [
+      "Explain schedule and health derivation.",
+      "Map owner actions to audit and news visibility."
+    ],
+    "references": [
+      "docs/features.md#schedule-schedule",
+      "docs/features.md#administration-admin",
+      "docs/features.md#news-hub-news-newsslug"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:ensureSchedule",
+      "api/src/database.js:publishOrgUpdate"
+    ],
+    "critical": false
+  },
+  {
+    "id": "simbrief-integration",
+    "moduleId": "integrations-notifications",
+    "title": "SimBrief generation, import, validation, and limits",
+    "definition": "Generated URLs use D1, AIR callsign, BCS3, LIDO, and recovery zero payload; imports restrict host, path, size, time, and assignment match.",
+    "why": "External planning data is useful only after provider and domain validation.",
+    "outcomes": [
+      "Trace generated parameters.",
+      "Diagnose rejected route, type, format, or recovery payload."
+    ],
+    "references": [
+      "docs/api-reference.md#get-assignmentsidsimbrief-generate",
+      "docs/architecture.md#external-integrations"
+    ],
+    "sourceEvidence": [
+      "api/src/integrations.js:importSimBrief",
+      "api/src/recoveryMissions.js:buildSimBriefDispatchParams"
+    ],
+    "critical": false
+  },
+  {
+    "id": "volanta-vatsim",
+    "moduleId": "integrations-notifications",
+    "title": "Volanta evidence and VATSIM pre-file behavior",
+    "definition": "Volanta public UUID data supplies verification; VATSIM is a browser link with an airDash remark and optional network record.",
+    "why": "Provider fields have distinct authority and no API secret is stored.",
+    "outcomes": [
+      "Distinguish Volanta evidence fields.",
+      "Explain VATSIM link generation and validation limits."
+    ],
+    "references": [
+      "docs/api-reference.md#post-volantaimport",
+      "docs/features.md#hangar-portal"
+    ],
+    "sourceEvidence": [
+      "api/src/integrations.js:importVolanta",
+      "web/src/flightPlan.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "notifications-push",
+    "moduleId": "integrations-notifications",
+    "title": "Notification history, polling, Web Push, and service worker",
+    "definition": "Server-side history creates stable event records and read state; the push worker delivers pending records through VAPID subscriptions; the service worker handles display and click.",
+    "why": "Browser-local state is not authoritative and failed subscriptions need lifecycle handling.",
+    "outcomes": [
+      "Trace a notification from source row to click.",
+      "Diagnose missing, duplicate, or undelivered notifications."
+    ],
+    "references": [
+      "docs/features.md#notifications",
+      "docs/architecture.md#service-worker-and-push"
+    ],
+    "sourceEvidence": [
+      "api/src/notifications.js",
+      "api/src/push.js",
+      "web/public/airdash-sw.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "map-external",
+    "moduleId": "integrations-notifications",
+    "title": "CARTO, RainViewer, Google Fonts, and estimated map positions",
+    "definition": "The browser contacts third-party tile and font providers; flight positions are estimated rather than telemetry.",
+    "why": "Privacy, availability, API keys, and display claims differ for browser-side integrations.",
+    "outcomes": [
+      "Identify direct browser requests.",
+      "Explain what the map can and cannot prove."
+    ],
+    "references": [
+      "docs/architecture.md#external-integrations",
+      "docs/features.md#network-map-map"
+    ],
+    "sourceEvidence": [
+      "web/src/AdvancedNetworkMap.tsx",
+      "web/index.html"
+    ],
+    "critical": false
+  },
+  {
+    "id": "windows-packages",
+    "moduleId": "integrations-notifications",
+    "title": "PowerPoint automation, liveries, GSX, and platform limits",
+    "definition": "Windows scripts render and atomically replace the video; package builders create simulator content; some checks require private archives or an interactive desktop.",
+    "why": "Source, deployed copies, hashes, interactive-session requirements, and unsupported automation must remain explicit.",
+    "outcomes": [
+      "Trace the exporter and launcher.",
+      "Choose the valid platform-specific verification method."
+    ],
+    "references": [
+      "docs/powerpoint-automation.md",
+      "docs/features.md#downloads-and-simulator-content"
+    ],
+    "sourceEvidence": [
+      "scripts/Update-AirDashPressStartVideo.ps1",
+      "scripts/build-msfs2020-liveries.py"
+    ],
+    "critical": false
+  },
+  {
+    "id": "test-strategy",
+    "moduleId": "testing-quality",
+    "title": "Test purpose, categories, isolation, and current strategy",
+    "definition": "Tests catch regressions and encode behavior; airDash combines pure unit scripts, syntax and type checks, smoke tests, builds, and manual visual checks.",
+    "why": "The correct evidence depends on which boundary changed.",
+    "outcomes": [
+      "Classify unit, integration, smoke, and visual checks.",
+      "Select validation by changed area."
+    ],
+    "references": [
+      "docs/testing.md#test-strategy",
+      "docs/testing.md#test-categories"
+    ],
+    "sourceEvidence": [
+      "api/scripts/test-streaks.js",
+      "api/scripts/test-flight-outcomes.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "assertions-determinism",
+    "moduleId": "testing-quality",
+    "title": "Assertions, fixtures, fakes, and determinism",
+    "definition": "Assertions compare expected and actual values; fixtures shape input; fakes replace dependencies; explicit time prevents flaky results.",
+    "why": "A passing test should be reproducible and its failure should identify a contract.",
+    "outcomes": [
+      "Read an assertion failure.",
+      "Design a deterministic project test."
+    ],
+    "references": [
+      "docs/testing.md#reading-a-failure",
+      "docs/foundations.md#assertions-fixtures-fakes-and-determinism"
+    ],
+    "sourceEvidence": [
+      "api/scripts/test-streaks.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "api-validation",
+    "moduleId": "testing-quality",
+    "title": "API syntax and pure unit tests",
+    "definition": "The check script parses all API files; two scripts cover streaks, outcomes, parsing, recovery, and gates without network or database.",
+    "why": "Each command catches a different failure class and none proves route integration.",
+    "outcomes": [
+      "State exactly what each script covers.",
+      "Interpret warning versus failure and exit code."
+    ],
+    "references": [
+      "docs/testing.md#running-the-unit-tests"
+    ],
+    "sourceEvidence": [
+      "api/package.json:scripts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "frontend-validation",
+    "moduleId": "testing-quality",
+    "title": "Type checking, isolated build, marker check, and visual check",
+    "definition": "TypeScript checks contracts, Vite proves bundling, markers prove inclusion, and a browser proves rendered behavior.",
+    "why": "No one check substitutes for the others and production site must not be the build target during validation.",
+    "outcomes": [
+      "Run the sequence safely.",
+      "Diagnose missing marker or wrong working directory."
+    ],
+    "references": [
+      "docs/local-development.md#frontend-validation-sequence",
+      "docs/testing.md#frontend-verification"
+    ],
+    "sourceEvidence": [
+      "web/package.json",
+      "web/vite.config.ts"
+    ],
+    "critical": true
+  },
+  {
+    "id": "smoke-ci-limits",
+    "moduleId": "testing-quality",
+    "title": "Smoke tests, coverage, CI gaps, and new test expectations",
+    "definition": "A temporary API process exercises real startup and routes; route coverage and CI are absent; new pure logic needs deterministic assertions.",
+    "why": "Evidence must disclose what was and was not automated, especially when a smoke test can migrate a database.",
+    "outcomes": [
+      "Run a local smoke test safely.",
+      "Plan test and documentation changes for new behavior."
+    ],
+    "references": [
+      "docs/testing.md#smoke-test",
+      "docs/testing.md#continuous-integration"
+    ],
+    "sourceEvidence": [
+      "docs/testing.md",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "symptom-diagnosis",
+    "moduleId": "debugging-diagnosis",
+    "title": "Symptom-first diagnosis and evidence order",
+    "definition": "Troubleshooting begins from observable behavior, tests likely causes in priority order, and distinguishes before correcting.",
+    "why": "Changing state before diagnosis can erase evidence or widen impact.",
+    "outcomes": [
+      "Build a hypothesis tree from a symptom.",
+      "Choose read-only diagnostics first."
+    ],
+    "references": [
+      "docs/debugging.md#symptom-index"
+    ],
+    "sourceEvidence": [
+      "docs/debugging.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "logs-health",
+    "moduleId": "debugging-diagnosis",
+    "title": "Health checks, logs, process state, and expected observations",
+    "definition": "Health, direct listeners, PM2, containers, logs, and bundle hashes reveal distinct layers.",
+    "why": "A green or red signal must be interpreted in its exact scope.",
+    "outcomes": [
+      "Map a failing check to a component.",
+      "Read normal versus abnormal log lines."
+    ],
+    "references": [
+      "docs/operations.md#health-checks",
+      "docs/operations.md#logs"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:app.get(\"/health\")"
+    ],
+    "critical": false
+  },
+  {
+    "id": "database-api-failure",
+    "moduleId": "debugging-diagnosis",
+    "title": "Database outages, API startup failure, and PM2 restart limits",
+    "definition": "The pg pool has no idle error handler, so a database restart crashes the API; repeated startup migration failure can exhaust PM2 restarts.",
+    "why": "Operator recovery requires database readiness followed by explicit API state verification.",
+    "outcomes": [
+      "Predict the observed failure sequence.",
+      "Recover without deleting data or restarting shared services blindly."
+    ],
+    "references": [
+      "docs/debugging.md#database-unavailable",
+      "docs/debugging.md#api-exits-at-startup"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:pool",
+      "api/ecosystem.config.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "auth-build-conflicts",
+    "moduleId": "debugging-diagnosis",
+    "title": "Authentication, origin, Vite, TypeScript, build, booking, and provider failures",
+    "definition": "Similar user symptoms come from distinct boundaries and readable messages or status codes narrow the cause.",
+    "why": "The correct fix differs between identity, origin, proxy path, type contract, concurrency, and external evidence.",
+    "outcomes": [
+      "Distinguish common errors by output.",
+      "Select corrective action without bypassing a control."
+    ],
+    "references": [
+      "docs/debugging.md#session-not-recognized",
+      "docs/debugging.md#development-proxy-returns-404",
+      "docs/debugging.md#booking-conflicts"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js",
+      "web/vite.config.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "safe-escalation",
+    "moduleId": "debugging-diagnosis",
+    "title": "Safe correction, verification, rollback, and escalation",
+    "definition": "A corrective action states changes, risk, rollback, and verification; shared or destructive actions require owner confirmation.",
+    "why": "Operational discipline prevents a local symptom from becoming a wider outage or data loss.",
+    "outcomes": [
+      "Choose repair versus rollback versus escalation.",
+      "State final verification and remaining uncertainty."
+    ],
+    "references": [
+      "docs/debugging.md#escalation"
+    ],
+    "sourceEvidence": [
+      "docs/deployment.md",
+      "docs/backup-and-recovery.md"
+    ],
+    "critical": true
+  },
+  {
+    "id": "security-assets",
+    "moduleId": "security",
+    "title": "Assets, threat surfaces, and trust boundaries",
+    "definition": "Credentials, sessions, owner authority, personal data, operational integrity, downloads, and shared availability cross explicit trust boundaries.",
+    "why": "Security starts by naming what must be protected and where trust changes.",
+    "outcomes": [
+      "Classify project assets.",
+      "Map controls to boundary crossings."
+    ],
+    "references": [
+      "docs/security.md#assets",
+      "docs/security.md#trust-boundaries"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js",
+      "api/src/server.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "auth-csrf",
+    "moduleId": "security",
+    "title": "Authentication, authorization, ownership, and CSRF defense",
+    "definition": "The auth service identifies; middleware authorizes roles; SQL predicates enforce ownership; Origin rejects cross-site mutations.",
+    "why": "Missing any one layer can expose another account or permit unwanted state change.",
+    "outcomes": [
+      "Trace authenticated mutation defenses.",
+      "Review a new route for all authorization layers."
+    ],
+    "references": [
+      "docs/security.md#authentication-flow",
+      "docs/security.md#authorization-model",
+      "docs/security.md#cross-site-request-forgery"
+    ],
+    "sourceEvidence": [
+      "api/src/auth.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "secrets-encryption",
+    "moduleId": "security",
+    "title": "Secrets, session handling, and encryption boundaries",
+    "definition": "Database and VAPID private credentials remain in untracked environment configuration; TLS terminates at Caddy; internal same-host traffic is plain.",
+    "why": "Secrets must not enter Git, browser bundles, logs, or insecure copies, and encryption claims must match actual boundaries.",
+    "outcomes": [
+      "Classify secret versus public identifier.",
+      "Plan rotation and state the transport boundary accurately."
+    ],
+    "references": [
+      "docs/security.md#secret-management",
+      "docs/security.md#encryption-in-transit-and-at-rest"
+    ],
+    "sourceEvidence": [
+      "api/.env.example",
+      ".gitignore"
+    ],
+    "critical": true
+  },
+  {
+    "id": "input-output-supply",
+    "moduleId": "security",
+    "title": "Input validation, parameterized SQL, output encoding, headers, and dependency security",
+    "definition": "Allow-lists, bounds, parameters, constraints, React escaping, headers, exact pins, locks, and audits provide layered controls.",
+    "why": "Removing one layer turns untrusted data or third-party code into a direct risk.",
+    "outcomes": [
+      "Review a field from request to rendering.",
+      "Evaluate a dependency or output change."
+    ],
+    "references": [
+      "docs/security.md#input-validation",
+      "docs/security.md#output-encoding-and-browser-protections",
+      "docs/security.md#dependency-security"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js",
+      "web/src/App.tsx"
+    ],
+    "critical": false
+  },
+  {
+    "id": "audit-incident",
+    "moduleId": "security",
+    "title": "Audit, sensitive data, unsafe changes, reporting, and incident response",
+    "definition": "Audit records actions but are not tamper-evident; data exposure differs by route; unsafe modifications and incidents require explicit response.",
+    "why": "Security review includes visibility, evidence quality, containment, communication, and recovery.",
+    "outcomes": [
+      "Classify route data exposure.",
+      "Respond to a suspected credential or owner compromise without public disclosure."
+    ],
+    "references": [
+      "docs/security.md#audit-logging",
+      "docs/security.md#sensitive-data-handling",
+      "docs/security.md#common-unsafe-modifications",
+      "docs/security.md#incident-response"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:audit",
+      "api/src/server.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "environment-classification",
+    "moduleId": "deployment-release",
+    "title": "Environments, artifacts, release identity, and change classification",
+    "definition": "Development and production are distinct; the changed area determines build, restart, backup, and procedure; commits and hashes identify a release.",
+    "why": "Treating every change alike causes unnecessary outages or missing steps.",
+    "outcomes": [
+      "Classify representative diffs.",
+      "Identify the deployed commit and frontend artifacts."
+    ],
+    "references": [
+      "docs/deployment.md#environments",
+      "docs/README.md#change-classification",
+      "docs/releases.md#versioning"
+    ],
+    "sourceEvidence": [
+      "docs/deployment.md",
+      "docs/releases.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "predeploy-backup",
+    "moduleId": "deployment-release",
+    "title": "Pre-deployment validation, clean Git state, and rollback backup",
+    "definition": "Production should deploy a merged clean commit after targeted validation and a verified release or database backup.",
+    "why": "A clean source of truth and rollback point bound deployment risk.",
+    "outcomes": [
+      "Apply the pre-deployment checklist.",
+      "Refuse deployment from an uncommitted or unvalidated tree."
+    ],
+    "references": [
+      "docs/deployment.md#pre-deployment-checklist",
+      "docs/deployment.md#get-the-code-onto-the-host"
+    ],
+    "sourceEvidence": [
+      "docs/backup-and-recovery.md#release-backup"
+    ],
+    "critical": true
+  },
+  {
+    "id": "frontend-api-order",
+    "moduleId": "deployment-release",
+    "title": "Frontend, API, and combined deployment mechanics",
+    "definition": "Frontend publication writes bind-mounted site artifacts without restart; API deployment restarts PM2; combined changes deploy API first.",
+    "why": "Order protects clients that depend on new server fields and minimizes interruption.",
+    "outcomes": [
+      "Trace each deployment side effect.",
+      "Select the correct combined order and verification."
+    ],
+    "references": [
+      "docs/deployment.md#deploy-a-frontend-only-change",
+      "docs/deployment.md#deploy-an-api-only-change",
+      "docs/deployment.md#deploy-a-combined-change"
+    ],
+    "sourceEvidence": [
+      "web/package.json",
+      "api/ecosystem.config.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "migration-rollback",
+    "moduleId": "deployment-release",
+    "title": "Migration deployment and source-versus-schema rollback",
+    "definition": "A smoke start can apply migrate; API source rollback does not remove columns, constraints, or data changes.",
+    "why": "Schema changes carry durable risk beyond code rollback and require a database backup and planned reverse action.",
+    "outcomes": [
+      "Plan a migration deployment.",
+      "Explain why improvised restore or source rollback is insufficient."
+    ],
+    "references": [
+      "docs/deployment.md#deploy-a-migration",
+      "docs/deployment.md#roll-back-the-api"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:migrate"
+    ],
+    "critical": true
+  },
+  {
+    "id": "config-postverify",
+    "moduleId": "deployment-release",
+    "title": "Static files, Nginx, Caddy, Windows automation, and post-deployment verification",
+    "definition": "Each non-code artifact has a distinct cache, reload, blast radius, and validation procedure.",
+    "why": "Shared configuration changes demand validation before reload and complete live verification afterward.",
+    "outcomes": [
+      "Choose a static or configuration deployment procedure.",
+      "Apply health, marker, log, and visual verification."
+    ],
+    "references": [
+      "docs/deployment.md#deploy-a-static-file-change",
+      "docs/deployment.md#deploy-an-nginx-configuration-change",
+      "docs/deployment.md#deploy-a-caddy-configuration-change",
+      "docs/deployment.md#post-deployment-verification"
+    ],
+    "sourceEvidence": [
+      "nginx.conf",
+      "scripts/Update-AirDashPressStartVideo.ps1"
+    ],
+    "critical": true
+  },
+  {
+    "id": "health-state",
+    "moduleId": "operations-observability",
+    "title": "Health, process, container, systemd, Git, and artifact state",
+    "definition": "A complete session check combines HTTP, PM2, Docker, systemd, bundle, and Git observations.",
+    "why": "No single health endpoint proves the entire deployment and source state.",
+    "outcomes": [
+      "Run the read-only health inventory.",
+      "Interpret restarts versus unstable restarts."
+    ],
+    "references": [
+      "docs/operations.md#health-checks"
+    ],
+    "sourceEvidence": [
+      "docs/operations.md",
+      "api/src/server.js:app.get(\"/health\")"
+    ],
+    "critical": false
+  },
+  {
+    "id": "logs-jobs",
+    "moduleId": "operations-observability",
+    "title": "Log sources, normal lines, and background-job verification",
+    "definition": "PM2 and Docker capture different components; jobs have no success log and must be checked through data effects.",
+    "why": "Absence of an error line is not evidence that a silent job ran.",
+    "outcomes": [
+      "Find the right log.",
+      "Write a read-only query that proves each job effect."
+    ],
+    "references": [
+      "docs/operations.md#logs",
+      "docs/operations.md#background-jobs"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:expireAssignments",
+      "api/src/push.js"
+    ],
+    "critical": false
+  },
+  {
+    "id": "audit-maintenance",
+    "moduleId": "operations-observability",
+    "title": "Audit review, routine maintenance, disk, dependencies, PM2 persistence, and bundle cleanup",
+    "definition": "Operators review durable actions and maintain backup, disk, dependency, process-list, and generated-artifact hygiene.",
+    "why": "Small maintenance omissions accumulate into unrecoverable or confusing state.",
+    "outcomes": [
+      "Plan a maintenance interval.",
+      "Remove stale bundles without breaking retained rollback."
+    ],
+    "references": [
+      "docs/operations.md#audit-review",
+      "docs/operations.md#routine-maintenance"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:audit",
+      "site/app-assets"
+    ],
+    "critical": false
+  },
+  {
+    "id": "capacity-monitoring",
+    "moduleId": "operations-observability",
+    "title": "Capacity, performance, metrics, traces, and alerting limits",
+    "definition": "The single-process system has known bundle, query, pool, and scaling characteristics but no metrics, tracing, or automated alerting.",
+    "why": "Operators must distinguish measured capacity from assumptions and disclose monitoring gaps.",
+    "outcomes": [
+      "Explain current bottlenecks and pool limits.",
+      "Design a minimal external health alert without claiming existing telemetry."
+    ],
+    "references": [
+      "docs/operations.md#capacity-and-performance",
+      "docs/operations.md#metrics-traces-and-alerts"
+    ],
+    "sourceEvidence": [
+      "api/src/database.js:pool",
+      "web/vite.config.ts"
+    ],
+    "critical": false
+  },
+  {
+    "id": "incident-sequence",
+    "moduleId": "operations-observability",
+    "title": "Incident diagnosis, planned shutdown, startup, and escalation",
+    "definition": "Incidents follow health, logs, dependency, recent-change, audit, correction, and verification order; shared restarts require coordination.",
+    "why": "A consistent evidence sequence preserves availability and prevents random restart behavior.",
+    "outcomes": [
+      "Execute the diagnosis order from a scenario.",
+      "Plan graceful whole-system maintenance and verify recovery."
+    ],
+    "references": [
+      "docs/operations.md#incident-diagnosis",
+      "docs/operations.md#shutdown-and-startup-of-the-whole-system"
+    ],
+    "sourceEvidence": [
+      "api/src/server.js:shutdown",
+      "api/ecosystem.config.js"
+    ],
+    "critical": true
+  },
+  {
+    "id": "backup-inventory",
+    "moduleId": "backup-recovery",
+    "title": "State inventory, backup scope, and unreproducible assets",
+    "definition": "Git, environment secrets, frontend artifacts, database data, downloads, profiles, Caddy, and PM2 state have different recovery sources.",
+    "why": "A backup plan that omits secrets or operational downloads cannot rebuild the service.",
+    "outcomes": [
+      "Map every state class to a recovery source.",
+      "Identify current backup gaps."
+    ],
+    "references": [
+      "docs/backup-and-recovery.md#what-needs-protecting-and-where-it-lives"
+    ],
+    "sourceEvidence": [
+      ".gitignore",
+      "docs/backup-and-recovery.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "backup-verification",
+    "moduleId": "backup-recovery",
+    "title": "Release backups, database dumps, permissions, checksums, and verification",
+    "definition": "Release backups copy active artifacts and API source with SHA-256; pg_dump custom format captures the schema and data and pg_restore --list verifies contents.",
+    "why": "A backup is not trusted until its integrity and expected contents are checked.",
+    "outcomes": [
+      "Explain each backup command and output.",
+      "Choose retention and privacy controls."
+    ],
+    "references": [
+      "docs/backup-and-recovery.md#release-backup",
+      "docs/backup-and-recovery.md#database-backup"
+    ],
+    "sourceEvidence": [
+      "docs/backup-and-recovery.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "destructive-restore",
+    "moduleId": "backup-recovery",
+    "title": "Destructive database restoration and rollback limits",
+    "definition": "A clean schema restore replaces current airDash data and loses later records; it requires API stop, current-state backup, owner approval, restore, migration, and verification.",
+    "why": "Restoration is not an exploratory undo command and source rollback cannot replace it.",
+    "outcomes": [
+      "State every precondition and data-loss consequence.",
+      "Reject an improvised production restore."
+    ],
+    "references": [
+      "docs/backup-and-recovery.md#restore-the-database-schema-from-a-dump"
+    ],
+    "sourceEvidence": [
+      "docs/backup-and-recovery.md"
+    ],
+    "critical": true
+  },
+  {
+    "id": "component-recovery",
+    "moduleId": "backup-recovery",
+    "title": "PM2, static container, database container, Caddy, frontend, profiles, and download recovery",
+    "definition": "Each component has an exact recovery procedure, dependencies, persistence location, and shared-impact boundary.",
+    "why": "Recreating a stateless container differs from restoring shared database state or unreproducible files.",
+    "outcomes": [
+      "Choose the correct component recovery.",
+      "Explain mounts, network, volume, and PM2 save behavior."
+    ],
+    "references": [
+      "docs/backup-and-recovery.md#recover-the-pm2-process",
+      "docs/backup-and-recovery.md#recover-the-static-site-container",
+      "docs/backup-and-recovery.md#recover-the-database-container"
+    ],
+    "sourceEvidence": [
+      "api/ecosystem.config.js",
+      "nginx.conf"
+    ],
+    "critical": true
+  },
+  {
+    "id": "disaster-recovery",
+    "moduleId": "backup-recovery",
+    "title": "Complete-host disaster order, recovery point, recovery time, and proof limits",
+    "definition": "A complete rebuild follows tools, Git, secrets, database, API, frontend, downloads, containers, Caddy, and health verification.",
+    "why": "Order respects dependencies and exposes what cannot be reproduced from repository and database alone.",
+    "outcomes": [
+      "Order the complete recovery.",
+      "State realistic recovery point and unresolved gaps."
+    ],
+    "references": [
+      "docs/backup-and-recovery.md#disaster-recovery-complete-host-loss"
+    ],
+    "sourceEvidence": [
+      "docs/backup-and-recovery.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "scope-branch",
+    "moduleId": "contribution-capstone",
+    "title": "Issue scope, prerequisites, and branch workflow",
+    "definition": "A contributor agrees scope, starts from current release, creates one focused branch, and never commits directly to release.",
+    "why": "Small isolated change reduces wasted work and review risk.",
+    "outcomes": [
+      "Prepare a branch from current remote state.",
+      "Identify when an issue or owner agreement is required."
+    ],
+    "references": [
+      "docs/contributing.md#before-you-start",
+      "docs/contributing.md#branches"
+    ],
+    "sourceEvidence": [
+      "docs/contributing.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "code-validation",
+    "moduleId": "contribution-capstone",
+    "title": "Coding standards and validation by change class",
+    "definition": "API changes preserve validation, parameters, transactions, errors, audit, and tests; frontend changes preserve types, accessibility, styles, and build checks.",
+    "why": "A diff is complete only when its implementation and evidence satisfy the owning area.",
+    "outcomes": [
+      "Review a proposed code change.",
+      "Select and run the complete validation checklist."
+    ],
+    "references": [
+      "docs/contributing.md#coding-standards",
+      "docs/contributing.md#validation-checklist"
+    ],
+    "sourceEvidence": [
+      "api/package.json",
+      "web/package.json"
+    ],
+    "critical": false
+  },
+  {
+    "id": "documentation-maintenance",
+    "moduleId": "contribution-capstone",
+    "title": "Canonical documentation and maintenance triggers",
+    "definition": "Routes, variables, schema, jobs, security boundaries, deployments, features, dependencies, and tests each trigger specific canonical updates.",
+    "why": "Documentation drift is a product defect and coverage must remain connected to source evidence.",
+    "outcomes": [
+      "Choose pages for a code change.",
+      "Update academy concept and assessment coverage with the canonical docs."
+    ],
+    "references": [
+      "docs/README.md#maintenance-triggers",
+      "academy/SCHEMA.md#coverage-invariants"
+    ],
+    "sourceEvidence": [
+      "docs/coverage-map.md",
+      "academy/validate.mjs"
+    ],
+    "critical": false
+  },
+  {
+    "id": "commit-pr-review",
+    "moduleId": "contribution-capstone",
+    "title": "Specific staging, commit quality, pull-request evidence, review, and merge",
+    "definition": "Only intended files are staged; commits explain why; the PR reports validation, docs, risk, rollback, and omissions; review responses use new commits.",
+    "why": "Inspectable and attributable change is the delivery mechanism, especially without branch protection or CI.",
+    "outcomes": [
+      "Prepare a safe commit and PR.",
+      "Respond to review without hiding history."
+    ],
+    "references": [
+      "docs/contributing.md#commits",
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ],
+    "sourceEvidence": [
+      ".gitignore",
+      "docs/contributing.md"
+    ],
+    "critical": false
+  },
+  {
+    "id": "integrated-evidence",
+    "moduleId": "contribution-capstone",
+    "title": "Guided contribution, capstone evidence, and professional limits",
+    "definition": "Integrated evidence combines trace, implementation, tests, docs, validation, diff review, risk, rollback, incident diagnosis, and human explanation.",
+    "why": "No score guarantees professional performance; durable confidence comes from delayed evidence plus independent reviewed work.",
+    "outcomes": [
+      "Complete and explain the contribution exercise.",
+      "State the exact scope and limits of academy evidence."
+    ],
+    "references": [
+      "docs/contributing.md#guided-contribution-exercise",
+      "academy/MASTERY_MODEL.md#what-the-evidence-cannot-prove"
+    ],
+    "sourceEvidence": [
+      "academy/MASTERY_MODEL.md",
+      "academy/data/capstones.json"
+    ],
+    "critical": true
+  }
+]

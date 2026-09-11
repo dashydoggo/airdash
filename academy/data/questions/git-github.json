@@ -1,0 +1,524 @@
+[
+  {
+    "id": "git-github-001",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 1,
+    "critical": false,
+    "concepts": [
+      "git-state"
+    ],
+    "prompt": "What is the Git staging area?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "The GitHub issue list"
+      },
+      {
+        "id": "b",
+        "text": "The selected changes for the next commit"
+      },
+      {
+        "id": "c",
+        "text": "Every untracked file automatically"
+      },
+      {
+        "id": "d",
+        "text": "The production build directory"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "The staging area is the index of content that the next commit will record.",
+    "remediation": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      ".gitattributes"
+    ]
+  },
+  {
+    "id": "git-github-002",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "branches-remotes"
+    ],
+    "prompt": "What does git fetch do?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Downloads remote objects and refs without merging into the working branch"
+      },
+      {
+        "id": "b",
+        "text": "Deletes local commits"
+      },
+      {
+        "id": "c",
+        "text": "Builds the frontend"
+      },
+      {
+        "id": "d",
+        "text": "Pushes every branch"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "Fetch updates remote-tracking information without changing the checked-out branch or files.",
+    "remediation": [
+      "docs/foundations.md#branches-remotes-fetch-pull-and-push"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#branches"
+    ]
+  },
+  {
+    "id": "git-github-003",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "diff-history"
+    ],
+    "prompt": "Which command shows staged changes?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "git diff --staged"
+      },
+      {
+        "id": "b",
+        "text": "git clean -f"
+      },
+      {
+        "id": "c",
+        "text": "git push --force"
+      },
+      {
+        "id": "d",
+        "text": "git branch -D"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "--staged compares the index with HEAD.",
+    "remediation": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#commits"
+    ]
+  },
+  {
+    "id": "git-github-004",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "review-conflicts"
+    ],
+    "prompt": "What must happen to conflict markers before a merge is completed?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Leave all three marker lines in the file"
+      },
+      {
+        "id": "b",
+        "text": "Edit to the correct final content and remove the markers"
+      },
+      {
+        "id": "c",
+        "text": "Convert them to comments"
+      },
+      {
+        "id": "d",
+        "text": "Copy both entire files without review"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "A human resolves the intended content, removes markers, validates, and stages the result.",
+    "remediation": [
+      "docs/foundations.md#merge-conflicts",
+      "docs/foundations.md#pull-requests-code-review-and-branch-protection"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ]
+  },
+  {
+    "id": "git-github-005",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "recall",
+    "difficulty": 2,
+    "critical": false,
+    "concepts": [
+      "git-recovery"
+    ],
+    "prompt": "Which command can irreversibly discard unstaged tracked changes?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "git status"
+      },
+      {
+        "id": "b",
+        "text": "git log"
+      },
+      {
+        "id": "c",
+        "text": "git reset --hard"
+      },
+      {
+        "id": "d",
+        "text": "git fetch"
+      }
+    ],
+    "answer": [
+      "c"
+    ],
+    "explanation": "reset --hard moves refs and replaces tracked working content; it requires exact understanding and permission.",
+    "remediation": [
+      "docs/foundations.md#safe-recovery-from-common-mistakes"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#safe-recovery-from-git-mistakes"
+    ]
+  },
+  {
+    "id": "git-github-006",
+    "moduleId": "git-github",
+    "type": "multi",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "git-state",
+      "branches-remotes",
+      "diff-history"
+    ],
+    "prompt": "Select every true statement in the project contribution workflow.",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Create a focused branch from current release"
+      },
+      {
+        "id": "b",
+        "text": "Stage specific intended paths"
+      },
+      {
+        "id": "c",
+        "text": "Inspect git diff before commit"
+      },
+      {
+        "id": "d",
+        "text": "Push directly to release because branch protection is absent"
+      },
+      {
+        "id": "e",
+        "text": "Record validation in the pull request"
+      }
+    ],
+    "answer": [
+      "a",
+      "b",
+      "c",
+      "e"
+    ],
+    "explanation": "The workflow relies on disciplined branches, specific staging, diff review, and evidence even though GitHub does not enforce protection.",
+    "remediation": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit",
+      "docs/foundations.md#branches-remotes-fetch-pull-and-push"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      ".gitattributes",
+      "docs/contributing.md#branches",
+      "docs/contributing.md#commits"
+    ]
+  },
+  {
+    "id": "git-github-007",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "explain",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "review-conflicts",
+      "git-recovery"
+    ],
+    "prompt": "Which recovery sequence preserves an accidentally staged edit while removing it from the next commit?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "git restore --staged <path>, then keep the working file"
+      },
+      {
+        "id": "b",
+        "text": "git reset --hard"
+      },
+      {
+        "id": "c",
+        "text": "git clean -f"
+      },
+      {
+        "id": "d",
+        "text": "git push --force"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "restore --staged changes only the index; the working edit remains.",
+    "remediation": [
+      "docs/foundations.md#merge-conflicts",
+      "docs/foundations.md#pull-requests-code-review-and-branch-protection",
+      "docs/foundations.md#safe-recovery-from-common-mistakes"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review",
+      "docs/contributing.md#safe-recovery-from-git-mistakes"
+    ]
+  },
+  {
+    "id": "git-github-008",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "git-state",
+      "branches-remotes"
+    ],
+    "prompt": "You need to start a fix after others merged changes. What is the safe sequence?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Checkout release, pull --ff-only, then create a fix branch"
+      },
+      {
+        "id": "b",
+        "text": "Edit release, commit, then fetch"
+      },
+      {
+        "id": "c",
+        "text": "Force-push the old branch"
+      },
+      {
+        "id": "d",
+        "text": "Delete origin and recreate it"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "The branch begins from current remote integration state and isolates the fix.",
+    "remediation": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit",
+      "docs/foundations.md#branches-remotes-fetch-pull-and-push"
+    ],
+    "sourceRefs": [
+      ".gitignore",
+      ".gitattributes",
+      "docs/contributing.md#branches"
+    ]
+  },
+  {
+    "id": "git-github-009",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "diagnose",
+    "difficulty": 4,
+    "critical": false,
+    "concepts": [
+      "branches-remotes",
+      "diff-history"
+    ],
+    "prompt": "git status shows api/.env staged. What should happen before commit?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Commit it because .env is needed to run"
+      },
+      {
+        "id": "b",
+        "text": "Unstage it, verify ignore rules, and check the diff for secrets"
+      },
+      {
+        "id": "c",
+        "text": "Rename it credentials.txt and commit"
+      },
+      {
+        "id": "d",
+        "text": "Base64-encode it"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Secrets must not enter history; encoding or renaming does not make them safe.",
+    "remediation": [
+      "docs/foundations.md#branches-remotes-fetch-pull-and-push",
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#branches",
+      "docs/contributing.md#commits"
+    ]
+  },
+  {
+    "id": "git-github-010",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "apply",
+    "difficulty": 3,
+    "critical": false,
+    "concepts": [
+      "diff-history",
+      "review-conflicts"
+    ],
+    "prompt": "A reviewer asks for a small correction after the branch is pushed. What matches project guidance?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Create a new commit addressing the comment"
+      },
+      {
+        "id": "b",
+        "text": "Amend and force-push without agreement"
+      },
+      {
+        "id": "c",
+        "text": "Close the pull request and edit release directly"
+      },
+      {
+        "id": "d",
+        "text": "Delete the reviewer comment"
+      }
+    ],
+    "answer": [
+      "a"
+    ],
+    "explanation": "New commits preserve reviewed history and are the default response.",
+    "remediation": [
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit",
+      "docs/foundations.md#merge-conflicts",
+      "docs/foundations.md#pull-requests-code-review-and-branch-protection"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#commits",
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review"
+    ]
+  },
+  {
+    "id": "git-github-011",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "secure",
+    "difficulty": 4,
+    "critical": true,
+    "concepts": [
+      "review-conflicts",
+      "git-recovery"
+    ],
+    "prompt": "A colleague proposes git push --force to repair the shared release branch. What is required?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Run it immediately because the repository is public"
+      },
+      {
+        "id": "b",
+        "text": "Stop, explain the destructive shared impact, and obtain explicit owner authorization or use a non-destructive revert"
+      },
+      {
+        "id": "c",
+        "text": "Disable Git hooks first"
+      },
+      {
+        "id": "d",
+        "text": "Delete all local branches"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Force push rewrites shared history; a revert commit is generally recoverable and preferred.",
+    "remediation": [
+      "docs/foundations.md#merge-conflicts",
+      "docs/foundations.md#pull-requests-code-review-and-branch-protection",
+      "docs/foundations.md#safe-recovery-from-common-mistakes"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#pull-requests",
+      "docs/contributing.md#review",
+      "docs/contributing.md#safe-recovery-from-git-mistakes"
+    ]
+  },
+  {
+    "id": "git-github-012",
+    "moduleId": "git-github",
+    "type": "single",
+    "skill": "operate",
+    "difficulty": 5,
+    "critical": true,
+    "concepts": [
+      "git-recovery",
+      "git-state"
+    ],
+    "prompt": "Which recovery rule is safest when the exact impact of a Git command is unclear?",
+    "choices": [
+      {
+        "id": "a",
+        "text": "Run the shortest command"
+      },
+      {
+        "id": "b",
+        "text": "Preserve current work, inspect status/diff/log, and ask before destructive action"
+      },
+      {
+        "id": "c",
+        "text": "Assume uncommitted files are backed up"
+      },
+      {
+        "id": "d",
+        "text": "Use sudo"
+      }
+    ],
+    "answer": [
+      "b"
+    ],
+    "explanation": "Preservation and inspection precede destructive recovery; uncertainty is a reason to stop, not to escalate force.",
+    "remediation": [
+      "docs/foundations.md#safe-recovery-from-common-mistakes",
+      "docs/foundations.md#repository-working-tree-staging-area-and-commit"
+    ],
+    "sourceRefs": [
+      "docs/contributing.md#safe-recovery-from-git-mistakes",
+      ".gitignore",
+      ".gitattributes"
+    ]
+  }
+]
